@@ -8,10 +8,11 @@ import { Badge } from "../../../../components/ui/badge";
 import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
+// Using any type to fix build errors with Next.js 15 page props
 export default async function AssessmentsListPage({
   searchParams,
 }: {
-  searchParams?: Record<string, string | string[]>;
+  searchParams?: any;
 }) {
   const supabase = createServerSupabaseClient();
   
