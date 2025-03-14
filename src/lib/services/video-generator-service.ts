@@ -119,7 +119,7 @@ export class VideoGeneratorService {
     }
   }
 
-  async generateAudioFromScript(script: string, voiceType: 'male' | 'female' = 'female'): Promise<{ success: boolean; audioUrl?: string; error?: string }> {
+  async generateAudioFromScript(script: string): Promise<{ success: boolean; audioUrl?: string; error?: string }> {
     try {
       // In a real implementation, this would call the ElevenLabs API
       // For now, we'll return a mock audio URL
@@ -140,7 +140,7 @@ export class VideoGeneratorService {
     }
   }
 
-  async generateVideoWithAudio(audioUrl: string, title: string, style: 'educational' | 'professional' | 'casual' = 'educational'): Promise<{ success: boolean; videoUrl?: string; thumbnailUrl?: string; error?: string }> {
+  async generateVideoWithAudio(audioUrl: string, title: string): Promise<{ success: boolean; videoUrl?: string; thumbnailUrl?: string; error?: string }> {
     try {
       // In a real implementation, this would generate video content to match the audio
       // For now, we'll return mock URLs
@@ -166,7 +166,7 @@ export class VideoGeneratorService {
     }
   }
 
-  async generateSubtitles(audioUrl: string, script: string): Promise<{ success: boolean; subtitlesUrl?: string; error?: string }> {
+  async generateSubtitles(audioUrl: string): Promise<{ success: boolean; subtitlesUrl?: string; error?: string }> {
     try {
       // In a real implementation, this would generate subtitles from the audio
       // For now, we'll return a mock URL

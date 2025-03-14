@@ -21,7 +21,7 @@ interface ChartProps {
   options?: Record<string, unknown>;
 }
 
-export function BarChart({ data }: ChartProps) {
+export function BarChart(_props: ChartProps) {
   // This is a placeholder component
   // In a real implementation, this would use a chart library
   return (
@@ -36,7 +36,7 @@ export function BarChart({ data }: ChartProps) {
   );
 }
 
-export function LineChart({ data }: ChartProps) {
+export function LineChart(_props: ChartProps) {
   // This is a placeholder component
   // In a real implementation, this would use a chart library
   return (
@@ -51,7 +51,7 @@ export function LineChart({ data }: ChartProps) {
   );
 }
 
-export function PieChart({ data }: ChartProps) {
+export function PieChart(_props: ChartProps) {
   // This is a placeholder component
   // In a real implementation, this would use a chart library
   return (
@@ -66,7 +66,7 @@ export function PieChart({ data }: ChartProps) {
   );
 }
 
-export function DoughnutChart({ data }: ChartProps) {
+export function DoughnutChart(_props: ChartProps) {
   // This is a placeholder component
   // In a real implementation, this would use a chart library
   return (
@@ -81,7 +81,7 @@ export function DoughnutChart({ data }: ChartProps) {
   );
 }
 
-export function RadarChart({ data }: ChartProps) {
+export function RadarChart(_props: ChartProps) {
   // This is a placeholder component
   // In a real implementation, this would use a chart library
   return (

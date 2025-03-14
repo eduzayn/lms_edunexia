@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import { ArrowLeft, Send, Loader2 } from "lucide-react";
+import { ArrowLeft, Send } from "lucide-react";
 
 export default function ActivitySubmitPage({ params }: { params: { id: string } }) {
   return (

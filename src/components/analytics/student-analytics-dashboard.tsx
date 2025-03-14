@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Progress } from "../ui/progress";
 import { Badge } from "../ui/badge";
 import { analyticsService, StudentAnalytics } from "../../lib/services/analytics-service";
-import { BarChart, LineChart, DoughnutChart, RadarChart } from "./chart-components";
+import { BarChart, DoughnutChart, RadarChart } from "./chart-components";
 
 interface StudentAnalyticsDashboardProps {
   studentId: string;

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { ThumbsUp, ThumbsDown, Award, AlertTriangle } from "lucide-react";
+import { ThumbsUp, Award, AlertTriangle } from "lucide-react";
 
 interface FeedbackDisplayProps {
   feedback: {
