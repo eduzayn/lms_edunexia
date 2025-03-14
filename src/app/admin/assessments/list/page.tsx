@@ -8,14 +8,10 @@ import { Badge } from "../../../../components/ui/badge";
 import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
-type SearchParams = {
-  courseId?: string | undefined;
-};
-
 export default async function AssessmentsListPage({
-  searchParams
+  searchParams = {}
 }: {
-  searchParams: SearchParams
+  searchParams?: { courseId?: string }
 }) {
   const supabase = createServerSupabaseClient();
   
