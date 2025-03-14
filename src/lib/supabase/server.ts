@@ -11,12 +11,15 @@ export const getServerClient = () => {
     {
       cookies: {
         get(name: string) {
+          // @ts-expect-error - Next.js types are not fully compatible with Supabase SSR
           return cookieStore.get(name)?.value;
         },
         set(name: string, value: string, options: Record<string, unknown>) {
+          // @ts-expect-error - Next.js types are not fully compatible with Supabase SSR
           cookieStore.set({ name, value, ...options });
         },
         remove(name: string, options: Record<string, unknown>) {
+          // @ts-expect-error - Next.js types are not fully compatible with Supabase SSR
           cookieStore.set({ name, value: '', ...options });
         },
       },
@@ -43,12 +46,15 @@ export const getServiceRoleClient = () => {
     {
       cookies: {
         get(name: string) {
+          // @ts-expect-error - Next.js types are not fully compatible with Supabase SSR
           return cookieStore.get(name)?.value;
         },
         set(name: string, value: string, options: Record<string, unknown>) {
+          // @ts-expect-error - Next.js types are not fully compatible with Supabase SSR
           cookieStore.set({ name, value, ...options });
         },
         remove(name: string, options: Record<string, unknown>) {
+          // @ts-expect-error - Next.js types are not fully compatible with Supabase SSR
           cookieStore.set({ name, value: '', ...options });
         },
       },

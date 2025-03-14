@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from '../../lib/supabase/server';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 export interface ContentItem {
   id: string;
@@ -114,7 +114,7 @@ class ContentEditorService {
     };
   }
   
-  async getAISuggestions(content: string): Promise<string[]> {
+  async getAISuggestions(): Promise<string[]> {
     // This would normally call an API endpoint to get suggestions
     // For now, we'll return mock data
     return [

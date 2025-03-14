@@ -1,8 +1,7 @@
 import * as React from "react";
 
-export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
-  // This interface extends HTMLAttributes but doesn't add any new properties
-}
+// Using type instead of interface to avoid empty interface warning
+export type SectionProps = React.HTMLAttributes<HTMLElement>;
 
 export const Section = React.forwardRef<HTMLElement, SectionProps>(
   ({ className, ...props }, ref) => (
@@ -15,9 +14,8 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
 );
 Section.displayName = "Section";
 
-export interface SectionTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
-  // This interface extends HTMLAttributes but doesn't add any new properties
-}
+// Using type instead of interface to avoid empty interface warning
+export type SectionTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
 
 export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitleProps>(
   ({ className, ...props }, ref) => (
@@ -30,9 +28,8 @@ export const SectionTitle = React.forwardRef<HTMLHeadingElement, SectionTitlePro
 );
 SectionTitle.displayName = "SectionTitle";
 
-export interface SectionDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {
-  // This interface extends HTMLAttributes but doesn't add any new properties
-}
+// Using type instead of interface to avoid empty interface warning
+export type SectionDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
 
 export const SectionDescription = React.forwardRef<HTMLParagraphElement, SectionDescriptionProps>(
   ({ className, ...props }, ref) => (

@@ -1,8 +1,7 @@
 import * as React from "react";
 
-export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  // This interface extends SelectHTMLAttributes but doesn't add any new properties
-}
+// Using type instead of interface to avoid empty interface warning
+export type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, children, ...props }, ref) => {
@@ -21,9 +20,8 @@ Select.displayName = "Select";
 
 export { Select };
 
-export interface SelectItemProps extends React.OptionHTMLAttributes<HTMLOptionElement> {
-  // This interface extends OptionHTMLAttributes but doesn't add any new properties
-}
+// Using type instead of interface to avoid empty interface warning
+export type SelectItemProps = React.OptionHTMLAttributes<HTMLOptionElement>;
 
 const SelectItem = React.forwardRef<HTMLOptionElement, SelectItemProps>(
   ({ className, ...props }, ref) => {
