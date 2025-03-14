@@ -8,10 +8,10 @@ import { Badge } from "../../../../components/ui/badge";
 import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export default async function AssessmentsListPage({
   searchParams,
 }: {
-  params?: Record<string, never>;
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const supabase = createServerSupabaseClient();

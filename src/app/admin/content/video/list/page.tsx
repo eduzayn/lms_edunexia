@@ -2,7 +2,11 @@ import * as React from "react";
 import Link from "next/link";
 import { ArrowLeft, Plus, Search, Filter, Clock, Calendar, Eye, Trash2 } from "lucide-react";
 
-export default function VideoListPage() {
+export default function VideoListPage({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   return (
     <div className="container mx-auto py-8">
       <div className="mb-4">
