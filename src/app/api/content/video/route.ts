@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { videoGeneratorService } from "../../../../lib/services/video-generator-service";
+import { videoQueueService } from "../../../../lib/services/video-queue-service";
 import { createClient } from "@supabase/supabase-js";
 
 export async function POST(request: NextRequest) {
@@ -46,7 +47,8 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    return NextResponse.json({ videoId: result.videoId }, { status: 201 });
+    // Return the job ID instead of video ID with 202 Accepted status
+    return NextResponse.json({ jobId: result.jobId }, { status: 202 });
   } catch (error) {
     console.error("Error in video generation API:", error);
     return NextResponse.json(
@@ -59,11 +61,21 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const videoId = searchParams.get("id");
+  const jobId = searchParams.get("jobId");
   const courseId = searchParams.get("courseId");
   const createdBy = searchParams.get("createdBy");
   
   try {
-    if (videoId) {
+    if (jobId) {
+      // Get job status
+      const result = await videoQueueService.getJob(jobId);
+      
+      if (!result.success) {
+        return NextResponse.json({ error: result.error }, { status: 404 });
+      }
+      
+      return NextResponse.json(result.job);
+    } else if (videoId) {
       // Get a specific video
       const result = await videoGeneratorService.getVideo(videoId);
       
