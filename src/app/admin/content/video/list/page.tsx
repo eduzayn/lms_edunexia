@@ -60,6 +60,7 @@ export default function VideoListPage() {
           {/* Video Card 1 */}
           <div className="border rounded-md overflow-hidden">
             <div className="aspect-video bg-muted relative">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://storage.googleapis.com/edunexia-videos/thumbnails/sample-thumbnail.jpg"
                 alt="Introdução à Fotossíntese"
@@ -110,6 +111,7 @@ export default function VideoListPage() {
           {/* Video Card 2 */}
           <div className="border rounded-md overflow-hidden">
             <div className="aspect-video bg-muted relative">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://storage.googleapis.com/edunexia-videos/thumbnails/sample-thumbnail.jpg"
                 alt="Equações Diferenciais"
@@ -160,6 +162,7 @@ export default function VideoListPage() {
           {/* Video Card 3 */}
           <div className="border rounded-md overflow-hidden">
             <div className="aspect-video bg-muted relative">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://storage.googleapis.com/edunexia-videos/thumbnails/sample-thumbnail.jpg"
                 alt="História da Revolução Industrial"

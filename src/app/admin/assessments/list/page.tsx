@@ -8,10 +8,11 @@ import { Badge } from "../../../../components/ui/badge";
 import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
-type SearchParams = { [key: string]: string | string[] | undefined };
-
-export default async function AssessmentsListPage(props: { searchParams: SearchParams }) {
-  const { searchParams } = props;
+export default async function AssessmentsListPage({
+  searchParams,
+}: {
+  searchParams: Record<string, string | string[] | undefined>;
+}) {
   const supabase = createServerSupabaseClient();
   
   // Check if user is admin or instructor
