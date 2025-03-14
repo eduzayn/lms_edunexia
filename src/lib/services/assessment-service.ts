@@ -172,11 +172,11 @@ class AssessmentService {
     
     // Sort questions and options by order
     const questions = data.questions || [];
-    questions.sort((a, b) => a.order - b.order);
+    questions.sort((a: AssessmentQuestion, b: AssessmentQuestion) => a.order - b.order);
     
-    questions.forEach(question => {
+    questions.forEach((question: AssessmentQuestion) => {
       if (question.options) {
-        question.options.sort((a, b) => a.order - b.order);
+        question.options.sort((a: QuestionOption, b: QuestionOption) => a.order - b.order);
       }
     });
     
@@ -646,13 +646,13 @@ class AssessmentService {
     for (const question of assessment.questions) {
       totalPoints += question.points;
       
-      const answer = submission.answers.find(a => a.question_id === question.id);
+      const answer = submission.answers.find((a: SubmissionAnswer) => a.question_id === question.id);
       
       if (!answer) continue;
       
       // Auto-grade based on question type
       if (question.question_type === 'multiple_choice' || question.question_type === 'true_false') {
-        const correctOption = question.options.find(o => o.is_correct);
+        const correctOption = question.options.find((o: QuestionOption) => o.is_correct);
         
         if (correctOption && answer.answer_text === correctOption.id) {
           answer.is_correct = true;
