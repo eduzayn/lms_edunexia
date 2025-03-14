@@ -11,7 +11,7 @@ import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 export default async function AssessmentsListPage({
   searchParams
 }: {
-  searchParams: { courseId?: string }
+  searchParams: { courseId?: string | undefined }
 }) {
   const supabase = createServerSupabaseClient();
   
