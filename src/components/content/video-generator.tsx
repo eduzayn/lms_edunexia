@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { Loader2, Video, Mic, FileVideo, Check, AlertCircle, Sparkles } from "lucide-react";
+import { Loader2, Mic, FileVideo, Check, AlertCircle, Sparkles } from "lucide-react";
 import { VideoCourseSelector } from "./video-course-selector";
 
 interface Course {
@@ -206,7 +206,7 @@ export function VideoGenerator({
     
     setIsRecording(true);
     
-    // @ts-ignore - SpeechRecognition is not in the TypeScript types
+    // @ts-expect-error - SpeechRecognition is not in the TypeScript types
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     
