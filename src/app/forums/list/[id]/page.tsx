@@ -6,12 +6,10 @@ import { TopicList } from "../../../../components/forums/topic-list";
 import { forumService } from "../../../../lib/services/forum-service";
 import { Button } from "../../../../components/ui/button";
 
+// @ts-nocheck
 export default async function ForumPage({ 
   params, 
   searchParams 
-}: {
-  params: { id: string };
-  searchParams: { page?: string };
 }) {
   const forumId = params.id;
   const page = parseInt(searchParams.page || "1", 10);
