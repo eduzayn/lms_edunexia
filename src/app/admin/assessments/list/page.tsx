@@ -9,6 +9,7 @@ import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
 export default async function AssessmentsListPage(props: {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   params: {};
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
