@@ -8,7 +8,7 @@ import { Badge } from "../../../../components/ui/badge";
 import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
-export default async function AssessmentsListPage({ searchParams }: { searchParams?: { courseId?: string } }) {
+export default async function AssessmentsListPage({ params, searchParams }: { params?: Record<string, string>; searchParams?: { courseId?: string } }) {
   const supabase = createServerSupabaseClient();
   
   // Check if user is admin or instructor
@@ -29,7 +29,7 @@ export default async function AssessmentsListPage({ searchParams }: { searchPara
   }
   
   // Fetch assessments
-  const courseId = typeof searchParams.courseId === 'string' ? searchParams.courseId : undefined;
+  const courseId = searchParams && typeof searchParams.courseId === 'string' ? searchParams.courseId : undefined;
   const assessments = await assessmentService.getAssessments(courseId);
   
   // Fetch courses for filter
