@@ -9,9 +9,11 @@ import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
 export default async function AssessmentsListPage({
-  searchParams = {}
+  params,
+  searchParams,
 }: {
-  searchParams?: { courseId?: string }
+  params: {};
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const supabase = createServerSupabaseClient();
   
