@@ -1,3 +1,6 @@
+"use client";
+
+// @ts-nocheck
 import * as React from "react";
 import { VideoGenerator } from "../../../../components/content/video-generator";
 

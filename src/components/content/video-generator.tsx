@@ -206,7 +206,8 @@ export function VideoGenerator({
     
     setIsRecording(true);
     
-    // @ts-expect-error - SpeechRecognition is not in the TypeScript types
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore - SpeechRecognition is not in the TypeScript types
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     
