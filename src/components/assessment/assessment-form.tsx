@@ -200,7 +200,7 @@ export function AssessmentForm({
               <Label htmlFor="due-date">Data de Entrega</Label>
               <DatePicker
                 date={assessment.due_date ? new Date(assessment.due_date) : undefined}
-                setDate={(date) => handleChange("due_date", date?.toISOString())}
+                setDate={(date: Date | null) => handleChange("due_date", date?.toISOString())}
                 className="w-full"
               />
             </div>
