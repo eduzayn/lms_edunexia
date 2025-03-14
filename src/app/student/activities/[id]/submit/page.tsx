@@ -2,7 +2,7 @@ import * as React from "react";
 import Link from "next/link";
 import { ArrowLeft, Send } from "lucide-react";
 
-export default function ActivitySubmitPage({ params }: { params: { id: string } }) {
+export default function ActivitySubmitPage({ params }) {
   return (
     <div className="container mx-auto py-8">
       <div className="mb-4">
