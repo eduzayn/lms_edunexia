@@ -2,13 +2,13 @@
 
 import * as React from "react";
 import { createClient } from "@supabase/supabase-js";
-import { Button } from "../../../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
-import { ChatMessage } from "../../../components/ai/chat-message";
-import { ConversationHistory } from "../../../components/ai/conversation-history";
-import { UserStats } from "../../../components/ai/user-stats";
-import { ContentViewer } from "../../../components/ai/content-viewer";
-import { AIService } from "../../../lib/services/ai-service";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChatMessage } from "@/components/ai/chat-message";
+import { ConversationHistory } from "@/components/ai/conversation-history";
+import { UserStats } from "@/components/ai/user-stats";
+import { ContentViewer } from "@/components/ai/content-viewer";
+import { AIService } from "@/lib/services/ai-service";
 
 export default function AITutorPage() {
   const [messages, setMessages] = React.useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
@@ -20,7 +20,7 @@ export default function AITutorPage() {
     materialsGenerated: 0,
     timeSaved: 0,
   });
-  const [conversations, setConversations] = React.useState<any[]>([]);
+  const [conversations, setConversations] = React.useState<Array<{id: string; title: string; created_at: string}>>([]);
   const [activeTab, setActiveTab] = React.useState<'chat' | 'history' | 'materials'>('chat');
   const [generatedContent, setGeneratedContent] = React.useState<{
     title: string;
@@ -28,6 +28,7 @@ export default function AITutorPage() {
     type: 'text' | 'mindmap' | 'flashcards';
   } | null>(null);
   const [contentType, setContentType] = React.useState<'summary' | 'mindmap' | 'flashcards' | 'explanation'>('summary');
+  // Map content types to difficulty levels for the AI service
   
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   
@@ -55,7 +56,11 @@ export default function AITutorPage() {
         
         try {
           const stats = await aiService.getUserAIStats(user.id);
-          setUserStats(stats);
+          setUserStats({
+            questionsAnswered: stats.questions_answered,
+            materialsGenerated: stats.materials_generated,
+            timeSaved: stats.time_saved
+          });
           
           const userConversations = await aiService.getUserConversations(user.id);
           setConversations(userConversations);
@@ -131,14 +136,18 @@ export default function AITutorPage() {
     setIsLoading(true);
     
     try {
-      // Get the last few messages for context
-      const recentMessages = messages.slice(-5).map(m => `${m.role}: ${m.content}`).join('\n');
+      // Get the last few messages for context - not used in current implementation
+      // const recentMessages = messages.slice(-5).map(m => `${m.role}: ${m.content}`).join('\n');
       
       // Extract topic from recent messages
       const topic = messages.length > 1 ? messages[messages.length - 2].content : "tópico geral";
       
       // Generate content based on type
-      const content = await aiService.generateStudyMaterial(topic, recentMessages, contentType);
+      const content = await aiService.generateStudyMaterial(
+        topic, 
+        contentType === 'summary' ? 'beginner' : 
+        contentType === 'mindmap' ? 'intermediate' : 'advanced'
+      );
       
       // Set generated content
       setGeneratedContent({
@@ -160,7 +169,11 @@ export default function AITutorPage() {
         
         // Refresh stats
         const stats = await aiService.getUserAIStats(userId);
-        setUserStats(stats);
+        setUserStats({
+          questionsAnswered: stats.questions_answered,
+          materialsGenerated: stats.materials_generated,
+          timeSaved: stats.time_saved
+        });
       } else {
         // Update local stats
         setUserStats(prev => ({
@@ -187,8 +200,9 @@ export default function AITutorPage() {
       if (conversationMessages.length > 0) {
         // Format messages for display
         const formattedMessages = conversationMessages.map(msg => ({
-          role: msg.role as 'user' | 'assistant',
-          content: msg.content
+          // Use type assertion to handle potential missing properties
+          role: (msg as any).role as 'user' | 'assistant',
+          content: (msg as any).content as string
         }));
         
         setMessages(formattedMessages);
@@ -283,7 +297,7 @@ export default function AITutorPage() {
                     <label className="block text-sm font-medium mb-1">Tipo de Material</label>
                     <select
                       value={contentType}
-                      onChange={(e) => setContentType(e.target.value as any)}
+                      onChange={(e) => setContentType(e.target.value as 'summary' | 'mindmap' | 'flashcards' | 'explanation')}
                       className="w-full px-3 py-2 border rounded-md"
                       disabled={isLoading}
                     >
@@ -343,7 +357,7 @@ export default function AITutorPage() {
             />
           ) : (
             <p className="text-muted-foreground">
-              Nenhum material gerado ainda. Use a opção "Gerar Material" durante uma conversa para criar materiais de estudo.
+              Nenhum material gerado ainda. Use a opção &quot;Gerar Material&quot; durante uma conversa para criar materiais de estudo.
             </p>
           )}
         </div>

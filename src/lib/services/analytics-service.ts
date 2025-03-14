@@ -6,7 +6,7 @@ export interface AnalyticsData {
   id: string;
   type: 'course' | 'student' | 'assessment' | 'content';
   entity_id: string;
-  data: any;
+  data: Record<string, unknown>;
   created_at: string;
   updated_at: string;
 }
@@ -204,12 +204,12 @@ class AnalyticsService {
     }
     
     // Calculate module completion
-    for (const module of modules || []) {
+    for (const moduleItem of modules || []) {
       // Get completion for each module
       const { data: completions, error: completionsError } = await supabase
         .from('module_completions')
         .select('*')
-        .eq('module_id', module.id);
+        .eq('module_id', moduleItem.id);
       
       if (!completionsError && completions) {
         const completionRate = enrollments?.length > 0
@@ -217,8 +217,8 @@ class AnalyticsService {
           : 0;
         
         moduleCompletion.push({
-          moduleId: module.id,
-          title: module.title,
+          moduleId: moduleItem.id,
+          title: moduleItem.title,
           completionRate
         });
       }
@@ -559,7 +559,7 @@ class AnalyticsService {
       let totalScore = 0;
       
       for (const submission of completedSubmissions) {
-        const answer = submission.answers?.find(a => a.question_id === question.id);
+        const answer = submission.answers?.find((a: { question_id: string }) => a.question_id === question.id);
         
         if (answer) {
           totalCount++;
@@ -725,7 +725,7 @@ class AnalyticsService {
   }
 
   // Platform Analytics
-  async getPlatformAnalytics(): Promise<any> {
+  async getPlatformAnalytics(): Promise<Record<string, unknown>> {
     const supabase = createServerSupabaseClient();
     
     // Get total users
@@ -800,9 +800,9 @@ class AnalyticsService {
       totalAssessments,
       totalSubmissions,
       userGrowth,
-      activeUserRate: totalUsers > 0 ? (activeUsers / totalUsers) * 100 : 0,
-      enrollmentsPerCourse: totalCourses > 0 ? totalEnrollments / totalCourses : 0,
-      submissionsPerAssessment: totalAssessments > 0 ? totalSubmissions / totalAssessments : 0
+      activeUserRate: totalUsers && totalUsers > 0 ? (activeUsers || 0) / totalUsers * 100 : 0,
+      enrollmentsPerCourse: totalCourses && totalCourses > 0 ? (totalEnrollments || 0) / totalCourses : 0,
+      submissionsPerAssessment: totalAssessments && totalAssessments > 0 ? (totalSubmissions || 0) / totalAssessments : 0
     };
   }
 }

@@ -42,7 +42,7 @@ Continue estudando este tema fascinante! Sugiro revisar especificamente as duas 
   created_at: "2025-03-14T12:30:00Z"
 };
 
-export default function FeedbackDetailPage({ params }: { params: { id: string } }) {
+export default function FeedbackDetailPage() {
   return (
     <div className="container mx-auto py-8">
       <div className="mb-8">

@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Button } from "../ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { Label } from "../ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { DatePicker } from "../ui/date-picker";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { Label } from "./ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { DatePicker } from "./ui/date-picker";
 import { QuestionEditor } from "./question-editor";
 import { Assessment, AssessmentQuestion, AssessmentType } from "../../lib/services/assessment-service";
 import { Plus } from "lucide-react";
@@ -29,7 +29,7 @@ export function AssessmentForm({
   onSave,
   isSaving
 }: AssessmentFormProps) {
-  const handleChange = (field: keyof Assessment, value: any) => {
+  const handleChange = (field: keyof Assessment, value: unknown) => {
     onUpdate({ ...assessment, [field]: value });
   };
 
@@ -143,7 +143,7 @@ export function AssessmentForm({
               <Label htmlFor="type">Tipo de Avaliação</Label>
               <Select
                 value={assessment.type_id}
-                onValueChange={(value) => handleChange("type_id", value)}
+                onValueChange={(value: string) => handleChange("type_id", value)}
               >
                 <SelectTrigger id="type">
                   <SelectValue placeholder="Selecione o tipo" />
@@ -162,7 +162,7 @@ export function AssessmentForm({
               <Label htmlFor="course">Curso</Label>
               <Select
                 value={assessment.course_id || ""}
-                onValueChange={(value) => handleChange("course_id", value)}
+                onValueChange={(value: string) => handleChange("course_id", value)}
               >
                 <SelectTrigger id="course">
                   <SelectValue placeholder="Selecione o curso" />
@@ -181,7 +181,7 @@ export function AssessmentForm({
               <Label htmlFor="module">Módulo</Label>
               <Select
                 value={assessment.module_id || ""}
-                onValueChange={(value) => handleChange("module_id", value)}
+                onValueChange={(value: string) => handleChange("module_id", value)}
               >
                 <SelectTrigger id="module">
                   <SelectValue placeholder="Selecione o módulo" />
@@ -200,7 +200,7 @@ export function AssessmentForm({
               <Label htmlFor="due-date">Data de Entrega</Label>
               <DatePicker
                 date={assessment.due_date ? new Date(assessment.due_date) : undefined}
-                setDate={(date) => handleChange("due_date", date?.toISOString())}
+                setDate={(date: Date | null) => handleChange("due_date", date?.toISOString())}
                 className="w-full"
               />
             </div>
@@ -279,7 +279,7 @@ export function AssessmentForm({
           {assessment.questions.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <p>Nenhuma questão adicionada ainda.</p>
-              <p className="mt-1">Clique em "Adicionar Questão" para começar.</p>
+              <p className="mt-1">Clique em &quot;Adicionar Questão&quot; para começar.</p>
             </div>
           ) : (
             <div className="space-y-4">

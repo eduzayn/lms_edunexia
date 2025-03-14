@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    const result = await contentEditorService.getAIContentSuggestions(body.content);
+    const result = await contentEditorService.getAISuggestions();
     
     if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 500 });
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   return NextResponse.json(
     { error: "Method not allowed" },
     { status: 405 }

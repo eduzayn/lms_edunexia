@@ -119,10 +119,11 @@ export class VideoGeneratorService {
     }
   }
 
-  async generateAudioFromScript(script: string, voiceType: 'male' | 'female' = 'female'): Promise<{ success: boolean; audioUrl?: string; error?: string }> {
+  async generateAudioFromScript(script: string): Promise<{ success: boolean; audioUrl?: string; error?: string }> {
     try {
-      // In a real implementation, this would call the ElevenLabs API
+      // In a real implementation, this would call the ElevenLabs API with the script parameter
       // For now, we'll return a mock audio URL
+      console.log(`Generating audio for script: ${script.substring(0, 50)}...`);
       
       // Mock implementation - in production this would call ElevenLabs API
       const mockAudioUrl = 'https://storage.googleapis.com/edunexia-videos/audio/sample-narration.mp3';
@@ -140,10 +141,11 @@ export class VideoGeneratorService {
     }
   }
 
-  async generateVideoWithAudio(audioUrl: string, title: string, style: 'educational' | 'professional' | 'casual' = 'educational'): Promise<{ success: boolean; videoUrl?: string; thumbnailUrl?: string; error?: string }> {
+  async generateVideoWithAudio(audioUrl: string, title: string): Promise<{ success: boolean; videoUrl?: string; thumbnailUrl?: string; error?: string }> {
     try {
       // In a real implementation, this would generate video content to match the audio
       // For now, we'll return mock URLs
+      console.log(`Generating video for audio: ${audioUrl} with title: ${title}`);
       
       // Mock implementation - in production this would generate actual video
       const mockVideoUrl = 'https://storage.googleapis.com/edunexia-videos/video/sample-video.mp4';
@@ -166,10 +168,11 @@ export class VideoGeneratorService {
     }
   }
 
-  async generateSubtitles(audioUrl: string, script: string): Promise<{ success: boolean; subtitlesUrl?: string; error?: string }> {
+  async generateSubtitles(audioUrl: string): Promise<{ success: boolean; subtitlesUrl?: string; error?: string }> {
     try {
       // In a real implementation, this would generate subtitles from the audio
       // For now, we'll return a mock URL
+      console.log(`Generating subtitles for audio: ${audioUrl}`);
       
       // Mock implementation - in production this would generate actual subtitles
       const mockSubtitlesUrl = 'https://storage.googleapis.com/edunexia-videos/subtitles/sample-subtitles.vtt';
@@ -369,14 +372,16 @@ export class VideoGeneratorService {
       }
       
       // Step 2: Generate audio from script
-      const audioResult = await this.generateAudioFromScript(scriptResult.script, request.voiceType);
+      // Pass only the script parameter since we updated the method signature
+      const audioResult = await this.generateAudioFromScript(scriptResult.script);
       if (!audioResult.success || !audioResult.audioUrl) {
         await videoQueueService.updateJobStatus(job.id, 'failed', null, audioResult.error || 'Failed to generate audio');
         return { success: false, error: audioResult.error || 'Failed to generate audio' };
       }
       
       // Step 3: Generate video with audio
-      const videoResult = await this.generateVideoWithAudio(audioResult.audioUrl, request.title, request.style);
+      // Pass only the required parameters since we updated the method signature
+      const videoResult = await this.generateVideoWithAudio(audioResult.audioUrl, request.title);
       if (!videoResult.success || !videoResult.videoUrl) {
         await videoQueueService.updateJobStatus(job.id, 'failed', null, videoResult.error || 'Failed to generate video');
         return { success: false, error: videoResult.error || 'Failed to generate video' };
@@ -385,7 +390,8 @@ export class VideoGeneratorService {
       // Step 4: Generate subtitles if requested
       let subtitlesUrl = undefined;
       if (request.includeSubtitles) {
-        const subtitlesResult = await this.generateSubtitles(audioResult.audioUrl, scriptResult.script);
+        // Pass only the audioUrl parameter since we updated the method signature
+        const subtitlesResult = await this.generateSubtitles(audioResult.audioUrl);
         if (subtitlesResult.success && subtitlesResult.subtitlesUrl) {
           subtitlesUrl = subtitlesResult.subtitlesUrl;
         }

@@ -7,13 +7,7 @@ import { AssessmentPreview } from "../../../../../components/assessment/assessme
 import { assessmentService } from "../../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../../lib/supabase/server";
 
-interface TakeAssessmentPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function TakeAssessmentPage({ params }: TakeAssessmentPageProps) {
+export default async function TakeAssessmentPage({ params }) {
   const assessmentId = params.id;
   const supabase = createServerSupabaseClient();
   

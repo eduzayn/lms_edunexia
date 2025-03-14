@@ -10,13 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../../../../components/ui/a
 import { Card, CardContent } from "../../../../components/ui/card";
 import { getServerUser } from "../../../../lib/supabase/server";
 
-interface TopicPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function TopicPage({ params }: TopicPageProps) {
+export default async function TopicPage({ params }) {
   const topicId = params.id;
   
   // Get current user

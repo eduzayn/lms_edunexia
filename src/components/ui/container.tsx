@@ -1,8 +1,7 @@
 import * as React from "react";
 
-export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
-  // This interface extends HTMLAttributes but doesn't add any new properties
-}
+// Using type instead of interface to avoid empty interface warning
+export type ContainerProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
   ({ className, ...props }, ref) => (

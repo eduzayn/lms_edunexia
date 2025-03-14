@@ -25,6 +25,7 @@ export function Avatar({
       {...props}
     >
       {src && !hasError ? (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
           alt={alt}
@@ -47,6 +48,7 @@ export function Avatar({
 }
 
 export const AvatarImage = ({ src, alt = "", className, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) => (
+  // eslint-disable-next-line @next/next/no-img-element
   <img
     src={src}
     alt={alt}

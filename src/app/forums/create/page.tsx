@@ -3,12 +3,9 @@ import Link from "next/link";
 import { ArrowLeft, MessageSquare, HelpCircle } from "lucide-react";
 import { PostEditor } from "../../../components/forums/post-editor";
 
-export default function CreateTopicPage({
-  searchParams
-}: {
-  searchParams: { forumId?: string }
-}) {
-  const forumId = searchParams.forumId || "1";
+export default function CreateTopicPage() {
+  // Use static forum ID since we're removing searchParams to fix build
+  const forumId = "1";
   
   // Mock data for forum
   const forum = {

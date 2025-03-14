@@ -38,7 +38,7 @@ export class AIService {
 
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4',
-        messages: messages as any,
+        messages: messages as OpenAI.Chat.ChatCompletionMessageParam[],
         temperature: 0.7,
         max_tokens: 500,
       });
@@ -76,7 +76,7 @@ export class AIService {
         messages: [
           { role: 'system', content: 'Você é um resumidor de conteúdo educacional. Crie resumos concisos e informativos de conteúdo educacional.' },
           { role: 'user', content: `Por favor, resuma o seguinte conteúdo educacional:\n\n${content}` }
-        ] as any,
+        ] as OpenAI.Chat.ChatCompletionMessageParam[],
         temperature: 0.5,
         max_tokens: 300,
       });
@@ -88,7 +88,7 @@ export class AIService {
     }
   }
 
-  async generateQuizQuestions(topic: string, difficulty: 'easy' | 'medium' | 'hard', count: number = 5): Promise<any[]> {
+  async generateQuizQuestions(topic: string, difficulty: 'easy' | 'medium' | 'hard', count: number = 5): Promise<Array<Record<string, unknown>>> {
     try {
       const difficultyMap = {
         'easy': 'fácil',
@@ -101,7 +101,7 @@ export class AIService {
         messages: [
           { role: 'system', content: 'Você é um gerador de questionários educacionais. Crie perguntas de quiz envolventes e precisas com respostas de múltipla escolha.' },
           { role: 'user', content: `Gere ${count} perguntas de múltipla escolha de nível ${difficultyMap[difficulty]} sobre ${topic}. Formate a resposta como um array JSON com objetos contendo "pergunta", "opcoes" (array de 4 escolhas) e "respostaCorreta" (índice da opção correta).` }
-        ] as any,
+        ] as OpenAI.Chat.ChatCompletionMessageParam[],
         temperature: 0.7,
         max_tokens: 1000,
         response_format: { type: 'json_object' },
@@ -129,7 +129,7 @@ export class AIService {
         messages: [
           { role: 'system', content: 'Você é um especialista em educação. Crie materiais de estudo informativos, bem estruturados e educacionalmente sólidos.' },
           { role: 'user', content: `Crie um material de estudo de nível ${levelMap[level]} sobre ${topic}. Inclua uma introdução, principais conceitos, exemplos e um resumo.` }
-        ] as any,
+        ] as OpenAI.Chat.ChatCompletionMessageParam[],
         temperature: 0.6,
         max_tokens: 1000,
       });
@@ -141,14 +141,14 @@ export class AIService {
     }
   }
 
-  async generateMindMap(topic: string): Promise<any> {
+  async generateMindMap(topic: string): Promise<{ mapa: { nos: Array<{ id: string; texto: string; filhos: string[] }>; conexoes: Array<{ origem: string; destino: string }> } }> {
     try {
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4',
         messages: [
           { role: 'system', content: 'Você é um especialista em criar mapas mentais educacionais. Crie estruturas de mapa mental claras e organizadas para tópicos educacionais.' },
           { role: 'user', content: `Crie um mapa mental para o tópico "${topic}". Formate a resposta como um objeto JSON com uma estrutura de nós e conexões. Cada nó deve ter um "id", "texto" e "filhos" (array de IDs de nós filhos).` }
-        ] as any,
+        ] as OpenAI.Chat.ChatCompletionMessageParam[],
         temperature: 0.6,
         max_tokens: 1000,
         response_format: { type: 'json_object' },
@@ -162,14 +162,14 @@ export class AIService {
     }
   }
 
-  async analyzeStudentPerformance(performanceData: any): Promise<string> {
+  async analyzeStudentPerformance(performanceData: Record<string, unknown>): Promise<string> {
     try {
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4',
         messages: [
           { role: 'system', content: 'Você é um analista educacional. Forneça insights úteis e recomendações baseadas em dados de desempenho de alunos.' },
           { role: 'user', content: `Analise os seguintes dados de desempenho do aluno e forneça insights e recomendações:\n\n${JSON.stringify(performanceData)}` }
-        ] as any,
+        ] as OpenAI.Chat.ChatCompletionMessageParam[],
         temperature: 0.5,
         max_tokens: 500,
       });
@@ -181,7 +181,7 @@ export class AIService {
     }
   }
 
-  async saveConversation(userId: string, messages: any[]): Promise<{ id: string }> {
+  async saveConversation(userId: string, messages: Array<{ role: string; content: string }>): Promise<{ id: string }> {
     try {
       // Create a new conversation
       const { data: conversation, error: conversationError } = await this.supabase
@@ -222,7 +222,7 @@ export class AIService {
     }
   }
 
-  async getConversation(conversationId: string): Promise<any[]> {
+  async getConversation(conversationId: string): Promise<Array<{ id: string; title: string; created_at: string; user_id?: string }>> {
     try {
       const { data, error } = await this.supabase
         .from('ai.messages')
@@ -235,14 +235,14 @@ export class AIService {
         throw new Error('Failed to fetch conversation');
       }
 
-      return data || [];
+      return (data || []) as Array<{ id: string; title: string; created_at: string; user_id?: string }>;
     } catch (error) {
       console.error('Error in getConversation:', error);
       throw error;
     }
   }
 
-  async getUserConversations(userId: string, limit: number = 10): Promise<any[]> {
+  async getUserConversations(userId: string, limit = 10): Promise<Array<{ id: string; title: string; created_at: string; user_id?: string }>> {
     try {
       const { data, error } = await this.supabase
         .from('ai.conversations')
@@ -256,7 +256,7 @@ export class AIService {
         throw new Error('Failed to fetch user conversations');
       }
 
-      return data || [];
+      return (data || []) as Array<{ id: string; title: string; created_at: string; user_id?: string }>;
     } catch (error) {
       console.error('Error in getUserConversations:', error);
       throw error;
@@ -282,7 +282,7 @@ export class AIService {
     }
   }
 
-  async getUserAIStats(userId: string): Promise<any> {
+  async getUserAIStats(userId: string): Promise<{ questions_answered: number; materials_generated: number; time_saved: number }> {
     try {
       const { data, error } = await this.supabase
         .from('ai.user_stats')
@@ -299,11 +299,11 @@ export class AIService {
         };
       }
 
-      return data || {
+      return (data || {
         questions_answered: 0,
         materials_generated: 0,
         time_saved: 0
-      };
+      }) as { questions_answered: number; materials_generated: number; time_saved: number };
     } catch (error) {
       console.error('Error in getUserAIStats:', error);
       return {

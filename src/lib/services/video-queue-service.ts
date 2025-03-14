@@ -3,9 +3,9 @@ import { createClient } from '@supabase/supabase-js';
 interface VideoGenerationJob {
   id: string;
   userId: string;
-  request: any;
+  request: Record<string, unknown>;
   status: 'pending' | 'processing' | 'completed' | 'failed';
-  result?: any;
+  result?: Record<string, unknown>;
   error?: string;
   createdAt: string;
   updatedAt: string;
@@ -28,7 +28,7 @@ export class VideoQueueService {
     return VideoQueueService.instance;
   }
   
-  async createJob(userId: string, request: any): Promise<{ success: boolean; jobId?: string; error?: string }> {
+  async createJob(userId: string, request: Record<string, unknown>): Promise<{ success: boolean; jobId?: string; error?: string }> {
     try {
       const supabase = createClient(this.supabaseUrl, this.supabaseKey);
       
@@ -82,7 +82,7 @@ export class VideoQueueService {
     }
   }
   
-  async updateJobStatus(jobId: string, status: 'processing' | 'completed' | 'failed', result?: any, error?: string): Promise<{ success: boolean; error?: string }> {
+  async updateJobStatus(jobId: string, status: 'processing' | 'completed' | 'failed', result?: Record<string, unknown>, error?: string): Promise<{ success: boolean; error?: string }> {
     try {
       const supabase = createClient(this.supabaseUrl, this.supabaseKey);
       

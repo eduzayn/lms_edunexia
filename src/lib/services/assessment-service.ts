@@ -8,7 +8,7 @@ export interface AssessmentType {
   name: string;
   description: string;
   icon: string;
-  settings: any;
+  settings: Record<string, unknown>;
 }
 
 export interface Assessment {
@@ -24,7 +24,7 @@ export interface Assessment {
   passing_score: number;
   time_limit_minutes: number | null;
   attempts_allowed: number | null;
-  settings: any;
+  settings: Record<string, unknown>;
   questions: AssessmentQuestion[];
   created_at: string;
   updated_at: string;
@@ -40,7 +40,7 @@ export interface AssessmentQuestion {
   options?: QuestionOption[];
   correct_answer?: string;
   feedback?: string;
-  settings?: any;
+  settings?: Record<string, unknown>;
   order: number;
 }
 
@@ -172,11 +172,11 @@ class AssessmentService {
     
     // Sort questions and options by order
     const questions = data.questions || [];
-    questions.sort((a, b) => a.order - b.order);
+    questions.sort((a: AssessmentQuestion, b: AssessmentQuestion) => a.order - b.order);
     
-    questions.forEach(question => {
+    questions.forEach((question: AssessmentQuestion) => {
       if (question.options) {
-        question.options.sort((a, b) => a.order - b.order);
+        question.options.sort((a: QuestionOption, b: QuestionOption) => a.order - b.order);
       }
     });
     
@@ -522,7 +522,7 @@ class AssessmentService {
   async updateSubmission(id: string, submission: Partial<StudentSubmission>): Promise<StudentSubmission | null> {
     const supabase = createServerSupabaseClient();
     
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
     
     if (submission.completed_at) updateData.completed_at = submission.completed_at;
     if (submission.score !== undefined) updateData.score = submission.score;
@@ -646,13 +646,13 @@ class AssessmentService {
     for (const question of assessment.questions) {
       totalPoints += question.points;
       
-      const answer = submission.answers.find(a => a.question_id === question.id);
+      const answer = submission.answers.find((a: SubmissionAnswer) => a.question_id === question.id);
       
       if (!answer) continue;
       
       // Auto-grade based on question type
       if (question.question_type === 'multiple_choice' || question.question_type === 'true_false') {
-        const correctOption = question.options.find(o => o.is_correct);
+        const correctOption = question.options.find((o: QuestionOption) => o.is_correct);
         
         if (correctOption && answer.answer_text === correctOption.id) {
           answer.is_correct = true;
@@ -710,7 +710,7 @@ class AssessmentService {
   }
 
   // Analytics
-  async getAssessmentAnalytics(assessmentId: string): Promise<any> {
+  async getAssessmentAnalytics(assessmentId: string): Promise<Record<string, unknown> | null> {
     const supabase = createServerSupabaseClient();
     
     const { data: submissions, error } = await supabase
