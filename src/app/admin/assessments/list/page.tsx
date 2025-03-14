@@ -9,12 +9,13 @@ import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
 // Using specific type to fix build errors with Next.js 15 page props
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export default async function AssessmentsListPage({
   searchParams,
 }: {
   searchParams?: any;
 }) {
+/* eslint-enable @typescript-eslint/no-explicit-any */
   const supabase = createServerSupabaseClient();
   
   // Check if user is admin or instructor

@@ -10,5 +10,6 @@
     "@next/next/no-assign-module-variable": "warn",
     "@typescript-eslint/ban-ts-comment": "warn",
     "jsx-a11y/alt-text": "warn"
-  }
+  },
+  "ignorePatterns": ["**/*.d.ts"]
 }
