@@ -151,7 +151,7 @@ export function PostEditor({
             onClick={() => insertFormat("image")}
             title="Inserir imagem"
           >
-            <Image className="h-4 w-4" aria-hidden="true" />
+            <Image className="h-4 w-4" aria-label="Inserir imagem" />
           </Button>
           
           <div className="ml-auto flex items-center">

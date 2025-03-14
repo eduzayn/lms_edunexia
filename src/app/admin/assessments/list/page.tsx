@@ -8,7 +8,7 @@ import { Badge } from "../../../../components/ui/badge";
 import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
-interface PageProps {
+type PageProps = {
   params: { [key: string]: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }
