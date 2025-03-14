@@ -12,7 +12,10 @@ export function middleware(request: NextRequest) {
   // Define public paths that don't require authentication
   const isPublicPath = path === '/' || 
                        path.startsWith('/auth/') || 
-                       path.startsWith('/pricing');
+                       path.startsWith('/pricing') ||
+                       path === '/student/login' ||
+                       path === '/teacher/login' ||
+                       path === '/admin/login';
   
   // If the user is on a public path and is authenticated, redirect to dashboard
   if (isPublicPath && isAuthenticated) {
