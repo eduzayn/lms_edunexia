@@ -8,8 +8,11 @@ import { Badge } from "../../../../components/ui/badge";
 import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
-export default async function AssessmentsListPage(props: { params?: { id: string }; searchParams?: Record<string, string | string[]> }) {
-  const { searchParams } = props;
+type PageProps = {
+  searchParams?: { courseId?: string }
+};
+
+export default async function AssessmentsListPage({ searchParams }: PageProps) {
   const supabase = createServerSupabaseClient();
   
   // Check if user is admin or instructor
