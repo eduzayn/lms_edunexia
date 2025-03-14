@@ -6,9 +6,17 @@ import { TopicList } from "../../../../components/forums/topic-list";
 import { forumService } from "../../../../lib/services/forum-service";
 import { Button } from "../../../../components/ui/button";
 
-export default async function ForumPage({ params, searchParams }) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export default async function ForumPage({ 
+  params, 
+  searchParams 
+}: { 
+  params: { id: string }; 
+  searchParams: any;
+}) {
   const forumId = params.id;
   const page = parseInt(searchParams.page || "1", 10);
+/* eslint-enable @typescript-eslint/no-explicit-any */
   
   // Fetch forum details
   const forum = await forumService.getForum(forumId);
