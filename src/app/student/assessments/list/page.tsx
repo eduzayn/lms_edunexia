@@ -8,11 +8,7 @@ import { Badge } from "../../../../components/ui/badge";
 import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
-export default async function StudentAssessmentsPage({
-  searchParams
-}: {
-  searchParams: { courseId?: string }
-}) {
+export default async function StudentAssessmentsPage({ searchParams }) {
   const supabase = createServerSupabaseClient();
   
   // Check if user is authenticated
