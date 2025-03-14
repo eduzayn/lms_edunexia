@@ -9,7 +9,7 @@ import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
 export default async function AssessmentsListPage({
-  searchParams,
+  searchParams = {},
 }: {
   searchParams?: Record<string, string | string[] | undefined>;
 }) {
