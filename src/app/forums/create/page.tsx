@@ -4,7 +4,8 @@ import { ArrowLeft, MessageSquare, HelpCircle } from "lucide-react";
 import { PostEditor } from "../../../components/forums/post-editor";
 
 export default function CreateTopicPage({ searchParams = {} }) {
-  const forumId = searchParams.forumId || "1";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const forumId = (searchParams as any).forumId || "1";
   
   // Mock data for forum
   const forum = {
