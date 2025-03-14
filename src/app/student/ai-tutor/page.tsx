@@ -14,10 +14,6 @@ export default function AITutorPage() {
     </Suspense>
   );
 }
-  const [input, setInput] = React.useState("");
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [userId, setUserId] = React.useState<string | null>(null);
-  const [userStats, setUserStats] = React.useState({
     questionsAnswered: 0,
     materialsGenerated: 0,
     timeSaved: 0,
