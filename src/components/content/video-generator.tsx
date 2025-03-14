@@ -1,17 +1,29 @@
 import * as React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Loader2, Video, Mic, FileVideo, Check, AlertCircle, Sparkles } from "lucide-react";
+import { VideoCourseSelector } from "./video-course-selector";
+
+interface Course {
+  id: string;
+  title: string;
+  lessons: {
+    id: string;
+    title: string;
+  }[];
+}
 
 interface VideoGeneratorProps {
   onVideoGenerated?: (videoId: string) => void;
   courseId?: string;
   lessonId?: string;
+  courses?: Course[];
 }
 
 export function VideoGenerator({
   onVideoGenerated,
-  courseId,
-  lessonId
+  courseId: initialCourseId,
+  lessonId: initialLessonId,
+  courses = []
 }: VideoGeneratorProps) {
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
@@ -26,6 +38,11 @@ export function VideoGenerator({
   const [error, setError] = React.useState<string | null>(null);
   const [success, setSuccess] = React.useState<string | null>(null);
   const [isVoiceInputSupported, setIsVoiceInputSupported] = React.useState(false);
+  const [selectedCourseId, setSelectedCourseId] = React.useState<string>(initialCourseId || '');
+  const [selectedLessonId, setSelectedLessonId] = React.useState<string>(initialLessonId || '');
+  const [jobId, setJobId] = React.useState<string | null>(null);
+  const [jobStatus, setJobStatus] = React.useState<string | null>(null);
+  const [pollInterval, setPollInterval] = React.useState<NodeJS.Timeout | null>(null);
 
   React.useEffect(() => {
     // Check if SpeechRecognition is supported
@@ -73,6 +90,57 @@ export function VideoGenerator({
     }
   };
 
+  // Handle course and lesson selection
+  const handleCourseSelection = (courseId: string, lessonId: string) => {
+    setSelectedCourseId(courseId);
+    setSelectedLessonId(lessonId);
+  };
+  
+  // Poll for job status
+  const pollJobStatus = React.useCallback(async (jobId: string) => {
+    try {
+      const response = await fetch(`/api/content/video?jobId=${jobId}`);
+      const data = await response.json();
+      
+      if (response.ok) {
+        setJobStatus(data.status);
+        
+        if (data.status === 'completed' && data.result && data.result.videoId) {
+          if (pollInterval) {
+            clearInterval(pollInterval);
+            setPollInterval(null);
+          }
+          
+          setSuccess('Vídeo gerado com sucesso!');
+          setIsGeneratingVideo(false);
+          
+          if (onVideoGenerated) {
+            onVideoGenerated(data.result.videoId);
+          }
+        } else if (data.status === 'failed') {
+          if (pollInterval) {
+            clearInterval(pollInterval);
+            setPollInterval(null);
+          }
+          
+          setError(data.error || "Falha ao gerar vídeo");
+          setIsGeneratingVideo(false);
+        }
+      }
+    } catch (err) {
+      console.error("Error polling job status:", err);
+    }
+  }, [onVideoGenerated, pollInterval]);
+  
+  // Clean up interval on unmount
+  React.useEffect(() => {
+    return () => {
+      if (pollInterval) {
+        clearInterval(pollInterval);
+      }
+    };
+  }, [pollInterval]);
+
   const handleGenerateVideo = async () => {
     if (!title || !description || !script) {
       setError('Título, descrição e roteiro são obrigatórios para gerar o vídeo.');
@@ -81,6 +149,8 @@ export function VideoGenerator({
     
     setIsGeneratingVideo(true);
     setError(null);
+    setJobId(null);
+    setJobStatus(null);
     
     try {
       const response = await fetch('/api/content/video', {
@@ -96,8 +166,8 @@ export function VideoGenerator({
           voiceType,
           includeSubtitles,
           duration,
-          courseId,
-          lessonId
+          courseId: selectedCourseId || undefined,
+          lessonId: selectedLessonId || undefined
         }),
       });
       
@@ -107,14 +177,23 @@ export function VideoGenerator({
         throw new Error(data.error || 'Erro ao gerar vídeo');
       }
       
-      setSuccess('Vídeo gerado com sucesso!');
-      
-      if (onVideoGenerated && data.videoId) {
-        onVideoGenerated(data.videoId);
+      if (data.jobId) {
+        setJobId(data.jobId);
+        setJobStatus('pending');
+        
+        // Start polling for job status
+        const interval = setInterval(() => pollJobStatus(data.jobId), 5000);
+        setPollInterval(interval);
+      } else if (data.videoId) {
+        // For backward compatibility
+        setSuccess('Vídeo gerado com sucesso!');
+        
+        if (onVideoGenerated) {
+          onVideoGenerated(data.videoId);
+        }
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Erro ao gerar vídeo');
-    } finally {
       setIsGeneratingVideo(false);
     }
   };
@@ -189,6 +268,15 @@ export function VideoGenerator({
             <Check className="h-5 w-5 flex-shrink-0 mt-0.5" />
             <p>{success}</p>
           </div>
+        )}
+        
+        {courses && courses.length > 0 && (
+          <VideoCourseSelector
+            courses={courses}
+            onSelect={handleCourseSelection}
+            selectedCourseId={selectedCourseId}
+            selectedLessonId={selectedLessonId}
+          />
         )}
         
         <div className="space-y-4">
@@ -359,6 +447,17 @@ export function VideoGenerator({
               <span>Gravando...</span>
             </div>
           )}
+          
+          {jobId && jobStatus && !success && !error && (
+            <div className="flex items-center gap-2 text-blue-500">
+              <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+              <span>
+                Status: {jobStatus === 'pending' ? 'Aguardando processamento' : 
+                        jobStatus === 'processing' ? 'Gerando vídeo' : 
+                        jobStatus}
+              </span>
+            </div>
+          )}
         </div>
         
         <button
@@ -370,7 +469,11 @@ export function VideoGenerator({
           {isGeneratingVideo ? (
             <>
               <Loader2 className="h-5 w-5 animate-spin" />
-              <span>Gerando Vídeo...</span>
+              <span>
+                {jobStatus === 'pending' ? 'Aguardando processamento...' : 
+                 jobStatus === 'processing' ? 'Gerando vídeo...' : 
+                 'Iniciando geração...'}
+              </span>
             </>
           ) : (
             <>

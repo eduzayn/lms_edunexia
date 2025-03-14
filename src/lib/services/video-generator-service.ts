@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import OpenAI from 'openai';
+import { videoQueueService } from './video-queue-service';
 
 interface VideoGenerationRequest {
   title: string;
@@ -322,23 +323,62 @@ export class VideoGeneratorService {
     }
   }
 
-  async generateVideo(request: VideoGenerationRequest, userId: string): Promise<{ success: boolean; videoId?: string; error?: string }> {
+ async generateVideo(request: VideoGenerationRequest, userId: string): Promise<{ success: boolean; videoId?: string; jobId?: string; error?: string }> {
     try {
+      // Create a job in the queue
+      const jobResult = await videoQueueService.createJob(userId, request);
+      
+      if (!jobResult.success || !jobResult.jobId) {
+        return { success: false, error: jobResult.error || 'Failed to create video generation job' };
+      }
+      
+      // Return the job ID immediately
+      return { success: true, jobId: jobResult.jobId };
+      
+      // Note: The actual video generation will be handled by a background process
+    } catch (error) {
+      console.error('Error in generateVideo:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error occurred' 
+      };
+    }
+  }
+  
+  async processNextJob(): Promise<{ success: boolean; videoId?: string; error?: string }> {
+    try {
+      // Get the next pending job
+      const jobsResult = await videoQueueService.listPendingJobs();
+      
+      if (!jobsResult.success || !jobsResult.jobs || jobsResult.jobs.length === 0) {
+        return { success: true }; // No jobs to process
+      }
+      
+      const job = jobsResult.jobs[0];
+      
+      // Update job status to processing
+      await videoQueueService.updateJobStatus(job.id, 'processing');
+      
+      const request = job.request as VideoGenerationRequest;
+      
       // Step 1: Generate script if not provided
       const scriptResult = await this.generateVideoScript(request);
       if (!scriptResult.success || !scriptResult.script) {
+        await videoQueueService.updateJobStatus(job.id, 'failed', null, scriptResult.error || 'Failed to generate script');
         return { success: false, error: scriptResult.error || 'Failed to generate script' };
       }
       
       // Step 2: Generate audio from script
       const audioResult = await this.generateAudioFromScript(scriptResult.script, request.voiceType);
       if (!audioResult.success || !audioResult.audioUrl) {
+        await videoQueueService.updateJobStatus(job.id, 'failed', null, audioResult.error || 'Failed to generate audio');
         return { success: false, error: audioResult.error || 'Failed to generate audio' };
       }
       
       // Step 3: Generate video with audio
       const videoResult = await this.generateVideoWithAudio(audioResult.audioUrl, request.title, request.style);
       if (!videoResult.success || !videoResult.videoUrl) {
+        await videoQueueService.updateJobStatus(job.id, 'failed', null, videoResult.error || 'Failed to generate video');
         return { success: false, error: videoResult.error || 'Failed to generate video' };
       }
       
@@ -361,18 +401,22 @@ export class VideoGeneratorService {
         scriptText: scriptResult.script,
         subtitlesUrl: subtitlesUrl,
         status: 'completed',
-        createdBy: userId,
+        createdBy: job.userId,
         courseId: request.courseId,
         lessonId: request.lessonId
       });
       
       if (!metadataResult.success || !metadataResult.data) {
+        await videoQueueService.updateJobStatus(job.id, 'failed', null, metadataResult.error || 'Failed to save video metadata');
         return { success: false, error: metadataResult.error || 'Failed to save video metadata' };
       }
       
+      // Update job status to completed
+      await videoQueueService.updateJobStatus(job.id, 'completed', { videoId: metadataResult.data.id });
+      
       return { success: true, videoId: metadataResult.data.id };
     } catch (error) {
-      console.error('Error in generateVideo:', error);
+      console.error('Error in processNextJob:', error);
       return { 
         success: false, 
         error: error instanceof Error ? error.message : 'Unknown error occurred' 
