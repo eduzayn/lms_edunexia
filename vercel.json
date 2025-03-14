@@ -6,17 +6,11 @@
   "framework": "nextjs",
   "outputDirectory": ".next",
   "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": "@next_public_supabase_url",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@next_public_supabase_anon_key",
-    "SUPABASE_SERVICE_ROLE_KEY": "@supabase_service_role_key",
-    "SUPABASE_ACCESS_TOKEN": "@supabase_access_token",
-    "DATABASE_URL": "@database_url",
-    "OPENAI_API_KEY": "@openai_api_key",
-    "ELEVENLABS_API_KEY": "@elevenlabs_api_key",
-    "LYTEX_API_KEY": "@lytex_api_key",
-    "LYTEX_API_URL": "@lytex_api_url",
-    "INFINITYPAY_API_KEY": "@infinitypay_api_key",
-    "INFINITYPAY_API_URL": "@infinitypay_api_url"
+    "NEXT_PUBLIC_SUPABASE_URL": "https://uasnyifizdjxogowijip.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVhc255aWZpemRqeG9nb3dpamlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE1ODYzMjIsImV4cCI6MjA1NzE2MjMyMn0.WGkiWL6VEazfIBHHz8LguEr8pRVy5XlbZT0iQ2rdfHU",
+    "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVhc255aWZpemRqeG9nb3dpamlwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MTU4NjMyMiwiZXhwIjoyMDU3MTYyMzIyfQ.MAp_vHBYhYj32rL3ALKFA919bY2EL-9fAmpI6-qg0bs",
+    "DATABASE_URL": "postgresql://postgres:EDUNEXIA2028@db.uasnyifizdjxogowijip.supabase.co:5432/postgres",
+    "OPENAI_API_KEY": "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"
   },
   "github": {
     "enabled": true,
