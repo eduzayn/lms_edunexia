@@ -29,7 +29,7 @@ export function AssessmentForm({
   onSave,
   isSaving
 }: AssessmentFormProps) {
-  const handleChange = (field: keyof Assessment, value: any) => {
+  const handleChange = (field: keyof Assessment, value: unknown) => {
     onUpdate({ ...assessment, [field]: value });
   };
 
@@ -143,7 +143,7 @@ export function AssessmentForm({
               <Label htmlFor="type">Tipo de Avaliação</Label>
               <Select
                 value={assessment.type_id}
-                onValueChange={(value) => handleChange("type_id", value)}
+                onValueChange={(value: string) => handleChange("type_id", value)}
               >
                 <SelectTrigger id="type">
                   <SelectValue placeholder="Selecione o tipo" />
@@ -162,7 +162,7 @@ export function AssessmentForm({
               <Label htmlFor="course">Curso</Label>
               <Select
                 value={assessment.course_id || ""}
-                onValueChange={(value) => handleChange("course_id", value)}
+                onValueChange={(value: string) => handleChange("course_id", value)}
               >
                 <SelectTrigger id="course">
                   <SelectValue placeholder="Selecione o curso" />
@@ -181,7 +181,7 @@ export function AssessmentForm({
               <Label htmlFor="module">Módulo</Label>
               <Select
                 value={assessment.module_id || ""}
-                onValueChange={(value) => handleChange("module_id", value)}
+                onValueChange={(value: string) => handleChange("module_id", value)}
               >
                 <SelectTrigger id="module">
                   <SelectValue placeholder="Selecione o módulo" />

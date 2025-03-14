@@ -26,11 +26,11 @@ export function QuestionEditor({
   onMoveUp,
   onMoveDown
 }: QuestionEditorProps) {
-  const handleQuestionChange = (field: keyof AssessmentQuestion, value: any) => {
+  const handleQuestionChange = (field: keyof AssessmentQuestion, value: unknown) => {
     onUpdate(index, { ...question, [field]: value });
   };
 
-  const handleOptionChange = (optionIndex: number, field: keyof QuestionOption, value: any) => {
+  const handleOptionChange = (optionIndex: number, field: keyof QuestionOption, value: unknown) => {
     const updatedOptions = [...(question.options || [])];
     updatedOptions[optionIndex] = { ...updatedOptions[optionIndex], [field]: value };
     
@@ -103,7 +103,7 @@ export function QuestionEditor({
                     <Switch
                       id={`correct-${option.id}`}
                       checked={option.is_correct}
-                      onCheckedChange={(checked) => handleOptionChange(optionIndex, "is_correct", checked)}
+                      onCheckedChange={(checked: boolean) => handleOptionChange(optionIndex, "is_correct", checked)}
                     />
                     <Label htmlFor={`correct-${option.id}`}>Resposta Correta</Label>
                   </div>
@@ -141,7 +141,7 @@ export function QuestionEditor({
               <Label>Resposta Correta</Label>
               <Select
                 value={question.correct_answer || "true"}
-                onValueChange={(value) => handleQuestionChange("correct_answer", value)}
+                onValueChange={(value: string) => handleQuestionChange("correct_answer", value)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione a resposta correta" />
@@ -213,7 +213,7 @@ export function QuestionEditor({
               <Label htmlFor={`language-${question.id}`}>Linguagem de Programação</Label>
               <Select
                 value={question.settings?.language || "javascript"}
-                onValueChange={(value) => {
+                onValueChange={(value: string) => {
                   const settings = { ...question.settings, language: value };
                   handleQuestionChange("settings", settings);
                 }}
@@ -311,7 +311,7 @@ export function QuestionEditor({
           <Label htmlFor={`question-type-${question.id}`}>Tipo de Questão</Label>
           <Select
             value={question.question_type}
-            onValueChange={(value: any) => handleQuestionChange("question_type", value)}
+            onValueChange={(value: string) => handleQuestionChange("question_type", value)}
           >
             <SelectTrigger id={`question-type-${question.id}`}>
               <SelectValue placeholder="Selecione o tipo de questão" />
