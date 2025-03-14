@@ -1,19 +1,17 @@
-import { Suspense } from "react";
-import dynamic from "next/dynamic";
+"use client";
 
-// Dynamically import the client component with no SSR
-const AITutorClient = dynamic(() => import("./page-client"), { 
-  ssr: false,
-  loading: () => <p>Carregando tutor de IA...</p>
-});
+import * as React from "react";
+import { createClient } from "@supabase/supabase-js";
+import { Button } from "../../../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
+import { ChatMessage } from "../../../components/ai/chat-message";
+import { ConversationHistory } from "../../../components/ai/conversation-history";
+import { UserStats } from "../../../components/ai/user-stats";
+import { ContentViewer } from "../../../components/ai/content-viewer";
+import { AIService } from "../../../lib/services/ai-service";
 
-export default function AITutorPage() {
-  return (
-    <Suspense fallback={<p>Carregando tutor de IA...</p>}>
-      <AITutorClient />
-    </Suspense>
-  );
-}
+export default function AITutorClient() {
+  const [messages, setMessages] = React.useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
   const [input, setInput] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [userId, setUserId] = React.useState<string | null>(null);
