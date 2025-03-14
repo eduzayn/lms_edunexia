@@ -19,9 +19,18 @@ export function middleware(request: NextRequest) {
                        path === '/teacher/login' ||
                        path === '/admin/login';
   
-  // If the user is on a public path and is authenticated, redirect to dashboard
+  // If the user is on a public path and is authenticated, redirect to appropriate dashboard
   if (isPublicPath && isAuthenticated) {
-    return NextResponse.redirect(new URL('/student/dashboard', request.url));
+    // Determine which dashboard to redirect to based on the path
+    let dashboardPath = '/student/dashboard'; // Default
+    
+    if (path === '/admin/login') {
+      dashboardPath = '/admin/dashboard';
+    } else if (path === '/teacher/login') {
+      dashboardPath = '/teacher/dashboard';
+    }
+    
+    return NextResponse.redirect(new URL(dashboardPath, request.url));
   }
   
   // If the user is on a protected path and is not authenticated, redirect to login
