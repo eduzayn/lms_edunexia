@@ -204,12 +204,12 @@ class AnalyticsService {
     }
     
     // Calculate module completion
-    for (const module of modules || []) {
+    for (const moduleItem of modules || []) {
       // Get completion for each module
       const { data: completions, error: completionsError } = await supabase
         .from('module_completions')
         .select('*')
-        .eq('module_id', module.id);
+        .eq('module_id', moduleItem.id);
       
       if (!completionsError && completions) {
         const completionRate = enrollments?.length > 0
@@ -217,8 +217,8 @@ class AnalyticsService {
           : 0;
         
         moduleCompletion.push({
-          moduleId: module.id,
-          title: module.title,
+          moduleId: moduleItem.id,
+          title: moduleItem.title,
           completionRate
         });
       }
@@ -725,7 +725,7 @@ class AnalyticsService {
   }
 
   // Platform Analytics
-  async getPlatformAnalytics(): Promise<any> {
+  async getPlatformAnalytics(): Promise<Record<string, unknown>> {
     const supabase = createServerSupabaseClient();
     
     // Get total users

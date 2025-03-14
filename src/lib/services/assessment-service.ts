@@ -522,7 +522,7 @@ class AssessmentService {
   async updateSubmission(id: string, submission: Partial<StudentSubmission>): Promise<StudentSubmission | null> {
     const supabase = createServerSupabaseClient();
     
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
     
     if (submission.completed_at) updateData.completed_at = submission.completed_at;
     if (submission.score !== undefined) updateData.score = submission.score;
@@ -710,7 +710,7 @@ class AssessmentService {
   }
 
   // Analytics
-  async getAssessmentAnalytics(assessmentId: string): Promise<any> {
+  async getAssessmentAnalytics(assessmentId: string): Promise<Record<string, unknown> | null> {
     const supabase = createServerSupabaseClient();
     
     const { data: submissions, error } = await supabase
