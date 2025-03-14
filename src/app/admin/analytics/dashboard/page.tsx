@@ -31,11 +31,11 @@ export default async function AnalyticsDashboardPage() {
   
   // Prepare chart data
   const userGrowthData = {
-    labels: platformAnalytics.userGrowth ? platformAnalytics.userGrowth.map((item: { month: string }) => item.month) : [],
+    labels: (platformAnalytics.userGrowth as any[] || []).map((item: { month: string }) => item.month),
     datasets: [
       {
         label: "Novos Usuários",
-        data: platformAnalytics.userGrowth ? platformAnalytics.userGrowth.map((item: { count: number }) => item.count) : [],
+        data: (platformAnalytics.userGrowth as any[] || []).map((item: { count: number }) => item.count),
         backgroundColor: "rgba(37, 99, 235, 0.5)",
         borderColor: "rgb(37, 99, 235)",
         borderWidth: 1
@@ -47,7 +47,7 @@ export default async function AnalyticsDashboardPage() {
     labels: ["Ativos", "Inativos"],
     datasets: [
       {
-        data: [platformAnalytics.activeUsers, platformAnalytics.totalUsers - platformAnalytics.activeUsers],
+        data: [(platformAnalytics.activeUsers as number) || 0, (platformAnalytics.totalUsers as number || 0) - (platformAnalytics.activeUsers as number || 0)],
         backgroundColor: ["rgba(16, 185, 129, 0.5)", "rgba(239, 68, 68, 0.5)"],
         borderColor: ["rgb(16, 185, 129)", "rgb(239, 68, 68)"],
         borderWidth: 1
@@ -78,9 +78,9 @@ export default async function AnalyticsDashboardPage() {
             <CardDescription>Total de usuários</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{platformAnalytics.totalUsers}</div>
+            <div className="text-3xl font-bold">{platformAnalytics.totalUsers as number || 0}</div>
             <div className="text-sm text-muted-foreground mt-1">
-              {platformAnalytics.activeUsers} usuários ativos nos últimos 30 dias
+              {platformAnalytics.activeUsers as number || 0} usuários ativos nos últimos 30 dias
             </div>
           </CardContent>
         </Card>
@@ -91,9 +91,9 @@ export default async function AnalyticsDashboardPage() {
             <CardDescription>Total de cursos</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{platformAnalytics.totalCourses}</div>
+            <div className="text-3xl font-bold">{platformAnalytics.totalCourses as number || 0}</div>
             <div className="text-sm text-muted-foreground mt-1">
-              {platformAnalytics.totalEnrollments} matrículas
+              {platformAnalytics.totalEnrollments as number || 0} matrículas
             </div>
           </CardContent>
         </Card>
@@ -104,7 +104,7 @@ export default async function AnalyticsDashboardPage() {
             <CardDescription>Total de itens de conteúdo</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{platformAnalytics.totalContentItems}</div>
+            <div className="text-3xl font-bold">{platformAnalytics.totalContentItems as number || 0}</div>
             <div className="text-sm text-muted-foreground mt-1">
               Em todos os cursos
             </div>
@@ -117,9 +117,9 @@ export default async function AnalyticsDashboardPage() {
             <CardDescription>Total de avaliações</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">{platformAnalytics.totalAssessments}</div>
+            <div className="text-3xl font-bold">{platformAnalytics.totalAssessments as number || 0}</div>
             <div className="text-sm text-muted-foreground mt-1">
-              {platformAnalytics.totalSubmissions} submissões
+              {platformAnalytics.totalSubmissions as number || 0} submissões
             </div>
           </CardContent>
         </Card>
@@ -170,7 +170,7 @@ export default async function AnalyticsDashboardPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="p-4 border rounded-md">
                   <div className="text-sm text-muted-foreground">Taxa de Usuários Ativos</div>
-                  <div className="text-2xl font-bold mt-1">{platformAnalytics.activeUserRate.toFixed(1)}%</div>
+                  <div className="text-2xl font-bold mt-1">{((platformAnalytics.activeUserRate as number) || 0).toFixed(1)}%</div>
                   <div className="text-xs text-muted-foreground mt-1">
                     Percentual de usuários ativos nos últimos 30 dias
                   </div>
@@ -178,7 +178,7 @@ export default async function AnalyticsDashboardPage() {
                 
                 <div className="p-4 border rounded-md">
                   <div className="text-sm text-muted-foreground">Matrículas por Curso</div>
-                  <div className="text-2xl font-bold mt-1">{platformAnalytics.enrollmentsPerCourse.toFixed(1)}</div>
+                  <div className="text-2xl font-bold mt-1">{((platformAnalytics.enrollmentsPerCourse as number) || 0).toFixed(1)}</div>
                   <div className="text-xs text-muted-foreground mt-1">
                     Média de matrículas por curso
                   </div>
@@ -186,7 +186,7 @@ export default async function AnalyticsDashboardPage() {
                 
                 <div className="p-4 border rounded-md">
                   <div className="text-sm text-muted-foreground">Submissões por Avaliação</div>
-                  <div className="text-2xl font-bold mt-1">{platformAnalytics.submissionsPerAssessment.toFixed(1)}</div>
+                  <div className="text-2xl font-bold mt-1">{((platformAnalytics.submissionsPerAssessment as number) || 0).toFixed(1)}</div>
                   <div className="text-xs text-muted-foreground mt-1">
                     Média de submissões por avaliação
                   </div>
