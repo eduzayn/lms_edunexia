@@ -3,11 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, MessageSquare, HelpCircle } from "lucide-react";
 import { PostEditor } from "../../../components/forums/post-editor";
 
-export default function CreateTopicPage({
-  searchParams
-}: {
-  searchParams: { forumId?: string }
-}) {
+export default function CreateTopicPage({ searchParams = {} }) {
   const forumId = searchParams.forumId || "1";
   
   // Mock data for forum
