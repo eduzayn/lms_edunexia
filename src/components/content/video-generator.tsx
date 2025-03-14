@@ -214,10 +214,10 @@ export function VideoGenerator({
     recognition.continuous = true;
     recognition.interimResults = true;
     
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
+    recognition.onresult = (event: any) => {
       const transcript = Array.from(event.results)
-        .map((result: SpeechRecognitionResult) => result[0])
-        .map((result: SpeechRecognitionResultItem) => result.transcript)
+        .map((result: any) => result[0])
+        .map((result: any) => result.transcript)
         .join('');
       
       if (field === 'title') {
@@ -229,7 +229,7 @@ export function VideoGenerator({
       }
     };
     
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+    recognition.onerror = (event: any) => {
       setError(`Erro na entrada de voz: ${event.error}`);
       setIsRecording(false);
     };
