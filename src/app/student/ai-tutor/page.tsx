@@ -200,8 +200,9 @@ export default function AITutorPage() {
       if (conversationMessages.length > 0) {
         // Format messages for display
         const formattedMessages = conversationMessages.map(msg => ({
-          role: msg.role as 'user' | 'assistant',
-          content: msg.content
+          // Use type assertion to handle potential missing properties
+          role: (msg as any).role as 'user' | 'assistant',
+          content: (msg as any).content as string
         }));
         
         setMessages(formattedMessages);
