@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    const result = await contentEditorService.getAIContentSuggestions(body.content);
+    const result = await contentEditorService.getAISuggestions();
     
     if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 500 });

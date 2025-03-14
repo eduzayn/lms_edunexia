@@ -17,11 +17,12 @@ export async function POST(request: NextRequest) {
       body.type
     );
     
-    if (!result.success) {
-      return NextResponse.json({ error: result.error }, { status: 500 });
-    }
-    
-    return NextResponse.json({ content: result.content });
+    // Since AIContentSuggestion doesn't have success/error properties in some contexts
+    return NextResponse.json({ 
+      content: result.content,
+      title: result.title,
+      type: result.type
+    });
   } catch (error) {
     console.error("Error in AI generate API:", error);
     return NextResponse.json(

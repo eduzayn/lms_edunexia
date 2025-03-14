@@ -18,10 +18,10 @@ interface ChartData {
 
 interface ChartProps {
   data: ChartData;
-  options?: any;
+  options?: Record<string, unknown>;
 }
 
-export function BarChart({ data, options }: ChartProps) {
+export function BarChart({ data }: ChartProps) {
   // This is a placeholder component
   // In a real implementation, this would use a chart library
   return (
@@ -36,7 +36,7 @@ export function BarChart({ data, options }: ChartProps) {
   );
 }
 
-export function LineChart({ data, options }: ChartProps) {
+export function LineChart({ data }: ChartProps) {
   // This is a placeholder component
   // In a real implementation, this would use a chart library
   return (
@@ -51,7 +51,7 @@ export function LineChart({ data, options }: ChartProps) {
   );
 }
 
-export function PieChart({ data, options }: ChartProps) {
+export function PieChart({ data }: ChartProps) {
   // This is a placeholder component
   // In a real implementation, this would use a chart library
   return (
@@ -66,7 +66,7 @@ export function PieChart({ data, options }: ChartProps) {
   );
 }
 
-export function DoughnutChart({ data, options }: ChartProps) {
+export function DoughnutChart({ data }: ChartProps) {
   // This is a placeholder component
   // In a real implementation, this would use a chart library
   return (
@@ -81,7 +81,7 @@ export function DoughnutChart({ data, options }: ChartProps) {
   );
 }
 
-export function RadarChart({ data, options }: ChartProps) {
+export function RadarChart({ data }: ChartProps) {
   // This is a placeholder component
   // In a real implementation, this would use a chart library
   return (
