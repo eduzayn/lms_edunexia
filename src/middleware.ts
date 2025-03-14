@@ -7,7 +7,9 @@ export function middleware(request: NextRequest) {
   
   // Check if the user is authenticated (has a session token)
   const isAuthenticated = request.cookies.has('sb-access-token') || 
-                          request.cookies.has('supabase-auth-token');
+                          request.cookies.has('supabase-auth-token') ||
+                          request.cookies.has('sb:token') ||
+                          request.cookies.has('sb-refresh-token');
   
   // Define public paths that don't require authentication
   const isPublicPath = path === '/' || 

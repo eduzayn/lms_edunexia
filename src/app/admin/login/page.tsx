@@ -28,9 +28,17 @@ export default function AdminLoginPage() {
       
       if (signInError) throw signInError;
       
-      // Redirecionar para o dashboard após login bem-sucedido
-      window.location.href = "/admin/dashboard";
+      // Check if we have a session
+      if (data && data.session) {
+        console.log("Authentication successful, redirecting...");
+        // Use Next.js router for client-side navigation
+        window.location.href = "/admin/dashboard";
+      } else {
+        // Handle the case where authentication succeeded but no session was returned
+        setError("Autenticação bem-sucedida, mas não foi possível iniciar a sessão. Por favor, tente novamente.");
+      }
     } catch (err: any) {
+      console.error("Login error:", err);
       setError(err.message || "Falha ao fazer login. Verifique suas credenciais e tente novamente.");
     } finally {
       setIsLoading(false);
