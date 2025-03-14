@@ -8,7 +8,8 @@ import { Badge } from "../../../../components/ui/badge";
 import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
-// Using any type to fix build errors with Next.js 15 page props
+// Using specific type to fix build errors with Next.js 15 page props
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function AssessmentsListPage({
   searchParams,
 }: {
