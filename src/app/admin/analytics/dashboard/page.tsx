@@ -31,11 +31,11 @@ export default async function AnalyticsDashboardPage() {
   
   // Prepare chart data
   const userGrowthData = {
-    labels: platformAnalytics.userGrowth.map((item: { month: string }) => item.month),
+    labels: platformAnalytics.userGrowth ? platformAnalytics.userGrowth.map((item: { month: string }) => item.month) : [],
     datasets: [
       {
         label: "Novos Usuários",
-        data: platformAnalytics.userGrowth.map((item: { count: number }) => item.count),
+        data: platformAnalytics.userGrowth ? platformAnalytics.userGrowth.map((item: { count: number }) => item.count) : [],
         backgroundColor: "rgba(37, 99, 235, 0.5)",
         borderColor: "rgb(37, 99, 235)",
         borderWidth: 1
