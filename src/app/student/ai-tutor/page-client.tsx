@@ -1,230 +1,116 @@
 "use client";
 
 import * as React from "react";
-import { createClient } from "@supabase/supabase-js";
-import { Button } from "../../../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
-import { ChatMessage } from "../../../components/ai/chat-message";
-import { ConversationHistory } from "../../../components/ai/conversation-history";
+import { Button } from "../../../components/ui/button";
 import { UserStats } from "../../../components/ai/user-stats";
+import { ChatMessage } from "../../../components/ai/chat-message";
 import { ContentViewer } from "../../../components/ai/content-viewer";
-import { AIService } from "../../../lib/services/ai-service";
+import { ConversationHistory } from "../../../components/ai/conversation-history";
+
+// Mock data for development and build
+const mockUserStats = {
+  questionsAnswered: 42,
+  materialsGenerated: 15,
+  timeSaved: 180,
+};
+
+const mockMessages = [
+  { role: "assistant", content: "Olá! Eu sou a Prof. Ana, sua tutora de IA. Como posso ajudar você hoje?" },
+  { role: "user", content: "Pode me explicar o conceito de fotossíntese?" },
+  { role: "assistant", content: "Claro! A fotossíntese é o processo pelo qual plantas, algas e algumas bactérias convertem luz solar, água e dióxido de carbono em glicose e oxigênio. É um processo fundamental para a vida na Terra, pois produz oxigênio e serve como base da cadeia alimentar." }
+];
 
 export default function AITutorClient() {
-  const [messages, setMessages] = React.useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
   const [input, setInput] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
-  const [userId, setUserId] = React.useState<string | null>(null);
-  const [userStats, setUserStats] = React.useState({
-    questionsAnswered: 0,
-    materialsGenerated: 0,
-    timeSaved: 0,
-  });
-  const [conversations, setConversations] = React.useState<Array<{id: string; title: string; created_at: string}>>([]);
-  const [activeTab, setActiveTab] = React.useState<'chat' | 'history' | 'materials'>('chat');
-  const [generatedContent, setGeneratedContent] = React.useState<{
-    title: string;
-    content: string;
-    type: 'text' | 'mindmap' | 'flashcards';
-  } | null>(null);
-  const [contentType, setContentType] = React.useState<'summary' | 'mindmap' | 'flashcards' | 'explanation'>('summary');
-  // Map content types to difficulty levels for the AI service
+  const [messages, setMessages] = React.useState(mockMessages);
+  const [userStats, setUserStats] = React.useState(mockUserStats);
+  const [activeTab, setActiveTab] = React.useState('chat');
+  const [contentType, setContentType] = React.useState('summary');
+  const [generatedContent, setGeneratedContent] = React.useState(null);
+  const [conversations, setConversations] = React.useState([
+    { id: "1", title: "Fotossíntese e respiração celular", created_at: "2023-05-15T14:30:00Z" },
+    { id: "2", title: "Leis de Newton e aplicações", created_at: "2023-05-10T09:15:00Z" }
+  ]);
   
-  const messagesEndRef = React.useRef<HTMLDivElement>(null);
+  const messagesEndRef = React.useRef(null);
   
-  const supabase = React.useMemo(() => createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  ), []);
-  
-  // Get AIService instance using the getInstance method with error handling
-  const aiService = React.useMemo(() => {
-    try {
-      return AIService.getInstance();
-    } catch (error) {
-      console.error("Error initializing AI service:", error);
-      return {
-        getUserAIStats: () => ({ questions_answered: 0, materials_generated: 0, time_saved: 0 }),
-        getUserConversations: () => [],
-        generateTutorResponse: () => "Serviço de IA indisponível no momento. Por favor, tente novamente mais tarde.",
-        generateStudyMaterial: () => "Serviço de IA indisponível no momento.",
-        updateUserAIStats: () => Promise.resolve(),
-        getConversation: () => []
-      };
-    }
-  }, []);
-  
-  // Scroll to bottom of messages
   React.useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
   
-  // Get user ID and stats
-  React.useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        setUserId(user.id);
-        
-        try {
-          const stats = await aiService.getUserAIStats(user.id);
-          setUserStats({
-            questionsAnswered: stats.questions_answered,
-            materialsGenerated: stats.materials_generated,
-            timeSaved: stats.time_saved
-          });
-          
-          const userConversations = await aiService.getUserConversations(user.id);
-          setConversations(userConversations);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        }
-      }
-    };
-    
-    getUser();
-  }, [supabase, aiService]);
-  
-  // Add initial welcome message
-  React.useEffect(() => {
-    if (messages.length === 0) {
-      setMessages([
-        {
-          role: 'assistant',
-          content: 'Olá! Eu sou a Prof. Ana, sua tutora de IA. Como posso ajudar você hoje? Posso responder perguntas, criar materiais de estudo, ou ajudar com seus estudos de outras formas.'
-        }
-      ]);
-    }
-  }, [messages]);
-  
-  const handleSendMessage = async (e: React.FormEvent) => {
+  const handleSendMessage = (e) => {
     e.preventDefault();
-    
     if (!input.trim() || isLoading) return;
     
-    const userMessage = input.trim();
+    // Add user message
+    const userMessage = { role: "user", content: input };
+    setMessages(prev => [...prev, userMessage]);
     setInput("");
-    
-    // Add user message to chat
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
-    
     setIsLoading(true);
     
-    try {
-      // Get context from previous messages
-      const context = messages.slice(-3).map(m => `${m.role}: ${m.content}`).join('\n');
+    // Simulate AI response
+    setTimeout(() => {
+      const aiResponse = { 
+        role: "assistant", 
+        content: "Esta é uma resposta simulada para fins de desenvolvimento. Em um ambiente de produção, isso seria conectado a um serviço de IA real." 
+      };
+      setMessages(prev => [...prev, aiResponse]);
+      setIsLoading(false);
       
-      // Get response from AI
-      const response = await aiService.generateTutorResponse(userMessage, context, userId || undefined);
-      
-      // Add AI response to chat
-      setMessages(prev => [...prev, { role: 'assistant', content: response }]);
-      
-      // Update stats locally
+      // Update stats
       setUserStats(prev => ({
         ...prev,
         questionsAnswered: prev.questionsAnswered + 1
       }));
-      
-      // Refresh conversation list if user is logged in
-      if (userId) {
-        const userConversations = await aiService.getUserConversations(userId);
-        setConversations(userConversations);
-      }
-    } catch (error) {
-      console.error("Error sending message:", error);
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: 'Desculpe, encontrei um erro ao processar sua mensagem. Por favor, tente novamente mais tarde.' 
-      }]);
-    } finally {
-      setIsLoading(false);
-    }
+    }, 1500);
   };
   
-  const handleGenerateContent = async () => {
+  const handleGenerateContent = () => {
     if (isLoading) return;
     
     setIsLoading(true);
     
-    try {
-      // Get the last few messages for context - not used in current implementation
-      // const recentMessages = messages.slice(-5).map(m => `${m.role}: ${m.content}`).join('\n');
+    // Simulate content generation
+    setTimeout(() => {
+      const content = {
+        title: "Resumo sobre " + (messages[1]?.content || "o tópico"),
+        content: "Este é um conteúdo simulado para fins de desenvolvimento. Em um ambiente de produção, isso seria gerado por um serviço de IA com base na conversa.",
+        type: contentType === 'mindmap' ? 'mindmap' : 
+              contentType === 'flashcards' ? 'flashcards' : 'text'
+      };
       
-      // Extract topic from recent messages
-      const topic = messages.length > 1 ? messages[messages.length - 2].content : "tópico geral";
-      
-      // Generate content based on type
-      const content = await aiService.generateStudyMaterial(
-        topic, 
-        contentType === 'summary' ? 'beginner' : 
-        contentType === 'mindmap' ? 'intermediate' : 'advanced'
-      );
-      
-      // Set generated content
-      setGeneratedContent({
-        title: `${contentType === 'summary' ? 'Resumo' : 
-                contentType === 'mindmap' ? 'Mapa Mental' : 
-                contentType === 'flashcards' ? 'Flashcards' : 'Explicação'} - ${topic.substring(0, 30)}...`,
-        content,
-        type: contentType === 'flashcards' ? 'flashcards' : 
-              contentType === 'mindmap' ? 'mindmap' : 'text'
-      });
-      
-      // Switch to materials tab
+      setGeneratedContent(content);
+      setIsLoading(false);
       setActiveTab('materials');
       
       // Update stats
-      if (userId) {
-        await aiService.updateUserAIStats(userId, 'materials_generated');
-        await aiService.updateUserAIStats(userId, 'time_saved');
-        
-        // Refresh stats
-        const stats = await aiService.getUserAIStats(userId);
-        setUserStats({
-          questionsAnswered: stats.questions_answered,
-          materialsGenerated: stats.materials_generated,
-          timeSaved: stats.time_saved
-        });
-      } else {
-        // Update local stats
-        setUserStats(prev => ({
-          ...prev,
-          materialsGenerated: prev.materialsGenerated + 1,
-          timeSaved: prev.timeSaved + 15
-        }));
-      }
-    } catch (error) {
-      console.error("Error generating content:", error);
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: 'Desculpe, encontrei um erro ao gerar o material de estudo. Por favor, tente novamente mais tarde.' 
-      }]);
-    } finally {
-      setIsLoading(false);
-    }
+      setUserStats(prev => ({
+        ...prev,
+        materialsGenerated: prev.materialsGenerated + 1,
+        timeSaved: prev.timeSaved + 15
+      }));
+    }, 2000);
   };
   
-  const handleSelectConversation = async (conversationId: string) => {
-    try {
-      const conversationMessages = await aiService.getConversation(conversationId);
+  const handleSelectConversation = (conversationId) => {
+    // Simulate loading a conversation
+    setIsLoading(true);
+    
+    setTimeout(() => {
+      const formattedMessages = [
+        { role: "assistant", content: "Olá! Eu sou a Prof. Ana, sua tutora de IA. Como posso ajudar você hoje?" },
+        { role: "user", content: "Pode me explicar o conceito de " + (conversationId === "1" ? "fotossíntese" : "leis de Newton") + "?" },
+        { role: "assistant", content: "Esta é uma conversa carregada do histórico para fins de demonstração." }
+      ];
       
-      if (conversationMessages.length > 0) {
-        // Format messages for display
-        const formattedMessages = conversationMessages.map(msg => ({
-          // Use type assertion to handle potential missing properties
-          role: (msg as any).role as 'user' | 'assistant',
-          content: (msg as any).content as string
-        }));
-        
-        setMessages(formattedMessages);
-        setActiveTab('chat');
-      }
-    } catch (error) {
-      console.error("Error loading conversation:", error);
-    }
+      setMessages(formattedMessages);
+      setActiveTab('chat');
+      setIsLoading(false);
+    }, 1000);
   };
   
   return (
@@ -311,7 +197,7 @@ export default function AITutorClient() {
                     <label className="block text-sm font-medium mb-1">Tipo de Material</label>
                     <select
                       value={contentType}
-                      onChange={(e) => setContentType(e.target.value as 'summary' | 'mindmap' | 'flashcards' | 'explanation')}
+                      onChange={(e) => setContentType(e.target.value)}
                       className="w-full px-3 py-2 border rounded-md"
                       disabled={isLoading}
                     >
