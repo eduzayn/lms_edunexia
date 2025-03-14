@@ -1,10 +1,10 @@
 import * as React from "react";
 import { redirect } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../../components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../components/ui/tabs";
-import { BarChart, LineChart, DoughnutChart } from "../../../../components/analytics/chart-components";
-import { analyticsService } from "../../../../lib/services/analytics-service";
-import { createServerSupabaseClient } from "../../../../lib/supabase/server";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { LineChart, DoughnutChart } from "@/components/analytics/chart-components";
+import { analyticsService } from "@/lib/services/analytics-service";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export default async function AnalyticsDashboardPage() {
   const supabase = createServerSupabaseClient();
@@ -31,11 +31,11 @@ export default async function AnalyticsDashboardPage() {
   
   // Prepare chart data
   const userGrowthData = {
-    labels: platformAnalytics.userGrowth.map(item => item.month),
+    labels: platformAnalytics.userGrowth.map((item: { month: string }) => item.month),
     datasets: [
       {
         label: "Novos Usuários",
-        data: platformAnalytics.userGrowth.map(item => item.count),
+        data: platformAnalytics.userGrowth.map((item: { count: number }) => item.count),
         backgroundColor: "rgba(37, 99, 235, 0.5)",
         borderColor: "rgb(37, 99, 235)",
         borderWidth: 1
@@ -232,7 +232,7 @@ export default async function AnalyticsDashboardPage() {
                 </div>
                 
                 <div className="divide-y">
-                  {courses?.map((course) => (
+                  {courses?.map((course: { id: string; title: string }) => (
                     <div key={course.id} className="grid grid-cols-12 gap-4 p-4">
                       <div className="col-span-5 font-medium truncate">{course.title}</div>
                       <div className="col-span-2">--</div>

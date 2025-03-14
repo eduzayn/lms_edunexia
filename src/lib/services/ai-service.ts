@@ -222,7 +222,7 @@ export class AIService {
     }
   }
 
-  async getConversation(conversationId: string): Promise<Array<{ id: string; title: string; created_at: string; user_id?: string }>> {
+  async getConversation(conversationId: string): Promise<Array<{ role: string; content: string; created_at: string; conversation_id: string }>> {
     try {
       const { data, error } = await this.supabase
         .from('ai.messages')
@@ -242,7 +242,7 @@ export class AIService {
     }
   }
 
-  async getUserConversations(userId: string, limit: number = 10): Promise<Array<{ id: string; title: string; created_at: string; user_id?: string }>> {
+  async getUserConversations(userId: string, limit = 10): Promise<Array<{ id: string; title: string; created_at: string; user_id?: string }>> {
     try {
       const { data, error } = await this.supabase
         .from('ai.conversations')
