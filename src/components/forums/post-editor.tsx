@@ -151,7 +151,7 @@ export function PostEditor({
             onClick={() => insertFormat("image")}
             title="Inserir imagem"
           >
-            <Image className="h-4 w-4" alt="Inserir imagem" />
+            <Image className="h-4 w-4" />
           </Button>
           
           <div className="ml-auto flex items-center">
@@ -175,7 +175,7 @@ export function PostEditor({
         dangerouslySetInnerHTML={{ __html: initialContent }}
         onInput={updateContent}
         onBlur={updateContent}
-        placeholder={placeholder}
+        data-placeholder={placeholder}
         style={{ overflowY: 'auto' }}
       />
       

@@ -13,7 +13,6 @@ export default async function AssessmentsListPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const { searchParams } = props;
   const supabase = createServerSupabaseClient();
   
   // Check if user is admin or instructor
