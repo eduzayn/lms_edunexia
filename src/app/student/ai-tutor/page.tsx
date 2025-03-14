@@ -14,11 +14,6 @@ export default function AITutorPage() {
     </Suspense>
   );
 }
-    questionsAnswered: 0,
-    materialsGenerated: 0,
-    timeSaved: 0,
-  });
-  const [conversations, setConversations] = React.useState<Array<{id: string; title: string; created_at: string}>>([]);
   const [activeTab, setActiveTab] = React.useState<'chat' | 'history' | 'materials'>('chat');
   const [generatedContent, setGeneratedContent] = React.useState<{
     title: string;
