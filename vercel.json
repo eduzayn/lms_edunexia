@@ -1,19 +1,10 @@
 {
-  "version": 2,
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
+  "buildCommand": "next build",
   "framework": "nextjs",
   "outputDirectory": ".next",
   "env": {
     "NEXT_PUBLIC_SUPABASE_URL": "https://uasnyifizdjxogowijip.supabase.co",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVhc255aWZpemRqeG9nb3dpamlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE1ODYzMjIsImV4cCI6MjA1NzE2MjMyMn0.WGkiWL6VEazfIBHHz8LguEr8pRVy5XlbZT0iQ2rdfHU",
-    "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVhc255aWZpemRqeG9nb3dpamlwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MTU4NjMyMiwiZXhwIjoyMDU3MTYyMzIyfQ.MAp_vHBYhYj32rL3ALKFA919bY2EL-9fAmpI6-qg0bs",
-    "DATABASE_URL": "postgresql://postgres:EDUNEXIA2028@db.uasnyifizdjxogowijip.supabase.co:5432/postgres",
-    "OPENAI_API_KEY": "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"
-  },
-  "github": {
-    "enabled": true,
-    "silent": false
+    "NEXT_PUBLIC_APP_URL": "https://lms-edunexia.vercel.app"
   }
 }
