@@ -11,7 +11,7 @@ import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 export default async function AssessmentsListPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams?: Record<string, string | string[] | undefined>;
 }) {
   const supabase = createServerSupabaseClient();
   
