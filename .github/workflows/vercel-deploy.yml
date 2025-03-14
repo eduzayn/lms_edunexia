@@ -1,0 +1,52 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - devin/1741935339-ai-tutoring
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+        
+      - name: Deploy to Vercel
+        run: |
+          vercel --prod --token ${VERCEL_TOKEN} \
+            --build-env NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL} \
+            --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY} \
+            --build-env SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY} \
+            --build-env OPENAI_API_KEY=${OPENAI_API_KEY} \
+            --build-env DATABASE_URL=${DATABASE_URL} \
+            --build-env ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY} \
+            --build-env LYTEX_API_KEY=${LYTEX_API_KEY} \
+            --build-env LYTEX_API_URL=${LYTEX_API_URL} \
+            --build-env INFINITYPAY_API_KEY=${INFINITYPAY_API_KEY} \
+            --build-env INFINITYPAY_API_URL=${INFINITYPAY_API_URL} \
+            --build-env VIDEO_WORKER_SECRET=${VIDEO_WORKER_SECRET}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          LYTEX_API_KEY: ${{ secrets.LYTEX_API_KEY }}
+          LYTEX_API_URL: ${{ secrets.LYTEX_API_URL }}
+          INFINITYPAY_API_KEY: ${{ secrets.INFINITYPAY_API_KEY }}
+          INFINITYPAY_API_URL: ${{ secrets.INFINITYPAY_API_URL }}
+          VIDEO_WORKER_SECRET: ${{ secrets.VIDEO_WORKER_SECRET }}
