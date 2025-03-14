@@ -8,7 +8,7 @@ export interface AssessmentType {
   name: string;
   description: string;
   icon: string;
-  settings: any;
+  settings: Record<string, unknown>;
 }
 
 export interface Assessment {
@@ -24,7 +24,7 @@ export interface Assessment {
   passing_score: number;
   time_limit_minutes: number | null;
   attempts_allowed: number | null;
-  settings: any;
+  settings: Record<string, unknown>;
   questions: AssessmentQuestion[];
   created_at: string;
   updated_at: string;
@@ -40,7 +40,7 @@ export interface AssessmentQuestion {
   options?: QuestionOption[];
   correct_answer?: string;
   feedback?: string;
-  settings?: any;
+  settings?: Record<string, unknown>;
   order: number;
 }
 

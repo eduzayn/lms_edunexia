@@ -6,7 +6,7 @@ export interface AnalyticsData {
   id: string;
   type: 'course' | 'student' | 'assessment' | 'content';
   entity_id: string;
-  data: any;
+  data: Record<string, unknown>;
   created_at: string;
   updated_at: string;
 }

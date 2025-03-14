@@ -88,7 +88,7 @@ export class AIService {
     }
   }
 
-  async generateQuizQuestions(topic: string, difficulty: 'easy' | 'medium' | 'hard', count: number = 5): Promise<any[]> {
+  async generateQuizQuestions(topic: string, difficulty: 'easy' | 'medium' | 'hard', count: number = 5): Promise<Array<Record<string, unknown>>> {
     try {
       const difficultyMap = {
         'easy': 'fácil',
