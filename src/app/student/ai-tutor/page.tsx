@@ -1,9 +1,10 @@
+"use client";
+
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
 
 // Dynamically import the client component with no SSR
 const AITutorClient = dynamic(() => import("./page-client"), { 
-  ssr: false,
   loading: () => <p>Carregando tutor de IA...</p>
 });
 
