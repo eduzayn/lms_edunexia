@@ -37,8 +37,22 @@ export default function AITutorPage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   ), []);
   
-  // Get AIService instance using the getInstance method
-  const aiService = React.useMemo(() => AIService.getInstance(), []);
+  // Get AIService instance using the getInstance method with error handling
+  const aiService = React.useMemo(() => {
+    try {
+      return AIService.getInstance();
+    } catch (error) {
+      console.error("Error initializing AI service:", error);
+      return {
+        getUserAIStats: () => ({ questions_answered: 0, materials_generated: 0, time_saved: 0 }),
+        getUserConversations: () => [],
+        generateTutorResponse: () => "Serviço de IA indisponível no momento. Por favor, tente novamente mais tarde.",
+        generateStudyMaterial: () => "Serviço de IA indisponível no momento.",
+        updateUserAIStats: () => Promise.resolve(),
+        getConversation: () => []
+      };
+    }
+  }, []);
   
   // Scroll to bottom of messages
   React.useEffect(() => {
