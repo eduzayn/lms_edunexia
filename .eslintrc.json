@@ -11,5 +11,5 @@
     "@typescript-eslint/ban-ts-comment": "warn",
     "jsx-a11y/alt-text": "warn"
   },
-  "ignorePatterns": ["**/*.d.ts"]
+  "ignorePatterns": ["**/*.d.ts", "src/types/next.d.ts"]
 }
