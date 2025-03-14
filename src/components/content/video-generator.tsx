@@ -214,10 +214,10 @@ export function VideoGenerator({
     recognition.continuous = true;
     recognition.interimResults = true;
     
-    recognition.onresult = (event: any) => {
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
       const transcript = Array.from(event.results)
-        .map((result: any) => result[0])
-        .map((result: any) => result.transcript)
+        .map((result: SpeechRecognitionResult) => result[0])
+        .map((result: SpeechRecognitionResultItem) => result.transcript)
         .join('');
       
       if (field === 'title') {
@@ -229,7 +229,7 @@ export function VideoGenerator({
       }
     };
     
-    recognition.onerror = (event: any) => {
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       setError(`Erro na entrada de voz: ${event.error}`);
       setIsRecording(false);
     };
@@ -340,7 +340,7 @@ export function VideoGenerator({
               <select
                 id="style"
                 value={style}
-                onChange={(e) => setStyle(e.target.value as any)}
+                onChange={(e) => setStyle(e.target.value as 'educational' | 'professional' | 'casual')}
                 className="w-full px-3 py-2 border rounded-md"
               >
                 <option value="educational">Educacional</option>
@@ -356,7 +356,7 @@ export function VideoGenerator({
               <select
                 id="voiceType"
                 value={voiceType}
-                onChange={(e) => setVoiceType(e.target.value as any)}
+                onChange={(e) => setVoiceType(e.target.value as 'female' | 'male')}
                 className="w-full px-3 py-2 border rounded-md"
               >
                 <option value="female">Feminina</option>
