@@ -279,7 +279,7 @@ export function AssessmentForm({
           {assessment.questions.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <p>Nenhuma questão adicionada ainda.</p>
-              <p className="mt-1">Clique em "Adicionar Questão" para começar.</p>
+              <p className="mt-1">Clique em &quot;Adicionar Questão&quot; para começar.</p>
             </div>
           ) : (
             <div className="space-y-4">
