@@ -121,8 +121,9 @@ export class VideoGeneratorService {
 
   async generateAudioFromScript(script: string): Promise<{ success: boolean; audioUrl?: string; error?: string }> {
     try {
-      // In a real implementation, this would call the ElevenLabs API
+      // In a real implementation, this would call the ElevenLabs API with the script parameter
       // For now, we'll return a mock audio URL
+      console.log(`Generating audio for script: ${script.substring(0, 50)}...`);
       
       // Mock implementation - in production this would call ElevenLabs API
       const mockAudioUrl = 'https://storage.googleapis.com/edunexia-videos/audio/sample-narration.mp3';
@@ -144,6 +145,7 @@ export class VideoGeneratorService {
     try {
       // In a real implementation, this would generate video content to match the audio
       // For now, we'll return mock URLs
+      console.log(`Generating video for audio: ${audioUrl} with title: ${title}`);
       
       // Mock implementation - in production this would generate actual video
       const mockVideoUrl = 'https://storage.googleapis.com/edunexia-videos/video/sample-video.mp4';
@@ -170,6 +172,7 @@ export class VideoGeneratorService {
     try {
       // In a real implementation, this would generate subtitles from the audio
       // For now, we'll return a mock URL
+      console.log(`Generating subtitles for audio: ${audioUrl}`);
       
       // Mock implementation - in production this would generate actual subtitles
       const mockSubtitlesUrl = 'https://storage.googleapis.com/edunexia-videos/subtitles/sample-subtitles.vtt';
