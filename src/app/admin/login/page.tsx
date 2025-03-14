@@ -7,6 +7,7 @@ import { Button } from "../../../components/ui/button";
 import { Card } from "../../../components/ui/card";
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
+import { supabase } from "../../../lib/supabase/client";
 
 export default function AdminLoginPage() {
   const [email, setEmail] = React.useState("");
@@ -20,14 +21,39 @@ export default function AdminLoginPage() {
     setError("");
 
     try {
-      // Simulação de login - em produção, isso seria uma chamada real para o Supabase
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (signInError) throw signInError;
       
       // Redirecionar para o dashboard após login bem-sucedido
       window.location.href = "/admin/dashboard";
-    } catch (err) {
-      setError("Falha ao fazer login. Verifique suas credenciais e tente novamente.");
+    } catch (err: any) {
+      setError(err.message || "Falha ao fazer login. Verifique suas credenciais e tente novamente.");
     } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setError("");
+    
+    try {
+      const { data, error: signInError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/admin/dashboard`,
+        },
+      });
+      
+      if (signInError) throw signInError;
+      
+      // O redirecionamento é tratado pelo Supabase OAuth
+    } catch (err: any) {
+      setError(err.message || "Falha ao fazer login com Google. Por favor, tente novamente.");
       setIsLoading(false);
     }
   };
@@ -124,6 +150,20 @@ export default function AdminLoginPage() {
                 {isLoading ? "Verificando..." : "Entrar"}
               </Button>
             </form>
+            
+            <div className="mt-6 pt-6 border-t text-center">
+              <p className="text-sm text-muted-foreground mb-4">
+                Ou continue com
+              </p>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={handleGoogleLogin}
+                disabled={isLoading}
+              >
+                Google
+              </Button>
+            </div>
           </div>
         </Card>
         

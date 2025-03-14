@@ -7,6 +7,7 @@ import { Button } from "../../../components/ui/button";
 import { Card } from "../../../components/ui/card";
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
+import { supabase } from "../../../lib/supabase/client";
 
 export default function TeacherLoginPage() {
   const [email, setEmail] = React.useState("");
@@ -20,14 +21,60 @@ export default function TeacherLoginPage() {
     setError("");
 
     try {
-      // Simulação de login - em produção, isso seria uma chamada real para o Supabase
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (signInError) throw signInError;
       
       // Redirecionar para o dashboard após login bem-sucedido
       window.location.href = "/teacher/dashboard";
-    } catch (err) {
-      setError("Falha ao fazer login. Verifique suas credenciais e tente novamente.");
+    } catch (err: any) {
+      setError(err.message || "Falha ao fazer login. Verifique suas credenciais e tente novamente.");
     } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setError("");
+    
+    try {
+      const { data, error: signInError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/teacher/dashboard`,
+        },
+      });
+      
+      if (signInError) throw signInError;
+      
+      // O redirecionamento é tratado pelo Supabase OAuth
+    } catch (err: any) {
+      setError(err.message || "Falha ao fazer login com Google. Por favor, tente novamente.");
+      setIsLoading(false);
+    }
+  };
+
+  const handleMicrosoftLogin = async () => {
+    setIsLoading(true);
+    setError("");
+    
+    try {
+      const { data, error: signInError } = await supabase.auth.signInWithOAuth({
+        provider: 'azure',
+        options: {
+          redirectTo: `${window.location.origin}/teacher/dashboard`,
+        },
+      });
+      
+      if (signInError) throw signInError;
+      
+      // O redirecionamento é tratado pelo Supabase OAuth
+    } catch (err: any) {
+      setError(err.message || "Falha ao fazer login com Microsoft. Por favor, tente novamente.");
       setIsLoading(false);
     }
   };
@@ -109,10 +156,20 @@ export default function TeacherLoginPage() {
                 Ou continue com
               </p>
               <div className="flex gap-2">
-                <Button variant="outline" className="flex-1">
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={handleGoogleLogin}
+                  disabled={isLoading}
+                >
                   Google
                 </Button>
-                <Button variant="outline" className="flex-1">
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={handleMicrosoftLogin}
+                  disabled={isLoading}
+                >
                   Microsoft
                 </Button>
               </div>
