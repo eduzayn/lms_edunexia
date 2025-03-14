@@ -1,7 +1,9 @@
 import * as React from "react";
 
 export interface LabelProps
-  extends React.LabelHTMLAttributes<HTMLLabelElement> {}
+  extends React.LabelHTMLAttributes<HTMLLabelElement> {
+  // This interface extends LabelHTMLAttributes but doesn't add any new properties
+}
 
 const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
   ({ className, ...props }, ref) => {

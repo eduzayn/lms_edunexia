@@ -1,6 +1,8 @@
 import * as React from "react";
 
-export interface SwitchProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface SwitchProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  // This interface extends InputHTMLAttributes but doesn't add any new properties
+}
 
 export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
   ({ className, ...props }, ref) => {
