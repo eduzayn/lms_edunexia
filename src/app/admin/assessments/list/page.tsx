@@ -9,7 +9,7 @@ import { assessmentService } from "../../../../lib/services/assessment-service";
 import { createServerSupabaseClient } from "../../../../lib/supabase/server";
 
 interface PageProps {
-  params: {};
+  params: Record<string, never>;
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
