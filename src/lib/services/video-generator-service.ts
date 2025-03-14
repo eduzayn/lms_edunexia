@@ -369,14 +369,16 @@ export class VideoGeneratorService {
       }
       
       // Step 2: Generate audio from script
-      const audioResult = await this.generateAudioFromScript(scriptResult.script, request.voiceType);
+      // Pass only the script parameter since we updated the method signature
+      const audioResult = await this.generateAudioFromScript(scriptResult.script);
       if (!audioResult.success || !audioResult.audioUrl) {
         await videoQueueService.updateJobStatus(job.id, 'failed', null, audioResult.error || 'Failed to generate audio');
         return { success: false, error: audioResult.error || 'Failed to generate audio' };
       }
       
       // Step 3: Generate video with audio
-      const videoResult = await this.generateVideoWithAudio(audioResult.audioUrl, request.title, request.style);
+      // Pass only the required parameters since we updated the method signature
+      const videoResult = await this.generateVideoWithAudio(audioResult.audioUrl, request.title);
       if (!videoResult.success || !videoResult.videoUrl) {
         await videoQueueService.updateJobStatus(job.id, 'failed', null, videoResult.error || 'Failed to generate video');
         return { success: false, error: videoResult.error || 'Failed to generate video' };
@@ -385,7 +387,8 @@ export class VideoGeneratorService {
       // Step 4: Generate subtitles if requested
       let subtitlesUrl = undefined;
       if (request.includeSubtitles) {
-        const subtitlesResult = await this.generateSubtitles(audioResult.audioUrl, scriptResult.script);
+        // Pass only the audioUrl parameter since we updated the method signature
+        const subtitlesResult = await this.generateSubtitles(audioResult.audioUrl);
         if (subtitlesResult.success && subtitlesResult.subtitlesUrl) {
           subtitlesUrl = subtitlesResult.subtitlesUrl;
         }
