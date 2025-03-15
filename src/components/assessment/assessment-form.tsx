@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { Label } from "./ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { DatePicker } from "./ui/date-picker";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Label } from "../ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { DatePicker } from "../ui/date-picker";
 import { QuestionEditor } from "./question-editor";
 import { Assessment, AssessmentQuestion, AssessmentType } from "../../lib/services/assessment-service";
 import { Plus } from "lucide-react";
