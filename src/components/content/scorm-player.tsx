@@ -24,7 +24,7 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
   onComplete
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const scormAPIRef = useRef<any>(null);
+  const scormAPIRef = useRef<Record<string, unknown>>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -33,6 +33,44 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
   );
 
+  // Define the setupScormEventListeners function before using it in useEffect
+  const setupScormEventListeners = (API: Record<string, unknown>) => {
+    // Type assertion to access methods
+    const typedAPI = API as {
+      on: (event: string, callback: (value: string) => void) => void;
+    };
+    
+    // Listen for completion status changes
+    typedAPI.on('LMSSetValue.cmi.core.lesson_status', async (value: string) => {
+      if (value === 'completed' || value === 'passed') {
+        await trackCompletion('completed');
+        if (onComplete) onComplete();
+      } else if (value === 'incomplete' || value === 'failed') {
+        await trackCompletion('incomplete');
+      }
+    });
+    
+    // For SCORM 2004
+    typedAPI.on('LMSSetValue.cmi.completion_status', async (value: string) => {
+      if (value === 'completed') {
+        await trackCompletion('completed');
+        if (onComplete) onComplete();
+      } else if (value === 'incomplete') {
+        await trackCompletion('incomplete');
+      }
+    });
+    
+    // Track score
+    typedAPI.on('LMSSetValue.cmi.core.score.raw', async (value: string) => {
+      await trackScore(parseFloat(value));
+    });
+    
+    // For SCORM 2004
+    typedAPI.on('LMSSetValue.cmi.score.raw', async (value: string) => {
+      await trackScore(parseFloat(value));
+    });
+  };
+  
   useEffect(() => {
     // Initialize SCORM API
     const initScormAPI = async () => {
@@ -62,20 +100,20 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
           };
           
           // Event listeners
-          const listeners = {};
+          const listeners: Record<string, ((value: string) => void)[]> = {};
           
           // Basic SCORM API implementation
           const API = {
             // SCORM 1.2 methods
             LMSInitialize: () => 'true',
             LMSFinish: () => 'true',
-            LMSGetValue: (element) => {
+            LMSGetValue: (element: string) => {
               console.log('LMSGetValue', element);
               if (element === 'cmi.core.lesson_status') return cmi.core.lesson_status;
               if (element === 'cmi.core.score.raw') return cmi.core.score.raw.toString();
               return '';
             },
-            LMSSetValue: (element, value) => {
+            LMSSetValue: (element: string, value: string) => {
               console.log('LMSSetValue', element, value);
               if (element === 'cmi.core.lesson_status') {
                 cmi.core.lesson_status = value;
@@ -101,14 +139,14 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
             // SCORM 2004 methods
             Initialize: () => 'true',
             Terminate: () => 'true',
-            GetValue: (element) => {
+            GetValue: (element: string) => {
               console.log('GetValue', element);
               if (element === 'cmi.completion_status') return cmi.completion_status;
               if (element === 'cmi.success_status') return cmi.success_status;
               if (element === 'cmi.score.raw') return cmi.score.raw.toString();
               return '';
             },
-            SetValue: (element, value) => {
+            SetValue: (element: string, value: string) => {
               console.log('SetValue', element, value);
               if (element === 'cmi.completion_status') {
                 cmi.completion_status = value;
@@ -132,13 +170,13 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
             GetDiagnostic: () => '',
             
             // Helper methods for our implementation
-            on: (event, callback) => {
+            on: (event: string, callback: (value: string) => void) => {
               if (!listeners[event]) {
                 listeners[event] = [];
               }
               listeners[event].push(callback);
             },
-            off: (event, callback) => {
+            off: (event: string, callback: (value: string) => void) => {
               if (listeners[event]) {
                 listeners[event] = listeners[event].filter(cb => cb !== callback);
               }
@@ -172,39 +210,7 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
     return () => {
       // No need to terminate our simplified API
     };
-  }, [contentId, scormVersion]);
-  
-  const setupScormEventListeners = (API: any) => {
-    // Listen for completion status changes
-    API.on('LMSSetValue.cmi.core.lesson_status', async (value: string) => {
-      if (value === 'completed' || value === 'passed') {
-        await trackCompletion('completed');
-        if (onComplete) onComplete();
-      } else if (value === 'incomplete' || value === 'failed') {
-        await trackCompletion('incomplete');
-      }
-    });
-    
-    // For SCORM 2004
-    API.on('LMSSetValue.cmi.completion_status', async (value: string) => {
-      if (value === 'completed') {
-        await trackCompletion('completed');
-        if (onComplete) onComplete();
-      } else if (value === 'incomplete') {
-        await trackCompletion('incomplete');
-      }
-    });
-    
-    // Track score
-    API.on('LMSSetValue.cmi.core.score.raw', async (value: string) => {
-      await trackScore(parseFloat(value));
-    });
-    
-    // For SCORM 2004
-    API.on('LMSSetValue.cmi.score.raw', async (value: string) => {
-      await trackScore(parseFloat(value));
-    });
-  };
+  // setupScormEventListeners is now defined above the useEffect
   
   const trackCompletion = async (status: 'not attempted' | 'incomplete' | 'completed') => {
     try {

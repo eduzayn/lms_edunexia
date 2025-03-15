@@ -33,6 +33,70 @@ const LtiPlayer: React.FC<LtiPlayerProps> = ({
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
   );
 
+  // Define handler functions before using them in useEffect
+  const handleLtiCompletion = async (data: Record<string, unknown>) => {
+    try {
+      const status = data.status === 'completed' ? 'completed' : 
+                     data.status === 'incomplete' ? 'incomplete' : 'not attempted';
+      
+      // Save to database
+      const { error } = await supabase.from('lti_progress').upsert({
+        user_id: userId,
+        content_id: contentId,
+        completion_status: status,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'user_id,content_id'
+      });
+      
+      if (error) {
+        console.error('Error tracking LTI completion:', error);
+      }
+      
+      // Also update analytics
+      await supabase.from('analytics.student_progress').upsert({
+        user_id: userId,
+        content_id: contentId,
+        progress_percentage: status === 'completed' ? 100 : 
+                             status === 'incomplete' ? 50 : 0,
+        last_accessed: new Date().toISOString(),
+        content_type: 'lti'
+      }, {
+        onConflict: 'user_id,content_id'
+      });
+      
+      if (status === 'completed' && onComplete) {
+        onComplete();
+      }
+    } catch (err) {
+      console.error('Error handling LTI completion:', err);
+    }
+  };
+  
+  const handleLtiScore = async (data: Record<string, unknown>) => {
+    try {
+      if (typeof data.score !== 'number') {
+        return;
+      }
+      
+      // Save to database
+      const { error } = await supabase.from('lti_progress').upsert({
+        user_id: userId,
+        content_id: contentId,
+        score: data.score,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'user_id,content_id'
+      });
+      
+      if (error) {
+        console.error('Error tracking LTI score:', error);
+      }
+    } catch (err) {
+      console.error('Error handling LTI score:', err);
+    }
+  };
+  
   useEffect(() => {
     // Initialize LTI session
     const initLtiSession = async () => {
@@ -77,10 +141,11 @@ const LtiPlayer: React.FC<LtiPlayerProps> = ({
       
       // Handle LTI messages
       if (event.data && typeof event.data === 'object') {
-        if (event.data.subject === 'lti.completion') {
-          handleLtiCompletion(event.data);
-        } else if (event.data.subject === 'lti.score') {
-          handleLtiScore(event.data);
+        const eventData = event.data as Record<string, unknown>;
+        if (eventData.subject === 'lti.completion') {
+          handleLtiCompletion(eventData);
+        } else if (eventData.subject === 'lti.score') {
+          handleLtiScore(eventData);
         }
       }
     };
@@ -91,70 +156,7 @@ const LtiPlayer: React.FC<LtiPlayerProps> = ({
     return () => {
       window.removeEventListener('message', handleLtiMessage);
     };
-  }, [contentId, launchUrl, clientId, deploymentId, userId]);
-  
-  const handleLtiCompletion = async (data: any) => {
-    try {
-      const status = data.status === 'completed' ? 'completed' : 
-                     data.status === 'incomplete' ? 'incomplete' : 'not attempted';
-      
-      // Save to database
-      const { error } = await supabase.from('lti_progress').upsert({
-        user_id: userId,
-        content_id: contentId,
-        completion_status: status,
-        updated_at: new Date().toISOString()
-      }, {
-        onConflict: 'user_id,content_id'
-      });
-      
-      if (error) {
-        console.error('Error tracking LTI completion:', error);
-      }
-      
-      // Also update analytics
-      await supabase.from('analytics.student_progress').upsert({
-        user_id: userId,
-        content_id: contentId,
-        progress_percentage: status === 'completed' ? 100 : 
-                             status === 'incomplete' ? 50 : 0,
-        last_accessed: new Date().toISOString(),
-        content_type: 'lti'
-      }, {
-        onConflict: 'user_id,content_id'
-      });
-      
-      if (status === 'completed' && onComplete) {
-        onComplete();
-      }
-    } catch (err) {
-      console.error('Error handling LTI completion:', err);
-    }
-  };
-  
-  const handleLtiScore = async (data: any) => {
-    try {
-      if (typeof data.score !== 'number') {
-        return;
-      }
-      
-      // Save to database
-      const { error } = await supabase.from('lti_progress').upsert({
-        user_id: userId,
-        content_id: contentId,
-        score: data.score,
-        updated_at: new Date().toISOString()
-      }, {
-        onConflict: 'user_id,content_id'
-      });
-      
-      if (error) {
-        console.error('Error tracking LTI score:', error);
-      }
-    } catch (err) {
-      console.error('Error handling LTI score:', err);
-    }
-  };
+  // handleLtiCompletion and handleLtiScore are now defined above the useEffect
 
   if (error) {
     return (

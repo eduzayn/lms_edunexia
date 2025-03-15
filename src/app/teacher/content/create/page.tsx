@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ContentTypeSelector from '@/components/content/content-type-selector';
-import TextEditor from '@/components/content/text-editor';
-import VideoUploader from '@/components/content/video-uploader';
-import QuizEditor from '@/components/content/quiz-editor';
+// These components will be implemented later
+// import TextEditor from '@/components/content/text-editor';
+// import VideoUploader from '@/components/content/video-uploader';
+// import QuizEditor from '@/components/content/quiz-editor';
 import ScormLtiEditor from '@/components/content/scorm-lti-editor';
 import { ContentItem } from '@/lib/services/content-editor-service';
 
@@ -14,7 +15,7 @@ export default function CreateContentPage() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const router = useRouter();
   
-  const handleContentSave = (content: ContentItem) => {
+  const handleContentSave = (contentItem: ContentItem) => {
     // After saving, redirect to content list
     router.push('/teacher/content');
   };
@@ -43,15 +44,21 @@ export default function CreateContentPage() {
       ) : (
         <div className="mt-6">
           {selectedType === 'text' && (
-            <TextEditor onSave={handleContentSave} onCancel={handleCancel} />
+            <div className="p-4 bg-gray-100 rounded">
+              <p>Text Editor component will be implemented here</p>
+            </div>
           )}
           
           {selectedType === 'video' && (
-            <VideoUploader onSave={handleContentSave} onCancel={handleCancel} />
+            <div className="p-4 bg-gray-100 rounded">
+              <p>Video Uploader component will be implemented here</p>
+            </div>
           )}
           
           {selectedType === 'quiz' && (
-            <QuizEditor onSave={handleContentSave} onCancel={handleCancel} />
+            <div className="p-4 bg-gray-100 rounded">
+              <p>Quiz Editor component will be implemented here</p>
+            </div>
           )}
           
           {(selectedType === 'scorm' || selectedType === 'lti') && (
