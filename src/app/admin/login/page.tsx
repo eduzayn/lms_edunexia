@@ -21,6 +21,13 @@ export default function AdminLoginPage() {
     setError("");
 
     try {
+      // In development mode, bypass authentication and redirect directly
+      if (process.env.NODE_ENV === 'development') {
+        console.log("Development mode: Bypassing authentication");
+        window.location.href = "/admin/dashboard";
+        return;
+      }
+
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -50,6 +57,13 @@ export default function AdminLoginPage() {
     setError("");
     
     try {
+      // In development mode, bypass authentication and redirect directly
+      if (process.env.NODE_ENV === 'development') {
+        console.log("Development mode: Bypassing Google authentication");
+        window.location.href = "/admin/dashboard";
+        return;
+      }
+
       const { data, error: signInError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {

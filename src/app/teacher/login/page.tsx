@@ -21,6 +21,13 @@ export default function TeacherLoginPage() {
     setError("");
 
     try {
+      // In development mode, bypass authentication and redirect directly
+      if (process.env.NODE_ENV === 'development') {
+        console.log("Development mode: Bypassing authentication");
+        window.location.href = "/teacher/dashboard";
+        return;
+      }
+
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -50,6 +57,13 @@ export default function TeacherLoginPage() {
     setError("");
     
     try {
+      // In development mode, bypass authentication and redirect directly
+      if (process.env.NODE_ENV === 'development') {
+        console.log("Development mode: Bypassing Google authentication");
+        window.location.href = "/teacher/dashboard";
+        return;
+      }
+
       const { data, error: signInError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -71,6 +85,13 @@ export default function TeacherLoginPage() {
     setError("");
     
     try {
+      // In development mode, bypass authentication and redirect directly
+      if (process.env.NODE_ENV === 'development') {
+        console.log("Development mode: Bypassing Microsoft authentication");
+        window.location.href = "/teacher/dashboard";
+        return;
+      }
+
       const { data, error: signInError } = await supabase.auth.signInWithOAuth({
         provider: 'azure',
         options: {
