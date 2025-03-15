@@ -1,5 +1,15 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Features
+
+- Course Management
+- Student Progress Tracking
+- Content Creation Tools
+- Analytics Dashboard
+- Assessment Engine
+- SCORM 1.2 and 2004 Support
+- LTI 1.3 Integration
+
 ## Getting Started
 
 First, run the development server:
