@@ -63,7 +63,7 @@ export default function StudentContentPage() {
     };
     
     fetchContent();
-  }, [params.id, router]);
+  }, [params.id, router, supabase]);
   
   const handleContentComplete = async () => {
     // Update progress tracking

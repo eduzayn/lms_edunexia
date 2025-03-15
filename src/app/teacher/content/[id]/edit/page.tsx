@@ -46,7 +46,7 @@ export default function EditContentPage() {
     };
     
     fetchContent();
-  }, [params.id]);
+  }, [params.id, supabase]);
   
   const handleContentSave = async (updatedContent: ContentItem) => {
     try {

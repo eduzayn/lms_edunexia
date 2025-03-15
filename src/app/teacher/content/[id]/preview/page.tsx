@@ -51,7 +51,7 @@ export default function ContentPreviewPage() {
     };
     
     fetchContent();
-  }, [params.id]);
+  }, [params.id, supabase]);
   
   const handleContentComplete = async () => {
     // Update analytics

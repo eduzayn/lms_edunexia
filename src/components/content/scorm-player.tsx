@@ -15,14 +15,14 @@ interface ScormPlayerProps {
   onComplete?: () => void;
 }
 
-const ScormPlayer: React.FC<ScormPlayerProps> = ({
+const ScormPlayer = ({
   contentId,
   scormVersion,
   entryPoint,
   manifestUrl,
   userId,
   onComplete
-}) => {
+}: ScormPlayerProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const scormAPIRef = useRef<Record<string, unknown>>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +33,61 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
   );
 
-  // Define the setupScormEventListeners function before using it in useEffect
+  // Define tracking functions first
+  const trackCompletion = async (status: 'not attempted' | 'incomplete' | 'completed') => {
+    try {
+      // Save to database
+      const { error } = await supabase.from('scorm_tracking').upsert({
+        user_id: userId,
+        content_id: contentId,
+        completion_status: status,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'user_id,content_id'
+      });
+      
+      if (error) {
+        console.error('Error tracking SCORM completion:', error);
+      }
+      
+      // Also update analytics
+      await supabase.from('analytics.student_progress').upsert({
+        user_id: userId,
+        content_id: contentId,
+        progress_percentage: status === 'completed' ? 100 : 
+                             status === 'incomplete' ? 50 : 0,
+        last_accessed: new Date().toISOString(),
+        content_type: 'scorm'
+      }, {
+        onConflict: 'user_id,content_id'
+      });
+      
+    } catch (err) {
+      console.error('Error tracking completion:', err);
+    }
+  };
+  
+  const trackScore = async (score: number) => {
+    try {
+      // Save to database
+      const { error } = await supabase.from('scorm_tracking').upsert({
+        user_id: userId,
+        content_id: contentId,
+        score_raw: score,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'user_id,content_id'
+      });
+      
+      if (error) {
+        console.error('Error tracking SCORM score:', error);
+      }
+    } catch (err) {
+      console.error('Error tracking score:', err);
+    }
+  };
+  
+  // Define the setupScormEventListeners function
   const setupScormEventListeners = (API: Record<string, unknown>) => {
     // Type assertion to access methods
     const typedAPI = API as {
@@ -210,60 +264,7 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
     return () => {
       // No need to terminate our simplified API
     };
-  // setupScormEventListeners is now defined above the useEffect
-  
-  const trackCompletion = async (status: 'not attempted' | 'incomplete' | 'completed') => {
-    try {
-      // Save to database
-      const { error } = await supabase.from('scorm_tracking').upsert({
-        user_id: userId,
-        content_id: contentId,
-        completion_status: status,
-        updated_at: new Date().toISOString()
-      }, {
-        onConflict: 'user_id,content_id'
-      });
-      
-      if (error) {
-        console.error('Error tracking SCORM completion:', error);
-      }
-      
-      // Also update analytics
-      await supabase.from('analytics.student_progress').upsert({
-        user_id: userId,
-        content_id: contentId,
-        progress_percentage: status === 'completed' ? 100 : 
-                             status === 'incomplete' ? 50 : 0,
-        last_accessed: new Date().toISOString(),
-        content_type: 'scorm'
-      }, {
-        onConflict: 'user_id,content_id'
-      });
-      
-    } catch (err) {
-      console.error('Error tracking completion:', err);
-    }
-  };
-  
-  const trackScore = async (score: number) => {
-    try {
-      // Save to database
-      const { error } = await supabase.from('scorm_tracking').upsert({
-        user_id: userId,
-        content_id: contentId,
-        score_raw: score,
-        updated_at: new Date().toISOString()
-      }, {
-        onConflict: 'user_id,content_id'
-      });
-      
-      if (error) {
-        console.error('Error tracking SCORM score:', error);
-      }
-    } catch (err) {
-      console.error('Error tracking score:', err);
-    }
-  };
+  }, [contentId, scormVersion]);
   
   // Handle iframe load event
   const handleIframeLoad = () => {
@@ -273,10 +274,10 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
       if (iframeWindow) {
         if (scormVersion === '1.2') {
           // SCORM 1.2 API
-          (iframeWindow as any).API = scormAPIRef.current;
+          (iframeWindow as Window & typeof globalThis & { API: Record<string, unknown> }).API = scormAPIRef.current;
         } else {
           // SCORM 2004 API
-          (iframeWindow as any).API_1484_11 = scormAPIRef.current;
+          (iframeWindow as Window & typeof globalThis & { API_1484_11: Record<string, unknown> }).API_1484_11 = scormAPIRef.current;
         }
       }
     }

@@ -11,7 +11,7 @@ export default function StudentContentListPage() {
   const [contents, setContents] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [, setUserId] = useState<string | null>(null);
   const [progress, setProgress] = useState<Record<string, number>>({});
   
   const supabase = createClient(
@@ -69,7 +69,7 @@ export default function StudentContentListPage() {
     };
     
     fetchContents();
-  }, [router]);
+  }, [router, supabase]);
   
   const getContentTypeIcon = (type: string) => {
     switch (type) {

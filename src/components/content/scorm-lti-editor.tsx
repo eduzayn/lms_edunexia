@@ -31,7 +31,7 @@ const ScormLtiEditor: React.FC<ScormLtiEditorProps> = ({
   
   // SCORM specific state
   const [scormVersion, setScormVersion] = useState<'1.2' | '2004'>('1.2');
-  const [scormPackage, setScormPackage] = useState<File | null>(null);
+  const [, setScormPackage] = useState<File | null>(null);
   const [scormPackageUrl, setScormPackageUrl] = useState('');
   const [scormManifestUrl, setScormManifestUrl] = useState('');
   const [scormEntryPoint, setScormEntryPoint] = useState('');
@@ -81,7 +81,7 @@ const ScormLtiEditor: React.FC<ScormLtiEditorProps> = ({
       setError(null);
       
       const fileName = `scorm/${Date.now()}_${file.name}`;
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from('content')
         .upload(fileName, file);
       
@@ -122,7 +122,7 @@ const ScormLtiEditor: React.FC<ScormLtiEditorProps> = ({
         throw new Error('Title is required');
       }
       
-      let contentType: 'scorm' | 'lti' = activeTab;
+      const contentType: 'scorm' | 'lti' = activeTab;
       let metadata: any = {};
       
       if (activeTab === 'scorm') {

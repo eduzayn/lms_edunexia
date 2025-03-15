@@ -14,7 +14,7 @@ interface LtiPlayerProps {
   onComplete?: () => void;
 }
 
-const LtiPlayer: React.FC<LtiPlayerProps> = ({
+const LtiPlayer = ({
   contentId,
   launchUrl,
   clientId,
@@ -22,7 +22,7 @@ const LtiPlayer: React.FC<LtiPlayerProps> = ({
   platformId,
   userId,
   onComplete
-}) => {
+}: LtiPlayerProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -156,7 +156,7 @@ const LtiPlayer: React.FC<LtiPlayerProps> = ({
     return () => {
       window.removeEventListener('message', handleLtiMessage);
     };
-  // handleLtiCompletion and handleLtiScore are now defined above the useEffect
+  }, [contentId, launchUrl, clientId, deploymentId, userId, supabase]);
 
   if (error) {
     return (
