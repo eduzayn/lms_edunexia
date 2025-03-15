@@ -50,9 +50,12 @@ describe('ChatMessage Component', () => {
     render(<ChatMessage role="assistant" content={multilineContent} />);
     
     // Check if the multiline content is preserved with whitespace-pre-wrap
-    const messageText = screen.getByText(multilineContent);
+    // Use a more flexible approach for multiline text
+    const messageText = screen.getByText((content, node) => {
+      return node.textContent === multilineContent;
+    });
     expect(messageText).toBeInTheDocument();
-    expect(messageText.parentElement).toHaveClass('whitespace-pre-wrap');
+    expect(messageText).toHaveClass('whitespace-pre-wrap');
   });
 
   it('applies correct background colors based on role', () => {

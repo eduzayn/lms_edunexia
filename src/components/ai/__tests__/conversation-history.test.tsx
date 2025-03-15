@@ -80,7 +80,7 @@ describe('ConversationHistory Component', () => {
     );
     
     // Check that the container is empty but rendered
-    const container = screen.getByRole('generic');
+    const container = screen.getByTestId('conversation-container');
     expect(container).toBeInTheDocument();
     expect(container.children.length).toBe(0);
   });
