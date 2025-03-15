@@ -1,13 +1,14 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { Database } from '../../types/supabase';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './client';
 
 export const getServerClient = () => {
   const cookieStore = cookies();
   
   return createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
     {
       cookies: {
         get(name: string) {
@@ -41,8 +42,8 @@ export const getServiceRoleClient = () => {
   const cookieStore = cookies();
   
   const supabase = createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY || 'fallback-service-role-key',
     {
       cookies: {
         get(name: string) {
