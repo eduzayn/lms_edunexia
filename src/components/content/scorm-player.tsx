@@ -50,7 +50,7 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
             });
         
         // Initialize the API
-        API.initialize(true);
+        API.initialize();
         
         // Store the API reference
         scormAPIRef.current = API;
@@ -73,7 +73,7 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
       if (scormAPIRef.current) {
         // Save final state before unmounting
         try {
-          scormAPIRef.current.terminate(true);
+          scormAPIRef.current.terminate();
         } catch (err) {
           console.error('Error terminating SCORM API:', err);
         }
