@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '../../types/supabase';
 
 // Create a Supabase client for client-side usage
@@ -17,8 +17,20 @@ export const createBrowserClient = () => {
         signOut: async () => ({ error: null }),
         getSession: async () => ({ data: { session: { user: { id: 'mock-user-id' } } }, error: null }),
       },
-      // Add other methods as needed
-    } as any;
+      // Add other required methods with mock implementations
+      from: () => ({
+        select: () => Promise.resolve({ data: [], error: null }),
+        insert: () => Promise.resolve({ data: [], error: null }),
+        update: () => Promise.resolve({ data: [], error: null }),
+        delete: () => Promise.resolve({ data: [], error: null }),
+      }),
+      storage: {
+        from: () => ({
+          upload: async () => ({ data: { path: 'mock-path' }, error: null }),
+          download: async () => ({ data: new Blob(), error: null }),
+        }),
+      },
+    } as unknown as SupabaseClient<Database>;
   }
   
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;

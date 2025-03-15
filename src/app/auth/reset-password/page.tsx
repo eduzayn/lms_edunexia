@@ -25,7 +25,7 @@ export default function ResetPasswordPage() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       setSuccess(true);
-    } catch (err) {
+    } catch {
       setError("Falha ao enviar e-mail de recuperação. Por favor, tente novamente.");
     } finally {
       setIsLoading(false);

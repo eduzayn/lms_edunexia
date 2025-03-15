@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { MainHeader } from "@/components/layout/main-header";
+import { MainFooter } from "@/components/layout/main-footer";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,12 +25,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Note: We can't use usePathname() directly here since this is a Server Component
+  // For a real implementation, we would need to use a Client Component wrapper
+  // or pass the pathname as a prop from the page components
+  
+  // For now, we'll include the header and footer on all pages
+  // In a more complete implementation, we would conditionally render based on the route
+  
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        {children}
+        <MainHeader />
+        <main className="flex-grow">
+          {children}
+        </main>
+        <MainFooter />
       </body>
     </html>
   );
