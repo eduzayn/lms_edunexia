@@ -3,7 +3,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
-import { Scorm12API, Scorm2004API } from 'scorm-again';
+// Using a more compatible approach without direct dependency on scorm-again
+// Will implement a simplified SCORM API wrapper
 
 interface ScormPlayerProps {
   contentId: string;
@@ -23,7 +24,7 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
   onComplete
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const scormAPIRef = useRef<Scorm12API | Scorm2004API | null>(null);
+  const scormAPIRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -38,19 +39,118 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
       try {
         setIsLoading(true);
         
-        // Create SCORM API instance based on version
-        const API = scormVersion === '1.2' 
-          ? new Scorm12API({
-              autocommit: true,
-              logLevel: process.env.NODE_ENV === 'development' ? 4 : 1
-            })
-          : new Scorm2004API({
-              autocommit: true,
-              logLevel: process.env.NODE_ENV === 'development' ? 4 : 1
-            });
+        // Create a simplified SCORM API wrapper
+        const createScormAPI = () => {
+          // Basic SCORM data model
+          const cmi = {
+            core: {
+              lesson_status: 'not attempted',
+              score: {
+                raw: 0
+              }
+            },
+            completion_status: 'not attempted',
+            success_status: 'unknown',
+            score: {
+              raw: 0,
+              min: 0,
+              max: 100,
+              scaled: 0
+            },
+            suspend_data: '',
+            time_tracked: 0
+          };
+          
+          // Event listeners
+          const listeners = {};
+          
+          // Basic SCORM API implementation
+          const API = {
+            // SCORM 1.2 methods
+            LMSInitialize: () => 'true',
+            LMSFinish: () => 'true',
+            LMSGetValue: (element) => {
+              console.log('LMSGetValue', element);
+              if (element === 'cmi.core.lesson_status') return cmi.core.lesson_status;
+              if (element === 'cmi.core.score.raw') return cmi.core.score.raw.toString();
+              return '';
+            },
+            LMSSetValue: (element, value) => {
+              console.log('LMSSetValue', element, value);
+              if (element === 'cmi.core.lesson_status') {
+                cmi.core.lesson_status = value;
+                // Trigger event listeners
+                if (listeners['LMSSetValue.cmi.core.lesson_status']) {
+                  listeners['LMSSetValue.cmi.core.lesson_status'].forEach(callback => callback(value));
+                }
+              }
+              if (element === 'cmi.core.score.raw') {
+                cmi.core.score.raw = parseFloat(value);
+                // Trigger event listeners
+                if (listeners['LMSSetValue.cmi.core.score.raw']) {
+                  listeners['LMSSetValue.cmi.core.score.raw'].forEach(callback => callback(value));
+                }
+              }
+              return 'true';
+            },
+            LMSCommit: () => 'true',
+            LMSGetLastError: () => '0',
+            LMSGetErrorString: () => '',
+            LMSGetDiagnostic: () => '',
+            
+            // SCORM 2004 methods
+            Initialize: () => 'true',
+            Terminate: () => 'true',
+            GetValue: (element) => {
+              console.log('GetValue', element);
+              if (element === 'cmi.completion_status') return cmi.completion_status;
+              if (element === 'cmi.success_status') return cmi.success_status;
+              if (element === 'cmi.score.raw') return cmi.score.raw.toString();
+              return '';
+            },
+            SetValue: (element, value) => {
+              console.log('SetValue', element, value);
+              if (element === 'cmi.completion_status') {
+                cmi.completion_status = value;
+                // Trigger event listeners
+                if (listeners['LMSSetValue.cmi.completion_status']) {
+                  listeners['LMSSetValue.cmi.completion_status'].forEach(callback => callback(value));
+                }
+              }
+              if (element === 'cmi.score.raw') {
+                cmi.score.raw = parseFloat(value);
+                // Trigger event listeners
+                if (listeners['LMSSetValue.cmi.score.raw']) {
+                  listeners['LMSSetValue.cmi.score.raw'].forEach(callback => callback(value));
+                }
+              }
+              return 'true';
+            },
+            Commit: () => 'true',
+            GetLastError: () => '0',
+            GetErrorString: () => '',
+            GetDiagnostic: () => '',
+            
+            // Helper methods for our implementation
+            on: (event, callback) => {
+              if (!listeners[event]) {
+                listeners[event] = [];
+              }
+              listeners[event].push(callback);
+            },
+            off: (event, callback) => {
+              if (listeners[event]) {
+                listeners[event] = listeners[event].filter(cb => cb !== callback);
+              }
+            },
+            getCMI: () => cmi
+          };
+          
+          return API;
+        };
         
-        // Initialize the API
-        API.initialize('', '');
+        // Create API based on SCORM version
+        const API = createScormAPI();
         
         // Store the API reference
         scormAPIRef.current = API;
@@ -70,18 +170,11 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
     
     // Cleanup function
     return () => {
-      if (scormAPIRef.current) {
-        // Save final state before unmounting
-        try {
-          scormAPIRef.current.terminate('', true);
-        } catch (err) {
-          console.error('Error terminating SCORM API:', err);
-        }
-      }
+      // No need to terminate our simplified API
     };
   }, [contentId, scormVersion]);
   
-  const setupScormEventListeners = (API: Scorm12API | Scorm2004API) => {
+  const setupScormEventListeners = (API: any) => {
     // Listen for completion status changes
     API.on('LMSSetValue.cmi.core.lesson_status', async (value: string) => {
       if (value === 'completed' || value === 'passed') {
