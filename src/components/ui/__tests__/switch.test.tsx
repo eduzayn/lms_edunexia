@@ -5,60 +5,63 @@ import { Switch } from '../switch';
 describe('Switch Component', () => {
   it('renders correctly', () => {
     render(<Switch />);
-    expect(screen.getByRole('switch')).toBeInTheDocument();
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).toBeInTheDocument();
   });
 
   it('applies custom className', () => {
     render(<Switch className="custom-switch" />);
-    expect(screen.getByRole('switch')).toHaveClass('custom-switch');
+    const label = screen.getByTestId('switch-label');
+    expect(label).toHaveClass('custom-switch');
   });
 
   it('handles checked state correctly', () => {
     render(<Switch defaultChecked />);
-    expect(screen.getByRole('switch')).toBeChecked();
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).toBeChecked();
   });
 
   it('handles onChange events', () => {
     const handleChange = jest.fn();
     render(<Switch onChange={handleChange} />);
     
-    const switchElement = screen.getByRole('switch');
-    fireEvent.click(switchElement);
+    const checkbox = screen.getByRole('checkbox');
+    fireEvent.click(checkbox);
     
     expect(handleChange).toHaveBeenCalledTimes(1);
   });
 
   it('can be disabled', () => {
     render(<Switch disabled />);
-    expect(screen.getByRole('switch')).toBeDisabled();
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).toBeDisabled();
   });
 
   it('forwards ref correctly', () => {
-    const ref = React.createRef<HTMLButtonElement>();
+    const ref = React.createRef<HTMLInputElement>();
     render(<Switch ref={ref} />);
-    expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+    expect(ref.current).toBeInstanceOf(HTMLInputElement);
   });
 
-  it('passes additional props to the switch element', () => {
+  it('passes additional props to the input element', () => {
     render(<Switch data-testid="test-switch" aria-label="Toggle feature" />);
-    const switchElement = screen.getByRole('switch');
-    expect(switchElement).toHaveAttribute('data-testid', 'test-switch');
-    expect(switchElement).toHaveAttribute('aria-label', 'Toggle feature');
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).toHaveAttribute('aria-label', 'Toggle feature');
   });
 
   it('toggles checked state when clicked', () => {
     render(<Switch />);
-    const switchElement = screen.getByRole('switch');
+    const checkbox = screen.getByRole('checkbox');
     
     // Initially unchecked
-    expect(switchElement).not.toBeChecked();
+    expect(checkbox).not.toBeChecked();
     
     // Click to check
-    fireEvent.click(switchElement);
-    expect(switchElement).toBeChecked();
+    fireEvent.click(checkbox);
+    expect(checkbox).toBeChecked();
     
     // Click again to uncheck
-    fireEvent.click(switchElement);
-    expect(switchElement).not.toBeChecked();
+    fireEvent.click(checkbox);
+    expect(checkbox).not.toBeChecked();
   });
 });

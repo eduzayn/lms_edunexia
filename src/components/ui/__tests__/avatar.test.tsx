@@ -1,22 +1,22 @@
 import React from 'react';
-import { render, screen, fireEvent } from '../../../__tests__/utils/test-utils';
+import { render, screen } from '../../../__tests__/utils/test-utils';
 import { Avatar } from '../avatar';
 
 describe('Avatar Component', () => {
   it('renders correctly', () => {
     render(<Avatar />);
-    const avatarElement = screen.getByRole('generic');
-    expect(avatarElement).toBeInTheDocument();
+    const avatarContainer = screen.getByTestId('avatar-container');
+    expect(avatarContainer).toBeInTheDocument();
   });
 
   it('applies custom className', () => {
-    render(<Avatar className="custom-avatar" />);
-    const avatarElement = screen.getByRole('generic');
-    expect(avatarElement).toHaveClass('custom-avatar');
+    render(<Avatar className="custom-avatar" data-testid="avatar-container" />);
+    const avatarContainer = screen.getByTestId('avatar-container');
+    expect(avatarContainer).toHaveClass('custom-avatar');
   });
 
   it('renders with image when src is provided', () => {
-    render(<Avatar src="/test-image.jpg" alt="Test User" />);
+    render(<Avatar src="/test-image.jpg" alt="Test User" data-testid="avatar-container" />);
     const img = screen.getByRole('img');
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute('src', '/test-image.jpg');
@@ -24,13 +24,13 @@ describe('Avatar Component', () => {
   });
 
   it('renders fallback when provided', () => {
-    render(<Avatar fallback="JD" />);
+    render(<Avatar fallback="JD" data-testid="avatar-container" />);
     const fallback = screen.getByText('JD');
     expect(fallback).toBeInTheDocument();
   });
 
   it('renders initials from alt text when no src or fallback is provided', () => {
-    render(<Avatar alt="John Doe" />);
+    render(<Avatar alt="John Doe" data-testid="avatar-container" />);
     const initials = screen.getByText('JD');
     expect(initials).toBeInTheDocument();
   });

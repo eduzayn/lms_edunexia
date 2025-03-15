@@ -30,7 +30,7 @@ export function DatePicker({
   };
 
   return (
-    <div className={`relative flex items-center ${className || ''}`}>
+    <div className={`relative flex items-center ${className || ''}`} data-testid="date-picker-container">
       <Input
         ref={inputRef}
         type="date"
