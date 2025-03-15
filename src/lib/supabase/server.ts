@@ -43,7 +43,7 @@ export const getServiceRoleClient = () => {
   
   const supabase = createServerClient<Database>(
     SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || 'fallback-service-role-key',
+    process.env.SUPABASE_SERVICE_ROLE_KEY || '',
     {
       cookies: {
         get(name: string) {

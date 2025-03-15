@@ -1,9 +1,9 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '../../types/supabase';
 
-// Default Supabase URL and key for production/deployment
+// Default Supabase URL for production/deployment
+// Using public URL which is not sensitive
 const DEFAULT_SUPABASE_URL = 'https://uasnyifizdjxogowijip.supabase.co';
-const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVhc255aWZpemRqeG9nb3dpanBpcCIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzA5NTY5NjAwLCJleHAiOjE3NDExMDU2MDB9.Nh0fPXLQnTcCcqshZiDYuUxV8h8ZqnQQDEMNLz2tZPE';
 
 // Create a Supabase client for client-side usage
 export const createBrowserClient = () => {
@@ -37,9 +37,11 @@ export const createBrowserClient = () => {
     } as unknown as SupabaseClient<Database>;
   }
   
-  // Use environment variables if available, otherwise fall back to defaults
+  // Use environment variables if available, otherwise fall back to defaults for URL
+  // Note: We only provide a fallback for the URL as it's public information
+  // The key must be provided through environment variables
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || DEFAULT_SUPABASE_ANON_KEY;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
   
   return createClient<Database>(supabaseUrl, supabaseAnonKey, {
     auth: {
@@ -53,6 +55,7 @@ export const createBrowserClient = () => {
 // For use in client components
 export const supabase = createBrowserClient();
 
-// Export default values for other modules that might need them
+// Export URL for other modules that might need it
+// The key should always come from environment variables
 export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
-export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || DEFAULT_SUPABASE_ANON_KEY;
+export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
