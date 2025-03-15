@@ -141,7 +141,7 @@ describe('CertificateList Component', () => {
 
   it('navigates to certificate page when view button is clicked', async () => {
     const mockRouter = { push: jest.fn() };
-    require('next/navigation').useRouter.mockReturnValue(mockRouter);
+    import * as navigation from 'next/navigation'.useRouter.mockReturnValue(mockRouter);
     
     const mockGetStudentCertificates = jest.fn().mockResolvedValue(mockCertificates);
     (CertificateService.getInstance().getStudentCertificates as jest.Mock).mockImplementation(mockGetStudentCertificates);

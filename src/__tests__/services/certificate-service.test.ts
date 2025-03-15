@@ -1,4 +1,4 @@
-import CertificateService, { CertificateTemplate, IssuedCertificate } from '@/lib/services/certificate-service';
+import CertificateService from '@/lib/services/certificate-service';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 // Mock Supabase client

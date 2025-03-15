@@ -1,4 +1,4 @@
-import GamificationService, { Achievement, UserAchievement, PointsTransaction, Level, UserLevel } from '@/lib/services/gamification-service';
+import GamificationService from '@/lib/services/gamification-service';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 // Mock Supabase client
