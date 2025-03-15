@@ -1,6 +1,10 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '../../types/supabase';
 
+// Default Supabase URL for production/deployment
+// Using public URL which is not sensitive
+const DEFAULT_SUPABASE_URL = 'https://uasnyifizdjxogowijip.supabase.co';
+
 // Create a Supabase client for client-side usage
 export const createBrowserClient = () => {
   // Check if we're in development mode
@@ -33,8 +37,11 @@ export const createBrowserClient = () => {
     } as unknown as SupabaseClient<Database>;
   }
   
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  // Use environment variables if available, otherwise fall back to defaults for URL
+  // Note: We only provide a fallback for the URL as it's public information
+  // The key must be provided through environment variables
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
   
   return createClient<Database>(supabaseUrl, supabaseAnonKey, {
     auth: {
@@ -47,3 +54,8 @@ export const createBrowserClient = () => {
 
 // For use in client components
 export const supabase = createBrowserClient();
+
+// Export URL for other modules that might need it
+// The key should always come from environment variables
+export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
