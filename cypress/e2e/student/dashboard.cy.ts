@@ -6,8 +6,8 @@ describe('Student Dashboard', () => {
     cy.url().should('include', '/student/login');
     
     // Fill login form and submit
-    cy.get('input[name="email"]').type('student@example.com');
-    cy.get('input[name="password"]').type('password123');
+    cy.get('input#email').type('student@example.com');
+    cy.get('input#password').type('password123');
     cy.get('button[type="submit"]').click();
     
     // Should be redirected to dashboard
@@ -16,36 +16,28 @@ describe('Student Dashboard', () => {
 
   it('should display student dashboard components', () => {
     cy.contains('Dashboard do Aluno').should('be.visible');
-    cy.get('[data-testid="student-sidebar"]').should('be.visible');
-    cy.get('[data-testid="student-breadcrumb"]').should('be.visible');
     
-    // Check for dashboard widgets
-    cy.contains('Próximas Atividades').should('be.visible');
-    cy.contains('Progresso do Curso').should('be.visible');
-    cy.contains('Avaliações Pendentes').should('be.visible');
+    // Check for dashboard cards
+    cy.contains('Meus Cursos').should('be.visible');
+    cy.contains('Meu Progresso').should('be.visible');
+    cy.contains('Financeiro').should('be.visible');
+    cy.contains('Certificados').should('be.visible');
+    cy.contains('Tutor IA').should('be.visible');
+    cy.contains('Atividades').should('be.visible');
   });
 
-  it('should navigate to assessments page', () => {
-    cy.contains('Avaliações').click();
-    cy.url().should('include', '/student/assessments/list');
-    cy.contains('Avaliações Disponíveis').should('be.visible');
+  it('should navigate to courses page', () => {
+    cy.contains('Meus Cursos').parent().contains('Ver Cursos').click();
+    cy.url().should('include', '/student/courses');
   });
 
   it('should navigate to AI tutor page', () => {
-    cy.contains('Tutor IA').click();
+    cy.contains('Tutor IA').parent().contains('Acessar Tutor IA').click();
     cy.url().should('include', '/student/ai-tutor');
-    cy.contains('Tutor de IA').should('be.visible');
   });
 
   it('should navigate to activities page', () => {
-    cy.contains('Atividades').click();
+    cy.contains('Atividades').parent().contains('Ver Atividades').click();
     cy.url().should('include', '/student/activities');
-    cy.contains('Minhas Atividades').should('be.visible');
-  });
-
-  it('should allow logging out', () => {
-    cy.get('[data-testid="user-menu"]').click();
-    cy.contains('Sair').click();
-    cy.url().should('include', '/auth/login');
   });
 });

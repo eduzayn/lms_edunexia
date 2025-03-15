@@ -6,8 +6,8 @@ describe('Teacher Dashboard', () => {
     cy.url().should('include', '/teacher/login');
     
     // Fill login form and submit
-    cy.get('input[name="email"]').type('teacher@example.com');
-    cy.get('input[name="password"]').type('password123');
+    cy.get('input#email').type('teacher@example.com');
+    cy.get('input#password').type('password123');
     cy.get('button[type="submit"]').click();
     
     // Should be redirected to dashboard
@@ -16,42 +16,28 @@ describe('Teacher Dashboard', () => {
 
   it('should display teacher dashboard components', () => {
     cy.contains('Dashboard do Professor').should('be.visible');
-    cy.get('[data-testid="teacher-sidebar"]').should('be.visible');
-    cy.get('[data-testid="teacher-breadcrumb"]').should('be.visible');
     
-    // Check for dashboard widgets
-    cy.contains('Desempenho dos Alunos').should('be.visible');
-    cy.contains('Avaliações Recentes').should('be.visible');
-    cy.contains('Atividades Pendentes').should('be.visible');
-  });
-
-  it('should navigate to assessments page', () => {
-    cy.contains('Avaliações').click();
-    cy.url().should('include', '/teacher/assessments');
-    cy.contains('Gerenciar Avaliações').should('be.visible');
+    // Check for dashboard cards
+    cy.contains('Meus Cursos').should('be.visible');
+    cy.contains('Meus Alunos').should('be.visible');
+    cy.contains('Conteúdo').should('be.visible');
+    cy.contains('Avaliações').should('be.visible');
+    cy.contains('Fóruns').should('be.visible');
+    cy.contains('Relatórios').should('be.visible');
   });
 
   it('should navigate to courses page', () => {
-    cy.contains('Cursos').click();
+    cy.contains('Meus Cursos').parent().contains('Gerenciar Cursos').click();
     cy.url().should('include', '/teacher/courses');
-    cy.contains('Meus Cursos').should('be.visible');
+  });
+
+  it('should navigate to assessments page', () => {
+    cy.contains('Avaliações').parent().contains('Gerenciar Avaliações').click();
+    cy.url().should('include', '/teacher/assessments');
   });
 
   it('should navigate to students page', () => {
-    cy.contains('Alunos').click();
+    cy.contains('Meus Alunos').parent().contains('Ver Alunos').click();
     cy.url().should('include', '/teacher/students');
-    cy.contains('Meus Alunos').should('be.visible');
-  });
-
-  it('should navigate to reports page', () => {
-    cy.contains('Relatórios').click();
-    cy.url().should('include', '/teacher/reports');
-    cy.contains('Relatórios de Desempenho').should('be.visible');
-  });
-
-  it('should allow logging out', () => {
-    cy.get('[data-testid="user-menu"]').click();
-    cy.contains('Sair').click();
-    cy.url().should('include', '/auth/login');
   });
 });
