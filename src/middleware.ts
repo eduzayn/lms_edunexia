@@ -5,12 +5,12 @@ export function middleware(request: NextRequest) {
   // Get the pathname of the request
   const path = request.nextUrl.pathname;
   
-  // Development mode bypass for authentication
+  // Bypass authentication when enabled
   // This allows developers to access protected routes without authentication
-  const isDevelopment = process.env.NODE_ENV === 'development';
-  if (isDevelopment) {
-    // Skip authentication checks in development mode
-    console.log('Development mode: Bypassing authentication middleware');
+  const bypassAuth = process.env.NEXT_PUBLIC_BYPASS_AUTH === 'true';
+  if (bypassAuth) {
+    // Skip authentication checks when bypass is enabled
+    console.log('Bypass mode: Skipping authentication middleware');
     return NextResponse.next();
   }
   
