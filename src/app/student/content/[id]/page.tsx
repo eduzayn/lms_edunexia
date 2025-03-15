@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
-import { ContentItem } from '@/lib/services/content-editor-service';
-import ContentPreview from '@/components/content/content-preview';
+import { ContentItem } from '../../../../lib/services/content-editor-service';
+import ContentPreview from '../../../../components/content/content-preview';
 
 export default function StudentContentPage() {
   const params = useParams();

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
-import { ContentItem } from '@/lib/services/content-editor-service';
+import { ContentItem } from '../../../lib/services/content-editor-service';
 
 export default function StudentContentListPage() {
   const router = useRouter();
