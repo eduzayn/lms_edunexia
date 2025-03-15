@@ -4,8 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 import { ContentItem } from '@/lib/services/content-editor-service';
-import ScormPlayer from '@/components/content/scorm-player';
-import LtiPlayer from '@/components/content/lti-player';
+import ContentPreview from '@/components/content/content-preview';
 
 export default function ContentPreviewPage() {
   const params = useParams();
@@ -108,47 +107,11 @@ export default function ContentPreviewPage() {
       </div>
       
       <div className="bg-white rounded-lg shadow-sm p-6">
-        {content.type === 'text' && (
-          <div dangerouslySetInnerHTML={{ __html: content.content }} />
-        )}
-        
-        {content.type === 'video' && (
-          <div className="aspect-video">
-            <iframe 
-              src={content.content} 
-              className="w-full h-full" 
-              allowFullScreen
-              title={content.title}
-            />
-          </div>
-        )}
-        
-        {content.type === 'quiz' && (
-          <div>
-            <p className="text-lg mb-4">Quiz preview not implemented yet</p>
-          </div>
-        )}
-        
-        {content.type === 'scorm' && content.metadata?.scorm && userId && (
-          <ScormPlayer
-            contentId={content.id}
-            scormVersion={content.metadata.scorm.version}
-            entryPoint={content.metadata.scorm.entryPoint}
-            manifestUrl={content.metadata.scorm.manifestUrl}
-            userId={userId}
-            onComplete={handleContentComplete}
-          />
-        )}
-        
-        {content.type === 'lti' && content.metadata?.lti && userId && (
-          <LtiPlayer
-            contentId={content.id}
-            launchUrl={content.metadata.lti.launchUrl}
-            clientId={content.metadata.lti.clientId}
-            deploymentId={content.metadata.lti.deploymentId}
-            platformId={content.metadata.lti.platformId}
-            userId={userId}
-            onComplete={handleContentComplete}
+        {userId && (
+          <ContentPreview 
+            content={content} 
+            userId={userId} 
+            onComplete={handleContentComplete} 
           />
         )}
       </div>
