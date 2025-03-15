@@ -14,7 +14,7 @@ interface ConversationHistoryProps {
 
 export function ConversationHistory({ conversations, onSelect }: ConversationHistoryProps) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" data-testid="conversation-container">
       {conversations.map((conversation) => (
         <Card key={conversation.id}>
           <CardHeader className="p-4">
