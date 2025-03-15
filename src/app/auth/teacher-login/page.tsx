@@ -202,9 +202,9 @@ export default function TeacherLoginPage() {
         
         <div className="mt-6 text-center">
           <p className="text-sm text-muted-foreground">
-            Precisa de ajuda?{" "}
-            <Link href="/support" className="text-primary hover:underline">
-              Contate o suporte
+            Ainda não tem uma conta?{" "}
+            <Link href="/auth/register" className="text-primary hover:underline">
+              Criar conta
             </Link>
           </p>
         </div>
