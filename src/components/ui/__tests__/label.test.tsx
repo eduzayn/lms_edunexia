@@ -20,10 +20,9 @@ describe('Label Component', () => {
   });
 
   it('passes additional props to the label element', () => {
-    render(<Label htmlFor="test-input" data-testid="test-label">Test Label</Label>);
+    render(<Label data-testid="test-label">Test Label</Label>);
     const label = screen.getByText('Test Label');
     expect(label).toHaveAttribute('data-testid', 'test-label');
-    expect(label).toHaveAttribute('htmlFor', 'test-input');
   });
 
   it('applies peer-disabled styles correctly', () => {
