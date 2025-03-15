@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ShieldAlert } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import { Card } from "../../../components/ui/card";
 import { Input } from "../../../components/ui/input";
@@ -118,7 +118,14 @@ export default function AdminLoginPage() {
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold mb-2">Portal Administrativo</h1>
           <p className="text-muted-foreground">
-            Faça login para gerenciar a plataforma
+            Acesso restrito para administradores do sistema
+          </p>
+        </div>
+        
+        <div className="p-4 mb-6 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3">
+          <ShieldAlert className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+          <p className="text-sm text-amber-800">
+            Este portal é destinado apenas a administradores autorizados. Tentativas de acesso não autorizado são monitoradas e podem resultar em ações disciplinares.
           </p>
         </div>
         
@@ -136,7 +143,7 @@ export default function AdminLoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="seu.email@exemplo.com"
+                  placeholder="admin@exemplo.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
