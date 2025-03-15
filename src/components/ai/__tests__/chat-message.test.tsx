@@ -50,12 +50,15 @@ describe('ChatMessage Component', () => {
     render(<ChatMessage role="assistant" content={multilineContent} />);
     
     // Check if the multiline content is preserved with whitespace-pre-wrap
-    // Use getAllByText to handle multiple matching elements
+    // Find the paragraph element that contains the multiline content
     const messageTexts = screen.getAllByText((content, node) => {
       return node.textContent === multilineContent;
     });
     expect(messageTexts[0]).toBeInTheDocument();
-    expect(messageTexts[0]).toHaveClass('whitespace-pre-wrap');
+    
+    // Find the paragraph element with the whitespace-pre-wrap class
+    const paragraphElement = screen.getByText(multilineContent, { selector: 'p' });
+    expect(paragraphElement).toHaveClass('whitespace-pre-wrap');
   });
 
   it('applies correct background colors based on role', () => {
