@@ -6,7 +6,7 @@ describe('RadioGroup Components', () => {
   describe('RadioGroup', () => {
     it('renders correctly with children', () => {
       render(
-        <RadioGroup value="option1" onValueChange={() => {}}>
+        <RadioGroup value="option1" onChange={() => {}}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="option1" id="option1" />
             <label htmlFor="option1">Option 1</label>
@@ -23,7 +23,7 @@ describe('RadioGroup Components', () => {
 
     it('applies custom className', () => {
       render(
-        <RadioGroup value="option1" onValueChange={() => {}} className="custom-group">
+        <RadioGroup value="option1" onChange={() => {}} className="custom-group">
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="option1" id="option1" />
             <label htmlFor="option1">Option 1</label>
@@ -33,12 +33,33 @@ describe('RadioGroup Components', () => {
       const radioGroup = screen.getByRole('radiogroup');
       expect(radioGroup).toHaveClass('custom-group');
     });
+
+    it('handles value changes correctly', () => {
+      const handleChange = jest.fn();
+      render(
+        <RadioGroup defaultValue="option1" onChange={handleChange}>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="option1" id="option1" />
+            <label htmlFor="option1">Option 1</label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="option2" id="option2" />
+            <label htmlFor="option2">Option 2</label>
+          </div>
+        </RadioGroup>
+      );
+      
+      const option2 = screen.getByLabelText('Option 2');
+      fireEvent.click(option2);
+      
+      expect(handleChange).toHaveBeenCalledWith('option2');
+    });
   });
 
   describe('RadioGroupItem', () => {
     it('renders correctly', () => {
       render(
-        <RadioGroup value="option1" onValueChange={() => {}}>
+        <RadioGroup value="option1" onChange={() => {}}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="option1" id="option1" />
             <label htmlFor="option1">Option 1</label>
@@ -52,7 +73,7 @@ describe('RadioGroup Components', () => {
 
     it('applies custom className', () => {
       render(
-        <RadioGroup value="option1" onValueChange={() => {}}>
+        <RadioGroup value="option1" onChange={() => {}}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="option1" id="option1" className="custom-radio" />
             <label htmlFor="option1">Option 1</label>
@@ -66,7 +87,7 @@ describe('RadioGroup Components', () => {
 
     it('can be disabled', () => {
       render(
-        <RadioGroup value="option1" onValueChange={() => {}}>
+        <RadioGroup value="option1" onChange={() => {}}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="option1" id="option1" disabled />
             <label htmlFor="option1">Option 1</label>
