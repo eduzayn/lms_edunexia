@@ -50,7 +50,7 @@ const ScormPlayer: React.FC<ScormPlayerProps> = ({
             });
         
         // Initialize the API
-        API.initialize('', '', true);
+        API.initialize('', '');
         
         // Store the API reference
         scormAPIRef.current = API;
