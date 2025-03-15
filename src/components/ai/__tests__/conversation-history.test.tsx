@@ -94,14 +94,14 @@ describe('ConversationHistory Component', () => {
     );
     
     // Check if cards have the correct spacing
-    const container = screen.getByRole('generic');
+    const container = screen.getByTestId('conversation-container');
     expect(container).toHaveClass('space-y-4');
     
     // Check if buttons have the correct variant and size
     const buttons = screen.getAllByText('Ver Conversa');
     buttons.forEach(button => {
-      expect(button).toHaveClass('variant-outline');
-      expect(button).toHaveClass('size-sm');
+      expect(button).toHaveClass('border');
+      expect(button).toHaveClass('border-input');
     });
   });
 });

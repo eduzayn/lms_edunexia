@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { POST, GET } from '../route';
 import { studentFeedbackService } from '../../../../../lib/services/student-feedback-service';
+import '@testing-library/jest-dom';
 
 // Mock the student feedback service
 jest.mock('../../../../../lib/services/student-feedback-service', () => ({

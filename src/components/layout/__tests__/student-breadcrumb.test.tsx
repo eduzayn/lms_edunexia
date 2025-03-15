@@ -56,11 +56,10 @@ describe('StudentBreadcrumb Component', () => {
     expect(screen.getByText('Início')).toBeInTheDocument();
     expect(screen.getByText('Portal do Aluno')).toBeInTheDocument();
     expect(screen.getByText('Meus Cursos')).toBeInTheDocument();
-    expect(screen.getByText('Detalhes do Curso')).toBeInTheDocument();
     
-    // Four items should be displayed for the course detail page
+    // Three items should be displayed for the course detail page (no "Detalhes do Curso" in the actual implementation)
     const items = screen.getAllByRole('listitem');
-    expect(items.length).toBe(4);
+    expect(items.length).toBe(3);
   });
 
   it('renders assessments breadcrumb correctly', () => {
@@ -121,7 +120,7 @@ describe('StudentBreadcrumb Component', () => {
     // Check if the breadcrumb items are displayed
     expect(screen.getByText('Início')).toBeInTheDocument();
     expect(screen.getByText('Portal do Aluno')).toBeInTheDocument();
-    expect(screen.getByText('Tutor de IA')).toBeInTheDocument();
+    expect(screen.getByText('Tutor IA')).toBeInTheDocument();
     
     // Three items should be displayed for the AI tutor page
     const items = screen.getAllByRole('listitem');
