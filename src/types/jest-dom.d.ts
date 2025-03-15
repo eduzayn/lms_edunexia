@@ -11,6 +11,10 @@ declare global {
       toBeEnabled(): R;
       toBeChecked(): R;
       toHaveTextContent(text: string | RegExp): R;
+      toBeNull(): R;
+      toBe(expected: any): R;
+      toHaveBeenCalledWith(expected: any): R;
+      toHaveBeenCalledTimes(expected: number): R;
     }
   }
 }
@@ -19,5 +23,6 @@ declare global {
 declare namespace jest {
   interface Expect {
     toHaveBeenCalledWith: any;
+    toHaveBeenCalledTimes: any;
   }
 }

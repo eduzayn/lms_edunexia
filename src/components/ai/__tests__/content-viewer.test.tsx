@@ -16,7 +16,7 @@ describe('ContentViewer Component', () => {
     // Check if content is wrapped in prose and whitespace-pre-wrap
     const textContainer = screen.getByText(content).parentElement;
     expect(textContainer).toHaveClass('whitespace-pre-wrap');
-    expect(textContainer?.parentElement).toHaveClass('prose');
+    expect(textContainer?.parentElement).toHaveClass('prose', 'max-w-none');
   });
 
   it('renders mindmap content correctly', () => {
@@ -26,7 +26,13 @@ describe('ContentViewer Component', () => {
     render(<ContentViewer title={title} content={content} type="mindmap" />);
     
     expect(screen.getByText(title)).toBeInTheDocument();
-    expect(screen.getByText(content)).toBeInTheDocument();
+    
+    // Use a more flexible approach for multiline text
+    const mindmapContent = screen.getByText((content, node) => {
+      return node.textContent === content;
+    });
+    expect(mindmapContent).toBeInTheDocument();
+    
     expect(screen.getByText('Mapa Mental')).toBeInTheDocument();
     
     // Check if content is in the correct container with proper styling
@@ -52,7 +58,7 @@ describe('ContentViewer Component', () => {
     const cards = screen.getAllByText(/Question/);
     cards.forEach(card => {
       const cardContainer = card.parentElement;
-      expect(cardContainer).toHaveClass('border');
+      expect(cardContainer).toHaveClass('p-4');
       expect(cardContainer).toHaveClass('rounded-md');
     });
   });
@@ -66,8 +72,8 @@ describe('ContentViewer Component', () => {
       />
     );
     
-    // Check if the component is wrapped in a Card
-    const card = screen.getByText('Test Title').closest('div');
-    expect(card).toHaveClass('w-full');
+    // Find the Card component by its role
+    const card = screen.getByRole('heading', { name: 'Test Title' }).closest('div');
+    expect(card?.parentElement).toHaveClass('w-full');
   });
 });

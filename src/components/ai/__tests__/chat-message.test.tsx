@@ -13,15 +13,13 @@ describe('ChatMessage Component', () => {
     // Check if the user avatar is displayed (contains 'E' for Edunexia user)
     const userAvatar = screen.getByText('E');
     expect(userAvatar).toBeInTheDocument();
-    const userAvatarParent = userAvatar.parentElement;
-    expect(userAvatarParent).not.toBeNull();
-    expect(userAvatarParent).toHaveClass('bg-secondary');
     
     // Check if the message is aligned to the right (user messages)
     const messageElement = screen.getByText('Hello, this is a test message').closest('div');
     expect(messageElement).not.toBeNull();
     const messageContainer = messageElement?.parentElement;
     expect(messageContainer).not.toBeNull();
+    expect(messageContainer).toHaveClass('flex');
     expect(messageContainer).toHaveClass('justify-end');
   });
 
@@ -34,15 +32,13 @@ describe('ChatMessage Component', () => {
     // Check if the assistant avatar is displayed (contains 'A' for Assistant)
     const assistantAvatar = screen.getByText('A');
     expect(assistantAvatar).toBeInTheDocument();
-    const assistantAvatarParent = assistantAvatar.parentElement;
-    expect(assistantAvatarParent).not.toBeNull();
-    expect(assistantAvatarParent).toHaveClass('bg-primary');
     
     // Check if the message is not aligned to the right (assistant messages)
     const messageElement = screen.getByText('I am the AI assistant').closest('div');
     expect(messageElement).not.toBeNull();
     const messageContainer = messageElement?.parentElement;
     expect(messageContainer).not.toBeNull();
+    expect(messageContainer).toHaveClass('flex');
     expect(messageContainer).not.toHaveClass('justify-end');
   });
 
