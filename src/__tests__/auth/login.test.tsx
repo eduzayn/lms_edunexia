@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '../utils/test-utils';
+import { render, screen, fireEvent } from '../utils/test-utils';
 import { useRouter } from 'next/navigation';
 import LoginPage from '@/app/auth/login/page';
 
@@ -7,16 +7,6 @@ import LoginPage from '@/app/auth/login/page';
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
   useSearchParams: jest.fn(() => ({ get: jest.fn() })),
-}));
-
-// Mock Supabase client
-jest.mock('@/lib/supabase/client', () => ({
-  createClient: jest.fn(() => ({
-    auth: {
-      signInWithPassword: jest.fn(),
-      signOut: jest.fn(),
-    },
-  })),
 }));
 
 describe('Login Page', () => {
@@ -30,96 +20,35 @@ describe('Login Page', () => {
     (useRouter as jest.Mock).mockReturnValue(mockRouter);
   });
 
-  it('renders login form correctly', () => {
+  it('renders login portal selection correctly', () => {
     render(<LoginPage />);
     
-    expect(screen.getByRole('heading', { name: /login/i })).toBeInTheDocument();
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
+    expect(screen.getByText('Acesse sua Conta')).toBeInTheDocument();
+    expect(screen.getByText('Portal do Aluno')).toBeInTheDocument();
+    expect(screen.getByText('Portal do Professor')).toBeInTheDocument();
+    expect(screen.getByText('Portal Administrativo')).toBeInTheDocument();
   });
 
-  it('handles form submission with valid credentials', async () => {
-    const mockSignIn = jest.fn().mockResolvedValue({
-      data: { user: { id: '123' } },
-      error: null,
-    });
-
-    require('@/lib/supabase/client').createClient.mockReturnValue({
-      auth: {
-        signInWithPassword: mockSignIn,
-      },
-    });
-
+  it('has correct links to different portals', () => {
     render(<LoginPage />);
     
-    fireEvent.change(screen.getByLabelText(/email/i), {
-      target: { value: 'test@example.com' },
-    });
+    // Check student portal link
+    const studentPortalLink = screen.getAllByRole('link', { name: /acessar portal/i })[0];
+    expect(studentPortalLink).toHaveAttribute('href', '/student/login');
     
-    fireEvent.change(screen.getByLabelText(/password/i), {
-      target: { value: 'password123' },
-    });
+    // Check teacher portal link
+    const teacherPortalLink = screen.getAllByRole('link', { name: /acessar portal/i })[1];
+    expect(teacherPortalLink).toHaveAttribute('href', '/teacher/login');
     
-    fireEvent.click(screen.getByRole('button', { name: /login/i }));
-    
-    await waitFor(() => {
-      expect(mockSignIn).toHaveBeenCalledWith({
-        email: 'test@example.com',
-        password: 'password123',
-      });
-      expect(mockRouter.push).toHaveBeenCalledWith('/dashboard');
-    });
+    // Check admin portal link
+    const adminPortalLink = screen.getAllByRole('link', { name: /acessar portal/i })[2];
+    expect(adminPortalLink).toHaveAttribute('href', '/admin/login');
   });
 
-  it('displays error message on login failure', async () => {
-    const mockSignIn = jest.fn().mockResolvedValue({
-      data: { user: null },
-      error: { message: 'Invalid login credentials' },
-    });
-
-    require('@/lib/supabase/client').createClient.mockReturnValue({
-      auth: {
-        signInWithPassword: mockSignIn,
-      },
-    });
-
+  it('navigates to registration page when clicking create account button', () => {
     render(<LoginPage />);
     
-    fireEvent.change(screen.getByLabelText(/email/i), {
-      target: { value: 'test@example.com' },
-    });
-    
-    fireEvent.change(screen.getByLabelText(/password/i), {
-      target: { value: 'wrongpassword' },
-    });
-    
-    fireEvent.click(screen.getByRole('button', { name: /login/i }));
-    
-    await waitFor(() => {
-      expect(mockSignIn).toHaveBeenCalledWith({
-        email: 'test@example.com',
-        password: 'wrongpassword',
-      });
-      expect(screen.getByText(/invalid login credentials/i)).toBeInTheDocument();
-    });
-  });
-
-  it('navigates to registration page when clicking register link', () => {
-    render(<LoginPage />);
-    
-    const registerLink = screen.getByText(/register/i);
-    fireEvent.click(registerLink);
-    
-    expect(mockRouter.push).toHaveBeenCalledWith('/auth/register');
-  });
-
-  it('navigates to password reset page when clicking forgot password link', () => {
-    render(<LoginPage />);
-    
-    const forgotPasswordLink = screen.getByText(/forgot password/i);
-    fireEvent.click(forgotPasswordLink);
-    
-    expect(mockRouter.push).toHaveBeenCalledWith('/auth/reset-password');
+    const registerLink = screen.getByRole('link', { name: /criar conta/i });
+    expect(registerLink).toHaveAttribute('href', '/auth/register');
   });
 });
