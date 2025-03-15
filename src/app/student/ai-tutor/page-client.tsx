@@ -15,7 +15,21 @@ const mockUserStats = {
   timeSaved: 180,
 };
 
-const mockMessages = [
+type MessageRole = "assistant" | "user";
+type ContentType = "text" | "mindmap" | "flashcards";
+
+interface Message {
+  role: MessageRole;
+  content: string;
+}
+
+interface GeneratedContent {
+  title: string;
+  content: string;
+  type: ContentType;
+}
+
+const mockMessages: Message[] = [
   { role: "assistant", content: "Olá! Eu sou a Prof. Ana, sua tutora de IA. Como posso ajudar você hoje?" },
   { role: "user", content: "Pode me explicar o conceito de fotossíntese?" },
   { role: "assistant", content: "Claro! A fotossíntese é o processo pelo qual plantas, algas e algumas bactérias convertem luz solar, água e dióxido de carbono em glicose e oxigênio. É um processo fundamental para a vida na Terra, pois produz oxigênio e serve como base da cadeia alimentar." }
@@ -24,12 +38,12 @@ const mockMessages = [
 export default function AITutorClient() {
   const [input, setInput] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
-  const [messages, setMessages] = React.useState(mockMessages);
+  const [messages, setMessages] = React.useState<Message[]>(mockMessages);
   const [userStats, setUserStats] = React.useState(mockUserStats);
   const [activeTab, setActiveTab] = React.useState('chat');
   const [contentType, setContentType] = React.useState('summary');
-  const [generatedContent, setGeneratedContent] = React.useState(null);
-  const [conversations, setConversations] = React.useState([
+  const [generatedContent, setGeneratedContent] = React.useState<null | GeneratedContent>(null);
+  const [conversations] = React.useState([
     { id: "1", title: "Fotossíntese e respiração celular", created_at: "2023-05-15T14:30:00Z" },
     { id: "2", title: "Leis de Newton e aplicações", created_at: "2023-05-10T09:15:00Z" }
   ]);
@@ -47,14 +61,14 @@ export default function AITutorClient() {
     if (!input.trim() || isLoading) return;
     
     // Add user message
-    const userMessage = { role: "user", content: input };
+    const userMessage: Message = { role: "user", content: input };
     setMessages(prev => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
     
     // Simulate AI response
     setTimeout(() => {
-      const aiResponse = { 
+      const aiResponse: Message = { 
         role: "assistant", 
         content: "Esta é uma resposta simulada para fins de desenvolvimento. Em um ambiente de produção, isso seria conectado a um serviço de IA real." 
       };
@@ -76,7 +90,7 @@ export default function AITutorClient() {
     
     // Simulate content generation
     setTimeout(() => {
-      const content = {
+      const content: GeneratedContent = {
         title: "Resumo sobre " + (messages[1]?.content || "o tópico"),
         content: "Este é um conteúdo simulado para fins de desenvolvimento. Em um ambiente de produção, isso seria gerado por um serviço de IA com base na conversa.",
         type: contentType === 'mindmap' ? 'mindmap' : 
@@ -101,7 +115,7 @@ export default function AITutorClient() {
     setIsLoading(true);
     
     setTimeout(() => {
-      const formattedMessages = [
+      const formattedMessages: Message[] = [
         { role: "assistant", content: "Olá! Eu sou a Prof. Ana, sua tutora de IA. Como posso ajudar você hoje?" },
         { role: "user", content: "Pode me explicar o conceito de " + (conversationId === "1" ? "fotossíntese" : "leis de Newton") + "?" },
         { role: "assistant", content: "Esta é uma conversa carregada do histórico para fins de demonstração." }

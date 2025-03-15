@@ -33,7 +33,7 @@ export default function RegisterPage() {
       
       // Redirecionar para o dashboard após registro bem-sucedido
       window.location.href = "/student/dashboard";
-    } catch (err) {
+    } catch {
       setError("Falha ao criar conta. Por favor, tente novamente.");
     } finally {
       setIsLoading(false);

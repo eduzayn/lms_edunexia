@@ -1,6 +1,6 @@
 import React from "react";
 import { Card } from "../../components/ui/card";
-import Image from "next/image";
+
 import Link from "next/link";
 import { Button } from "../../components/ui/button";
 
@@ -83,7 +83,7 @@ export default function DepoimentosPage() {
                 </div>
               </div>
               <div className="mt-4">
-                <p className="text-sm italic">"{testimonial.content}"</p>
+                <p className="text-sm italic">&ldquo;{testimonial.content}&rdquo;</p>
               </div>
             </Card>
           ))}

@@ -28,25 +28,19 @@ export default function StudentLoginPage() {
         return;
       }
 
-      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       
       if (signInError) throw signInError;
       
-      // Check if we have a session
-      if (data && data.session) {
-        console.log("Authentication successful, redirecting...");
-        // Use Next.js router for client-side navigation
-        window.location.href = "/student/dashboard";
-      } else {
-        // Handle the case where authentication succeeded but no session was returned
-        setError("Autenticação bem-sucedida, mas não foi possível iniciar a sessão. Por favor, tente novamente.");
-      }
-    } catch (err: any) {
+      // Authentication successful, redirect
+      console.log("Authentication successful, redirecting...");
+      window.location.href = "/student/dashboard";
+    } catch (err) {
       console.error("Login error:", err);
-      setError(err.message || "Falha ao fazer login. Verifique suas credenciais e tente novamente.");
+      setError(err instanceof Error ? err.message : "Falha ao fazer login. Verifique suas credenciais e tente novamente.");
     } finally {
       setIsLoading(false);
     }
@@ -64,7 +58,7 @@ export default function StudentLoginPage() {
         return;
       }
 
-      const { data, error: signInError } = await supabase.auth.signInWithOAuth({
+      const { error: signInError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/student/dashboard`,
@@ -74,8 +68,8 @@ export default function StudentLoginPage() {
       if (signInError) throw signInError;
       
       // O redirecionamento é tratado pelo Supabase OAuth
-    } catch (err: any) {
-      setError(err.message || "Falha ao fazer login com Google. Por favor, tente novamente.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Falha ao fazer login com Google. Por favor, tente novamente.");
       setIsLoading(false);
     }
   };
@@ -92,7 +86,7 @@ export default function StudentLoginPage() {
         return;
       }
 
-      const { data, error: signInError } = await supabase.auth.signInWithOAuth({
+      const { error: signInError } = await supabase.auth.signInWithOAuth({
         provider: 'azure',
         options: {
           redirectTo: `${window.location.origin}/student/dashboard`,
@@ -102,8 +96,8 @@ export default function StudentLoginPage() {
       if (signInError) throw signInError;
       
       // O redirecionamento é tratado pelo Supabase OAuth
-    } catch (err: any) {
-      setError(err.message || "Falha ao fazer login com Microsoft. Por favor, tente novamente.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Falha ao fazer login com Microsoft. Por favor, tente novamente.");
       setIsLoading(false);
     }
   };
