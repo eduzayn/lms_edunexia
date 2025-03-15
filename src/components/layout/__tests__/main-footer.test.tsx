@@ -26,7 +26,7 @@ describe('MainFooter Component', () => {
     
     // Check if section headings are displayed
     expect(screen.getByText('Links Úteis')).toBeInTheDocument();
-    expect(screen.getByText('Suporte')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Suporte' })).toBeInTheDocument();
     expect(screen.getByText('Legal')).toBeInTheDocument();
     
     // Check if navigation links are displayed

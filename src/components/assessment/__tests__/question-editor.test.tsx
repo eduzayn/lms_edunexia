@@ -12,8 +12,8 @@ describe('QuestionEditor Component', () => {
     question_type: 'multiple_choice',
     points: 10,
     options: [
-      { id: 'opt1', text: 'Option 1', is_correct: true },
-      { id: 'opt2', text: 'Option 2', is_correct: false }
+      { id: 'opt1', text: 'Option 1', is_correct: true, question_id: 'q1', order: 0 },
+      { id: 'opt2', text: 'Option 2', is_correct: false, question_id: 'q1', order: 1 }
     ],
     order: 0
   };

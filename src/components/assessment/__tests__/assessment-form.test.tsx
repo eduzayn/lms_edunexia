@@ -41,12 +41,15 @@ describe('AssessmentForm Component', () => {
         options: [],
         order: 0
       }
-    ]
+    ],
+    settings: {},
+    created_at: '2025-03-15T00:00:00Z',
+    updated_at: '2025-03-15T00:00:00Z'
   };
 
   const mockAssessmentTypes: AssessmentType[] = [
-    { id: 'type-1', name: 'Quiz' },
-    { id: 'type-2', name: 'Exam' }
+    { id: 'type-1', name: 'Quiz', description: 'Short assessment', icon: 'quiz', settings: {} },
+    { id: 'type-2', name: 'Exam', description: 'Comprehensive assessment', icon: 'exam', settings: {} }
   ];
 
   const mockCourses = [

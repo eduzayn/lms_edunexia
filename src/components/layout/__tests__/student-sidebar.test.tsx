@@ -27,9 +27,12 @@ describe('StudentSidebar Component', () => {
     // Check if all navigation links are displayed
     expect(screen.getByText('Dashboard')).toBeInTheDocument();
     expect(screen.getByText('Meus Cursos')).toBeInTheDocument();
-    expect(screen.getByText('Avaliações')).toBeInTheDocument();
+    expect(screen.getByText('Meu Progresso')).toBeInTheDocument();
+    expect(screen.getByText('Financeiro')).toBeInTheDocument();
     expect(screen.getByText('Certificados')).toBeInTheDocument();
-    expect(screen.getByText('Tutor de IA')).toBeInTheDocument();
+    expect(screen.getByText('Tutor IA')).toBeInTheDocument();
+    expect(screen.getByText('Atividades')).toBeInTheDocument();
+    expect(screen.getByText('Fóruns')).toBeInTheDocument();
     expect(screen.getByText('Suporte')).toBeInTheDocument();
     expect(screen.getByText('Sair')).toBeInTheDocument();
   });
@@ -82,9 +85,12 @@ describe('StudentSidebar Component', () => {
     // Check href attributes for main navigation links
     expect(screen.getByText('Dashboard').closest('a')).toHaveAttribute('href', '/student/dashboard');
     expect(screen.getByText('Meus Cursos').closest('a')).toHaveAttribute('href', '/student/courses');
-    expect(screen.getByText('Avaliações').closest('a')).toHaveAttribute('href', '/student/assessments');
+    expect(screen.getByText('Meu Progresso').closest('a')).toHaveAttribute('href', '/student/progress');
+    expect(screen.getByText('Financeiro').closest('a')).toHaveAttribute('href', '/student/financial');
     expect(screen.getByText('Certificados').closest('a')).toHaveAttribute('href', '/student/certificates');
-    expect(screen.getByText('Tutor de IA').closest('a')).toHaveAttribute('href', '/student/ai-tutor');
+    expect(screen.getByText('Tutor IA').closest('a')).toHaveAttribute('href', '/student/ai-tutor');
+    expect(screen.getByText('Atividades').closest('a')).toHaveAttribute('href', '/student/activities');
+    expect(screen.getByText('Fóruns').closest('a')).toHaveAttribute('href', '/forums/list');
     
     // Check href attributes for footer links
     expect(screen.getByText('Suporte').closest('a')).toHaveAttribute('href', '/support');
