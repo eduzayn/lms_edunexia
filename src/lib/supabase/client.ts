@@ -1,4 +1,4 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient as createSupabaseClient, SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '../../types/supabase';
 
 // Default Supabase URL for production/deployment
@@ -43,7 +43,7 @@ export const createBrowserClient = () => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
   
-  return createClient<Database>(supabaseUrl, supabaseAnonKey, {
+  return createSupabaseClient<Database>(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
@@ -54,6 +54,9 @@ export const createBrowserClient = () => {
 
 // For use in client components
 export const supabase = createBrowserClient();
+
+// Export createClient function for use in other modules
+export { createBrowserClient as createClient };
 
 // Export URL for other modules that might need it
 // The key should always come from environment variables

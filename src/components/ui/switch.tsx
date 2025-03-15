@@ -6,7 +6,7 @@ export type SwitchProps = React.InputHTMLAttributes<HTMLInputElement>;
 export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
   ({ className, ...props }, ref) => {
     return (
-      <label className={`relative inline-flex items-center cursor-pointer ${className || ''}`}>
+      <label className={`relative inline-flex items-center cursor-pointer ${className || ''}`} data-testid="switch-label">
         <input
           type="checkbox"
           className="sr-only peer"
