@@ -5,6 +5,15 @@ export function middleware(request: NextRequest) {
   // Get the pathname of the request
   const path = request.nextUrl.pathname;
   
+  // Development mode bypass for authentication
+  // This allows developers to access protected routes without authentication
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  if (isDevelopment) {
+    // Skip authentication checks in development mode
+    console.log('Development mode: Bypassing authentication middleware');
+    return NextResponse.next();
+  }
+  
   // Check if the user is authenticated (has a session token)
   const isAuthenticated = request.cookies.has('sb-access-token') || 
                           request.cookies.has('supabase-auth-token') ||

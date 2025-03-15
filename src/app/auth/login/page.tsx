@@ -28,7 +28,7 @@ export default function LoginPage() {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
         {/* Portal do Aluno */}
-        <Card className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+        <Card className="border-2 border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
           <div className="p-6 flex flex-col items-center text-center h-full">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
               <User className="h-8 w-8 text-primary" />
