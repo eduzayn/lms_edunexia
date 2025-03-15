@@ -4,11 +4,32 @@ export interface ContentItem {
   id: string;
   title: string;
   content: string;
-  type: 'text' | 'video' | 'quiz';
+  type: 'text' | 'video' | 'quiz' | 'scorm' | 'lti';
   course_id?: string;
   lesson_id?: string;
   created_at: string;
   updated_at: string;
+  metadata?: {
+    scorm?: {
+      version: '1.2' | '2004';
+      entryPoint: string;
+      manifestUrl: string;
+    };
+    lti?: {
+      version: '1.3';
+      launchUrl: string;
+      clientId: string;
+      deploymentId: string;
+      platformId: string;
+    };
+    progress?: {
+      completion_status?: 'not attempted' | 'incomplete' | 'completed';
+      success_status?: 'unknown' | 'passed' | 'failed';
+      score?: number;
+      time_tracked?: number;
+      suspend_data?: string;
+    };
+  };
 }
 
 export interface AIContentSuggestion {
