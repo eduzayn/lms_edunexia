@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, act, waitFor } from '../utils/test-utils';
 import { AuthProvider, useAuth } from '@/lib/contexts/auth-context';
+import { createClient } from '@/lib/supabase/client';
 
 // Mock Supabase client
 jest.mock('@/lib/supabase/client', () => ({
@@ -40,7 +41,8 @@ describe('AuthProvider', () => {
   it('shows loading state initially', async () => {
     const mockGetSession = jest.fn().mockReturnValue(new Promise(() => {})); // Never resolves to keep loading state
     
-    require('@/lib/supabase/client').createClient.mockReturnValue({
+    // Use jest.mocked instead of require
+    jest.mocked(createClient).mockReturnValue({
       auth: {
         getSession: mockGetSession,
         onAuthStateChange: jest.fn(() => ({ data: { subscription: { unsubscribe: jest.fn() } } })),
@@ -63,7 +65,7 @@ describe('AuthProvider', () => {
       error: null,
     });
     
-    require('@/lib/supabase/client').createClient.mockReturnValue({
+    jest.mocked(createClient).mockReturnValue({
       auth: {
         getSession: mockGetSession,
         onAuthStateChange: jest.fn(() => ({ data: { subscription: { unsubscribe: jest.fn() } } })),
@@ -87,7 +89,7 @@ describe('AuthProvider', () => {
       error: null,
     });
     
-    require('@/lib/supabase/client').createClient.mockReturnValue({
+    jest.mocked(createClient).mockReturnValue({
       auth: {
         getSession: mockGetSession,
         onAuthStateChange: jest.fn(() => ({ data: { subscription: { unsubscribe: jest.fn() } } })),
@@ -113,7 +115,7 @@ describe('AuthProvider', () => {
       error: null,
     });
     
-    require('@/lib/supabase/client').createClient.mockReturnValue({
+    jest.mocked(createClient).mockReturnValue({
       auth: {
         getSession: mockGetSession,
         signOut: mockSignOut,
@@ -154,7 +156,7 @@ describe('AuthProvider', () => {
       return { data: { subscription: { unsubscribe: jest.fn() } } };
     });
     
-    require('@/lib/supabase/client').createClient.mockReturnValue({
+    jest.mocked(createClient).mockReturnValue({
       auth: {
         getSession: mockGetSession,
         onAuthStateChange: mockOnAuthStateChange,

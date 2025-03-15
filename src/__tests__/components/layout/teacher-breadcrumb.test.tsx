@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '../../utils/test-utils';
 import { TeacherBreadcrumb } from '@/components/layout/teacher-breadcrumb';
+import { usePathname } from 'next/navigation';
 
 // Mock Next.js navigation
 jest.mock('next/navigation', () => ({
@@ -13,7 +14,8 @@ describe('TeacherBreadcrumb Component', () => {
   });
 
   it('renders default breadcrumb items', () => {
-    require('next/navigation').usePathname.mockReturnValue('/teacher/dashboard');
+    // Use jest.mocked instead of require
+    jest.mocked(usePathname).mockReturnValue('/teacher/dashboard');
     
     render(<TeacherBreadcrumb />);
     
@@ -23,7 +25,7 @@ describe('TeacherBreadcrumb Component', () => {
   });
 
   it('renders courses breadcrumb items', () => {
-    require('next/navigation').usePathname.mockReturnValue('/teacher/courses');
+    jest.mocked(usePathname).mockReturnValue('/teacher/courses');
     
     render(<TeacherBreadcrumb />);
     
@@ -34,7 +36,7 @@ describe('TeacherBreadcrumb Component', () => {
   });
 
   it('renders students breadcrumb items', () => {
-    require('next/navigation').usePathname.mockReturnValue('/teacher/students');
+    jest.mocked(usePathname).mockReturnValue('/teacher/students');
     
     render(<TeacherBreadcrumb />);
     
@@ -45,7 +47,7 @@ describe('TeacherBreadcrumb Component', () => {
   });
 
   it('renders content breadcrumb items', () => {
-    require('next/navigation').usePathname.mockReturnValue('/teacher/content');
+    jest.mocked(usePathname).mockReturnValue('/teacher/content');
     
     render(<TeacherBreadcrumb />);
     
@@ -56,7 +58,7 @@ describe('TeacherBreadcrumb Component', () => {
   });
 
   it('renders assessments breadcrumb items', () => {
-    require('next/navigation').usePathname.mockReturnValue('/teacher/assessments');
+    jest.mocked(usePathname).mockReturnValue('/teacher/assessments');
     
     render(<TeacherBreadcrumb />);
     
@@ -67,7 +69,7 @@ describe('TeacherBreadcrumb Component', () => {
   });
 
   it('renders reports breadcrumb items', () => {
-    require('next/navigation').usePathname.mockReturnValue('/teacher/reports');
+    jest.mocked(usePathname).mockReturnValue('/teacher/reports');
     
     render(<TeacherBreadcrumb />);
     
@@ -78,7 +80,7 @@ describe('TeacherBreadcrumb Component', () => {
   });
 
   it('renders forums breadcrumb items', () => {
-    require('next/navigation').usePathname.mockReturnValue('/forums/list');
+    jest.mocked(usePathname).mockReturnValue('/forums/list');
     
     render(<TeacherBreadcrumb />);
     
@@ -89,7 +91,7 @@ describe('TeacherBreadcrumb Component', () => {
   });
 
   it('renders forum topic breadcrumb items', () => {
-    require('next/navigation').usePathname.mockReturnValue('/forums/topic/123');
+    jest.mocked(usePathname).mockReturnValue('/forums/topic/123');
     
     render(<TeacherBreadcrumb />);
     
@@ -101,7 +103,7 @@ describe('TeacherBreadcrumb Component', () => {
   });
 
   it('renders create forum topic breadcrumb items', () => {
-    require('next/navigation').usePathname.mockReturnValue('/forums/create');
+    jest.mocked(usePathname).mockReturnValue('/forums/create');
     
     render(<TeacherBreadcrumb />);
     
@@ -113,7 +115,7 @@ describe('TeacherBreadcrumb Component', () => {
   });
 
   it('renders forum list breadcrumb items', () => {
-    require('next/navigation').usePathname.mockReturnValue('/forums/list/123');
+    jest.mocked(usePathname).mockReturnValue('/forums/list/123');
     
     render(<TeacherBreadcrumb />);
     

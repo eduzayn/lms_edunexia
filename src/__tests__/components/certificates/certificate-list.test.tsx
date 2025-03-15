@@ -17,6 +17,9 @@ jest.mock('next/navigation', () => ({
   })),
 }));
 
+// Import useRouter for type checking
+import { useRouter } from 'next/navigation';
+
 describe('CertificateList Component', () => {
   const mockCertificates = [
     {
@@ -141,7 +144,8 @@ describe('CertificateList Component', () => {
 
   it('navigates to certificate page when view button is clicked', async () => {
     const mockRouter = { push: jest.fn() };
-    import * as navigation from 'next/navigation'.useRouter.mockReturnValue(mockRouter);
+    // Update the mock to use the correct syntax
+    (jest.mocked(useRouter) as jest.Mock).mockReturnValue(mockRouter);
     
     const mockGetStudentCertificates = jest.fn().mockResolvedValue(mockCertificates);
     (CertificateService.getInstance().getStudentCertificates as jest.Mock).mockImplementation(mockGetStudentCertificates);
