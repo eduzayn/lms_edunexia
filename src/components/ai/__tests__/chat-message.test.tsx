@@ -57,7 +57,9 @@ describe('ChatMessage Component', () => {
     expect(messageTexts[0]).toBeInTheDocument();
     
     // Find the paragraph element with the whitespace-pre-wrap class
-    const paragraphElement = screen.getByText(multilineContent, { selector: 'p' });
+    const paragraphElement = screen.getByText((content, node) => {
+      return node.textContent === multilineContent && node.tagName.toLowerCase() === 'p';
+    });
     expect(paragraphElement).toHaveClass('whitespace-pre-wrap');
   });
 
