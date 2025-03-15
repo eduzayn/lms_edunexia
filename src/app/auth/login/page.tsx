@@ -37,7 +37,7 @@ export default function LoginPage() {
             <p className="text-muted-foreground mb-6 flex-grow">
               Acesse seus cursos, atividades, notas e certificados. Interaja com professores e colegas.
             </p>
-            <Link href="/student/login" className="w-full">
+            <Link href="/auth/student-login" className="w-full">
               <Button className="w-full">Acessar Portal</Button>
             </Link>
           </div>
@@ -53,7 +53,7 @@ export default function LoginPage() {
             <p className="text-muted-foreground mb-6 flex-grow">
               Gerencie suas turmas, crie conteúdos, avaliações e acompanhe o desempenho dos alunos.
             </p>
-            <Link href="/teacher/login" className="w-full">
+            <Link href="/auth/teacher-login" className="w-full">
               <Button variant="outline" className="w-full">Acessar Portal</Button>
             </Link>
           </div>
@@ -69,7 +69,7 @@ export default function LoginPage() {
             <p className="text-muted-foreground mb-6 flex-grow">
               Configure a plataforma, gerencie usuários, módulos, relatórios e aspectos financeiros.
             </p>
-            <Link href="/admin/login" className="w-full">
+            <Link href="/auth/admin-login" className="w-full">
               <Button variant="outline" className="w-full">Acessar Portal</Button>
             </Link>
           </div>

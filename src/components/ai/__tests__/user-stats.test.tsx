@@ -54,7 +54,9 @@ describe('UserStats Component', () => {
       />
     );
     
-    expect(screen.getByText('0')).toBeInTheDocument();
+    // Use getAllByText since there are multiple elements with '0'
+    const zeroElements = screen.getAllByText('0');
+    expect(zeroElements.length).toBe(2); // Two elements with just '0'
     expect(screen.getByText('0 min')).toBeInTheDocument();
   });
 
