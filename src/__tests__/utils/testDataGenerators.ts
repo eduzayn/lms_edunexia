@@ -516,8 +516,8 @@ export function generatePointsHistory(
   studentId: string,
   overrides: Partial<PointsHistory> = {}
 ): PointsHistory {
-  const sourceTypes = ['achievement', 'assessment', 'course', 'manual'] as const;
-  const sourceType = randomItem(sourceTypes);
+  const sourceTypes = ['achievement', 'assessment', 'course', 'manual'];
+  const sourceType = randomItem(sourceTypes) as 'achievement' | 'assessment' | 'course' | 'manual';
   
   let description = '';
   let points = randomNumber(10, 200);
