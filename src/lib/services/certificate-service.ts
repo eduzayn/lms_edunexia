@@ -77,7 +77,7 @@ class CertificateService {
       return [];
     }
     
-    return data || [];
+    return (data || []) as IssuedCertificate[];
   }
 
   async getDefaultTemplate(): Promise<CertificateTemplate | null> {
@@ -94,7 +94,7 @@ class CertificateService {
       return null;
     }
     
-    return data;
+    return data as IssuedCertificate;
   }
 
   async getTemplate(id: string): Promise<CertificateTemplate | null> {
@@ -111,7 +111,7 @@ class CertificateService {
       return null;
     }
     
-    return data;
+    return data as IssuedCertificate;
   }
 
   async createTemplate(template: Partial<CertificateTemplate>): Promise<CertificateTemplate | null> {
@@ -136,7 +136,7 @@ class CertificateService {
       return null;
     }
     
-    return data;
+    return data as IssuedCertificate;
   }
 
   async updateTemplate(id: string, template: Partial<CertificateTemplate>): Promise<CertificateTemplate | null> {
@@ -161,7 +161,7 @@ class CertificateService {
       return null;
     }
     
-    return data;
+    return data as IssuedCertificate;
   }
 
   // Issued Certificates
@@ -183,7 +183,7 @@ class CertificateService {
       return [];
     }
     
-    return data || [];
+    return (data || []) as IssuedCertificate[];
   }
 
   async getCertificate(id: string): Promise<IssuedCertificate | null> {
@@ -205,7 +205,7 @@ class CertificateService {
       return null;
     }
     
-    return data;
+    return data as IssuedCertificate;
   }
 
   async getCertificateByHash(hash: string): Promise<IssuedCertificate | null> {
@@ -227,7 +227,7 @@ class CertificateService {
       return null;
     }
     
-    return data;
+    return data as IssuedCertificate;
   }
 
   async issueCertificate(studentId: string, courseId: string, templateId?: string): Promise<IssuedCertificate | null> {

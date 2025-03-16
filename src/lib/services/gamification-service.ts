@@ -69,7 +69,7 @@ class GamificationService {
     this.supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
     
     if (this.supabaseUrl && this.supabaseKey) {
-      this.supabase = createClient(this.supabaseUrl, this.supabaseKey);
+      this.supabase = createClient<Database>(this.supabaseUrl, this.supabaseKey);
     }
   }
 
@@ -100,7 +100,7 @@ class GamificationService {
       return [];
     }
     
-    return data || [];
+    return (data || []) as Achievement[];
   }
 
   async getAchievement(id: string): Promise<Achievement | null> {
@@ -117,7 +117,7 @@ class GamificationService {
       return null;
     }
     
-    return data;
+    return data as Achievement;
   }
 
   async createAchievement(achievement: Partial<Achievement>): Promise<Achievement | null> {
@@ -142,7 +142,7 @@ class GamificationService {
       return null;
     }
     
-    return data;
+    return data as Achievement;
   }
 
   async updateAchievement(id: string, achievement: Partial<Achievement>): Promise<Achievement | null> {
@@ -168,7 +168,7 @@ class GamificationService {
       return null;
     }
     
-    return data;
+    return data as Achievement;
   }
 
   // User Achievements
@@ -189,7 +189,7 @@ class GamificationService {
       return [];
     }
     
-    return data || [];
+    return (data || []) as UserAchievement[];
   }
 
   async awardAchievement(userId: string, achievementId: string, context: Record<string, any> = {}): Promise<UserAchievement | null> {
@@ -235,7 +235,7 @@ class GamificationService {
     // Add points
     await this.addPoints(userId, achievement.points, 'achievement', achievementId, `Conquista: ${achievement.name}`);
     
-    return data;
+    return data as UserAchievement;
   }
 
   // Points
@@ -281,7 +281,7 @@ class GamificationService {
       return [];
     }
     
-    return data || [];
+    return (data || []) as PointsTransaction[];
   }
 
   async addPoints(
@@ -314,7 +314,7 @@ class GamificationService {
     // Update user level
     await this.updateUserLevel(userId);
     
-    return data;
+    return data as PointsTransaction;
   }
 
   // Levels
@@ -331,7 +331,7 @@ class GamificationService {
       return [];
     }
     
-    return data || [];
+    return (data || []) as Level[];
   }
 
   async getUserLevel(userId: string): Promise<UserLevel | null> {
@@ -357,7 +357,7 @@ class GamificationService {
       return null;
     }
     
-    return data;
+    return data as UserLevel;
   }
 
   private async initializeUserLevel(userId: string): Promise<UserLevel | null> {
@@ -395,7 +395,7 @@ class GamificationService {
       return null;
     }
     
-    return data;
+    return data as UserLevel;
   }
 
   private async updateUserLevel(userId: string): Promise<void> {
@@ -625,7 +625,7 @@ class GamificationService {
   }
 
   // Assessment completion handler - call this when an assessment is completed
-  async handleAssessmentCompletion(userId: string, assessmentId: string, score: number, passed: boolean): Promise<void> {
+  async handleAssessmentCompletion(userId: string, assessmentId: string, score: number, passed: boolean = true): Promise<void> {
     // Add points for assessment completion
     const points = passed ? 50 : 10; // More points if passed
     
@@ -642,4 +642,5 @@ class GamificationService {
   }
 }
 
-export default GamificationService;
+export const gamificationService = GamificationService.getInstance();
+export default gamificationService;
