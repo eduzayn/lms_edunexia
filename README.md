@@ -9,6 +9,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - Assessment Engine
 - SCORM 1.2 and 2004 Support
 - LTI 1.3 Integration
+- Videoconference Integration (Zoom, Teams, BigBlueButton)
+- Class Scheduling and Recording
+- Attendance Tracking
 
 ## Getting Started
 
