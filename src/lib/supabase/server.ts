@@ -1,7 +1,9 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import { Database } from '../../types/supabase';
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from './client';
+import type { Database } from '@/types/supabase';
+// Use environment variables directly instead of importing from client
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export const getServerClient = () => {
   const cookieStore = cookies();
