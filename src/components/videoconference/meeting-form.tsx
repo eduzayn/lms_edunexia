@@ -266,7 +266,7 @@ export function MeetingForm({
               <Select
                 id="recurrence_pattern"
                 name="recurrence_pattern"
-                value={formData.recurrence_pattern || ''}
+                value={formData.recurrence_pattern as string || ''}
                 onChange={handleInputChange}
               >
                 <option value="">Selecione um padrão</option>
