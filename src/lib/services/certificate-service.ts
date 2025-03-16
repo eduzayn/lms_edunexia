@@ -28,6 +28,24 @@ export interface IssuedCertificate {
   metadata: Record<string, any>;
   created_at: string;
   updated_at: string;
+  course?: {
+    id: string;
+    name: string;
+    description: string;
+    hours: number;
+  };
+  template?: {
+    id: string;
+    name: string;
+    html_template?: string;
+    css_style?: string;
+    background_image_url?: string;
+  };
+  student?: {
+    id: string;
+    full_name: string;
+    email: string;
+  };
 }
 
 export interface VerificationLog {
@@ -45,7 +63,7 @@ class CertificateService {
   private static instance: CertificateService;
   private supabaseUrl: string;
   private supabaseKey: string;
-  private supabase: ReturnType<typeof createClient> | null = null;
+  private supabase: ReturnType<typeof createClient<Database>> | null = null;
 
   private constructor() {
     this.supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
@@ -77,7 +95,7 @@ class CertificateService {
       return [];
     }
     
-    return (data || []) as IssuedCertificate[];
+    return (data || []) as CertificateTemplate[];
   }
 
   async getDefaultTemplate(): Promise<CertificateTemplate | null> {
@@ -94,7 +112,7 @@ class CertificateService {
       return null;
     }
     
-    return data as IssuedCertificate;
+    return data as CertificateTemplate;
   }
 
   async getTemplate(id: string): Promise<CertificateTemplate | null> {
@@ -111,7 +129,7 @@ class CertificateService {
       return null;
     }
     
-    return data as IssuedCertificate;
+    return data as CertificateTemplate;
   }
 
   async createTemplate(template: Partial<CertificateTemplate>): Promise<CertificateTemplate | null> {
@@ -136,7 +154,7 @@ class CertificateService {
       return null;
     }
     
-    return data as IssuedCertificate;
+    return data as CertificateTemplate;
   }
 
   async updateTemplate(id: string, template: Partial<CertificateTemplate>): Promise<CertificateTemplate | null> {
@@ -161,7 +179,7 @@ class CertificateService {
       return null;
     }
     
-    return data as IssuedCertificate;
+    return data as CertificateTemplate;
   }
 
   // Issued Certificates
@@ -183,7 +201,7 @@ class CertificateService {
       return [];
     }
     
-    return (data || []) as IssuedCertificate[];
+    return (data || []) as unknown as IssuedCertificate[];
   }
 
   async getCertificate(id: string): Promise<IssuedCertificate | null> {
@@ -205,7 +223,7 @@ class CertificateService {
       return null;
     }
     
-    return data as IssuedCertificate;
+    return data as unknown as IssuedCertificate;
   }
 
   async getCertificateByHash(hash: string): Promise<IssuedCertificate | null> {
@@ -227,7 +245,7 @@ class CertificateService {
       return null;
     }
     
-    return data as IssuedCertificate;
+    return data as unknown as IssuedCertificate;
   }
 
   async issueCertificate(studentId: string, courseId: string, templateId?: string): Promise<IssuedCertificate | null> {
@@ -339,15 +357,11 @@ class CertificateService {
       return null;
     }
     
-    const template = certificate.template as any;
-    const student = certificate.student as any;
-    const course = certificate.course as any;
-    
     // Replace placeholders in template
-    let html = template.html_template;
-    html = html.replace(/{{student_name}}/g, student.full_name);
-    html = html.replace(/{{course_name}}/g, course.name);
-    html = html.replace(/{{course_hours}}/g, course.hours || '40');
+    let html = certificate.template.html_template || '';
+    html = html.replace(/{{student_name}}/g, certificate.student.full_name);
+    html = html.replace(/{{course_name}}/g, certificate.course.name);
+    html = html.replace(/{{course_hours}}/g, certificate.course.hours?.toString() || '40');
     html = html.replace(/{{completion_date}}/g, new Date(certificate.issue_date).toLocaleDateString('pt-BR'));
     html = html.replace(/{{certificate_number}}/g, certificate.certificate_number);
     html = html.replace(/{{verification_url}}/g, `${process.env.NEXT_PUBLIC_BASE_URL}/verify-certificate?hash=${certificate.verification_hash}`);
@@ -361,7 +375,7 @@ class CertificateService {
     
     return {
       html,
-      css: template.css_style
+      css: certificate.template.css_style || ''
     };
   }
 }
