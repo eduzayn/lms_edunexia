@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
+import { MainFooter } from "@/components/layout/main-footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
         <main className={!isAuthPage ? "pt-16" : ""}>
           {children}
         </main>
+        {!isAuthPage && <MainFooter />}
       </body>
     </html>
   );
