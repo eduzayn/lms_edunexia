@@ -1,4 +1,4 @@
-import { AnalyticsService } from '@/lib/services/analytics-service';
+import { analyticsService } from '@/lib/services/analytics-service';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 // Mock the Supabase client
@@ -8,7 +8,7 @@ jest.mock('@/lib/supabase/server', () => ({
 
 describe('AnalyticsService', () => {
   // Get the singleton instance
-  const analyticsService = AnalyticsService.getInstance();
+  const analyticsServiceInstance = analyticsService;
   
   // Mock data
   const mockCourseAnalytics = {
@@ -107,9 +107,9 @@ describe('AnalyticsService', () => {
   });
 
   describe('getInstance', () => {
-    it('should return the singleton instance', () => {
-      const instance1 = AnalyticsService.getInstance();
-      const instance2 = AnalyticsService.getInstance();
+    it('should be a singleton instance', () => {
+      const instance1 = analyticsService;
+      const instance2 = analyticsService;
       
       expect(instance1).toBe(instance2);
     });
@@ -117,7 +117,7 @@ describe('AnalyticsService', () => {
 
   describe('getCourseAnalytics', () => {
     it('should return course analytics when data exists', async () => {
-      const result = await analyticsService.getCourseAnalytics('course-1');
+      const result = await analyticsServiceInstance.getCourseAnalytics('course-1');
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(mockFrom).toHaveBeenCalledWith('analytics');
@@ -159,13 +159,13 @@ describe('AnalyticsService', () => {
       });
       
       // Mock generateCourseAnalytics implementation
-      jest.spyOn(analyticsService, 'generateCourseAnalytics').mockResolvedValue(mockCourseAnalytics);
+      jest.spyOn(analyticsServiceInstance, 'generateCourseAnalytics').mockResolvedValue(mockCourseAnalytics);
       
-      const result = await analyticsService.getCourseAnalytics('course-1');
+      const result = await analyticsServiceInstance.getCourseAnalytics('course-1');
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(mockFrom).toHaveBeenCalledWith('analytics');
-      expect(analyticsService.generateCourseAnalytics).toHaveBeenCalledWith('course-1');
+      expect(analyticsServiceInstance.generateCourseAnalytics).toHaveBeenCalledWith('course-1');
       expect(result).toEqual(mockCourseAnalytics);
     });
 
@@ -174,13 +174,13 @@ describe('AnalyticsService', () => {
       mockSingle.mockReturnValueOnce({ data: null, error: new Error('Database error') });
       
       // Mock generateCourseAnalytics to return null on error
-      jest.spyOn(analyticsService, 'generateCourseAnalytics').mockResolvedValue(null);
+      jest.spyOn(analyticsServiceInstance, 'generateCourseAnalytics').mockResolvedValue(null);
       
-      const result = await analyticsService.getCourseAnalytics('course-1');
+      const result = await analyticsServiceInstance.getCourseAnalytics('course-1');
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalled();
-      expect(analyticsService.generateCourseAnalytics).toHaveBeenCalledWith('course-1');
+      expect(analyticsServiceInstance.generateCourseAnalytics).toHaveBeenCalledWith('course-1');
       expect(result).toBeNull();
     });
   });
@@ -190,7 +190,7 @@ describe('AnalyticsService', () => {
       // Mock student analytics data
       mockSingle.mockReturnValue({ data: { data: mockStudentAnalytics }, error: null });
       
-      const result = await analyticsService.getStudentAnalytics('student-1');
+      const result = await analyticsServiceInstance.getStudentAnalytics('student-1');
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(mockFrom).toHaveBeenCalledWith('analytics');
@@ -208,13 +208,13 @@ describe('AnalyticsService', () => {
       mockSingle.mockReturnValueOnce({ data: null, error: new Error('Not found') });
       
       // Mock generateStudentAnalytics implementation
-      jest.spyOn(analyticsService, 'generateStudentAnalytics').mockResolvedValue(mockStudentAnalytics);
+      jest.spyOn(analyticsServiceInstance, 'generateStudentAnalytics').mockResolvedValue(mockStudentAnalytics);
       
-      const result = await analyticsService.getStudentAnalytics('student-1');
+      const result = await analyticsServiceInstance.getStudentAnalytics('student-1');
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(mockFrom).toHaveBeenCalledWith('analytics');
-      expect(analyticsService.generateStudentAnalytics).toHaveBeenCalledWith('student-1');
+      expect(analyticsServiceInstance.generateStudentAnalytics).toHaveBeenCalledWith('student-1');
       expect(result).toEqual(mockStudentAnalytics);
     });
 
@@ -223,13 +223,13 @@ describe('AnalyticsService', () => {
       mockSingle.mockReturnValueOnce({ data: null, error: new Error('Database error') });
       
       // Mock generateStudentAnalytics to return null on error
-      jest.spyOn(analyticsService, 'generateStudentAnalytics').mockResolvedValue(null);
+      jest.spyOn(analyticsServiceInstance, 'generateStudentAnalytics').mockResolvedValue(null);
       
-      const result = await analyticsService.getStudentAnalytics('student-1');
+      const result = await analyticsServiceInstance.getStudentAnalytics('student-1');
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalled();
-      expect(analyticsService.generateStudentAnalytics).toHaveBeenCalledWith('student-1');
+      expect(analyticsServiceInstance.generateStudentAnalytics).toHaveBeenCalledWith('student-1');
       expect(result).toBeNull();
     });
   });
@@ -239,7 +239,7 @@ describe('AnalyticsService', () => {
       // Mock assessment analytics data
       mockSingle.mockReturnValue({ data: { data: mockAssessmentAnalytics }, error: null });
       
-      const result = await analyticsService.getAssessmentAnalytics('assessment-1');
+      const result = await analyticsServiceInstance.getAssessmentAnalytics('assessment-1');
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(mockFrom).toHaveBeenCalledWith('analytics');
@@ -257,13 +257,13 @@ describe('AnalyticsService', () => {
       mockSingle.mockReturnValueOnce({ data: null, error: new Error('Not found') });
       
       // Mock generateAssessmentAnalytics implementation
-      jest.spyOn(analyticsService, 'generateAssessmentAnalytics').mockResolvedValue(mockAssessmentAnalytics);
+      jest.spyOn(analyticsServiceInstance, 'generateAssessmentAnalytics').mockResolvedValue(mockAssessmentAnalytics);
       
-      const result = await analyticsService.getAssessmentAnalytics('assessment-1');
+      const result = await analyticsServiceInstance.getAssessmentAnalytics('assessment-1');
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(mockFrom).toHaveBeenCalledWith('analytics');
-      expect(analyticsService.generateAssessmentAnalytics).toHaveBeenCalledWith('assessment-1');
+      expect(analyticsServiceInstance.generateAssessmentAnalytics).toHaveBeenCalledWith('assessment-1');
       expect(result).toEqual(mockAssessmentAnalytics);
     });
 
@@ -272,13 +272,13 @@ describe('AnalyticsService', () => {
       mockSingle.mockReturnValueOnce({ data: null, error: new Error('Database error') });
       
       // Mock generateAssessmentAnalytics to return null on error
-      jest.spyOn(analyticsService, 'generateAssessmentAnalytics').mockResolvedValue(null);
+      jest.spyOn(analyticsServiceInstance, 'generateAssessmentAnalytics').mockResolvedValue(null);
       
-      const result = await analyticsService.getAssessmentAnalytics('assessment-1');
+      const result = await analyticsServiceInstance.getAssessmentAnalytics('assessment-1');
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalled();
-      expect(analyticsService.generateAssessmentAnalytics).toHaveBeenCalledWith('assessment-1');
+      expect(analyticsServiceInstance.generateAssessmentAnalytics).toHaveBeenCalledWith('assessment-1');
       expect(result).toBeNull();
     });
   });
@@ -288,7 +288,7 @@ describe('AnalyticsService', () => {
       // Mock content analytics data
       mockSingle.mockReturnValue({ data: { data: mockContentAnalytics }, error: null });
       
-      const result = await analyticsService.getContentAnalytics('content-1');
+      const result = await analyticsServiceInstance.getContentAnalytics('content-1');
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(mockFrom).toHaveBeenCalledWith('analytics');
@@ -306,13 +306,13 @@ describe('AnalyticsService', () => {
       mockSingle.mockReturnValueOnce({ data: null, error: new Error('Not found') });
       
       // Mock generateContentAnalytics implementation
-      jest.spyOn(analyticsService, 'generateContentAnalytics').mockResolvedValue(mockContentAnalytics);
+      jest.spyOn(analyticsServiceInstance, 'generateContentAnalytics').mockResolvedValue(mockContentAnalytics);
       
-      const result = await analyticsService.getContentAnalytics('content-1');
+      const result = await analyticsServiceInstance.getContentAnalytics('content-1');
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(mockFrom).toHaveBeenCalledWith('analytics');
-      expect(analyticsService.generateContentAnalytics).toHaveBeenCalledWith('content-1');
+      expect(analyticsServiceInstance.generateContentAnalytics).toHaveBeenCalledWith('content-1');
       expect(result).toEqual(mockContentAnalytics);
     });
 
@@ -321,13 +321,13 @@ describe('AnalyticsService', () => {
       mockSingle.mockReturnValueOnce({ data: null, error: new Error('Database error') });
       
       // Mock generateContentAnalytics to return null on error
-      jest.spyOn(analyticsService, 'generateContentAnalytics').mockResolvedValue(null);
+      jest.spyOn(analyticsServiceInstance, 'generateContentAnalytics').mockResolvedValue(null);
       
-      const result = await analyticsService.getContentAnalytics('content-1');
+      const result = await analyticsServiceInstance.getContentAnalytics('content-1');
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalled();
-      expect(analyticsService.generateContentAnalytics).toHaveBeenCalledWith('content-1');
+      expect(analyticsServiceInstance.generateContentAnalytics).toHaveBeenCalledWith('content-1');
       expect(result).toBeNull();
     });
   });
@@ -338,7 +338,7 @@ describe('AnalyticsService', () => {
       const mockCount = jest.fn().mockReturnValue({ data: { count: 100 }, error: null });
       mockFrom.mockReturnValue({ select: mockSelect, count: mockCount });
       
-      const result = await analyticsService.getPlatformAnalytics();
+      const result = await analyticsServiceInstance.getPlatformAnalytics();
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(mockFrom).toHaveBeenCalledWith('profiles');
@@ -362,7 +362,7 @@ describe('AnalyticsService', () => {
       const mockCount = jest.fn().mockReturnValue({ data: null, error: new Error('Database error') });
       mockFrom.mockReturnValue({ select: mockSelect, count: mockCount });
       
-      const result = await analyticsService.getPlatformAnalytics();
+      const result = await analyticsServiceInstance.getPlatformAnalytics();
       
       expect(createServerSupabaseClient).toHaveBeenCalled();
       expect(console.error).toHaveBeenCalled();
