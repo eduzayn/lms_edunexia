@@ -765,3 +765,4 @@ class AssessmentService {
 }
 
 export const assessmentService = AssessmentService.getInstance();
+export default assessmentService;

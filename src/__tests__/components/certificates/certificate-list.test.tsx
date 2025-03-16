@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen, waitFor } from '../../utils/test-utils';
 import CertificateList from '@/components/certificates/certificate-list';
-import CertificateService from '@/lib/services/certificate-service';
+import { certificateService } from '@/lib/services/certificate-service';
 
 // Mock certificate service
 jest.mock('@/lib/services/certificate-service', () => ({
-  getInstance: jest.fn(() => ({
+  certificateService: {
     getStudentCertificates: jest.fn(),
-  })),
+  }
 }));
 
 // Mock next/navigation
@@ -16,6 +16,10 @@ jest.mock('next/navigation', () => ({
     push: jest.fn(),
   })),
 }));
+
+// Import useRouter for type checking
+import { useRouter } from 'next/navigation';
+import { jest } from '@jest/globals';
 
 describe('CertificateList Component', () => {
   const mockCertificates = [
@@ -76,7 +80,7 @@ describe('CertificateList Component', () => {
   it('renders certificates when loaded', async () => {
     const mockGetStudentCertificates = jest.fn().mockResolvedValue(mockCertificates);
     
-    (CertificateService.getInstance().getStudentCertificates as jest.Mock).mockImplementation(mockGetStudentCertificates);
+    (certificateService.getStudentCertificates as jest.Mock).mockImplementation(mockGetStudentCertificates);
     
     render(<CertificateList studentId="student-123" />);
     
@@ -102,7 +106,7 @@ describe('CertificateList Component', () => {
   it('shows empty state when no certificates', async () => {
     const mockGetStudentCertificates = jest.fn().mockResolvedValue([]);
     
-    (CertificateService.getInstance().getStudentCertificates as jest.Mock).mockImplementation(mockGetStudentCertificates);
+    (certificateService.getStudentCertificates as jest.Mock).mockImplementation(mockGetStudentCertificates);
     
     render(<CertificateList studentId="student-123" />);
     
@@ -112,7 +116,7 @@ describe('CertificateList Component', () => {
   });
 
   it('shows error state when service fails', async () => {
-    (CertificateService.getInstance().getStudentCertificates as jest.Mock).mockRejectedValue(new Error('Service error'));
+    (certificateService.getStudentCertificates as jest.Mock).mockRejectedValue(new Error('Service error'));
     
     render(<CertificateList studentId="student-123" />);
     
@@ -124,7 +128,7 @@ describe('CertificateList Component', () => {
   it('renders view and download buttons for each certificate', async () => {
     const mockGetStudentCertificates = jest.fn().mockResolvedValue(mockCertificates);
     
-    (CertificateService.getInstance().getStudentCertificates as jest.Mock).mockImplementation(mockGetStudentCertificates);
+    (certificateService.getStudentCertificates as jest.Mock).mockImplementation(mockGetStudentCertificates);
     
     render(<CertificateList studentId="student-123" />);
     
@@ -141,10 +145,11 @@ describe('CertificateList Component', () => {
 
   it('navigates to certificate page when view button is clicked', async () => {
     const mockRouter = { push: jest.fn() };
-    import * as navigation from 'next/navigation'.useRouter.mockReturnValue(mockRouter);
+    // Update the mock to use the correct syntax
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
     
     const mockGetStudentCertificates = jest.fn().mockResolvedValue(mockCertificates);
-    (CertificateService.getInstance().getStudentCertificates as jest.Mock).mockImplementation(mockGetStudentCertificates);
+    (certificateService.getStudentCertificates as jest.Mock).mockImplementation(mockGetStudentCertificates);
     
     render(<CertificateList studentId="student-123" />);
     

@@ -15,25 +15,28 @@ describe('PointsHistory Component', () => {
   const mockTransactions = [
     {
       id: 'tx-1',
-      user_id: 'user-123',
+      student_id: 'user-123',
       points: 50,
-      transaction_type: 'achievement',
+      source_type: 'achievement',
+      source_id: 'achievement-123',
       description: 'Earned achievement: First Course',
       created_at: '2025-03-01T10:00:00Z',
     },
     {
       id: 'tx-2',
-      user_id: 'user-123',
+      student_id: 'user-123',
       points: 100,
-      transaction_type: 'course_completion',
+      source_type: 'course',
+      source_id: 'course-123',
       description: 'Completed course: Introduction to React',
       created_at: '2025-02-15T14:30:00Z',
     },
     {
       id: 'tx-3',
-      user_id: 'user-123',
+      student_id: 'user-123',
       points: -20,
-      transaction_type: 'custom',
+      source_type: 'manual',
+      source_id: 'manual-123',
       description: 'Penalty for late submission',
       created_at: '2025-02-10T09:15:00Z',
     }
@@ -126,8 +129,8 @@ describe('PointsHistory Component', () => {
     
     await waitFor(() => {
       expect(screen.getByText('Conquista')).toBeInTheDocument();
-      expect(screen.getByText('Conclusão de Curso')).toBeInTheDocument();
-      expect(screen.getByText('Personalizado')).toBeInTheDocument();
+      expect(screen.getByText('Curso')).toBeInTheDocument();
+      expect(screen.getByText('Manual')).toBeInTheDocument();
     });
     
     // In a real test, you would check the specific classes applied
