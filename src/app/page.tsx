@@ -2,173 +2,97 @@
 
 import * as React from "react";
 import Link from "next/link";
-
 import { ArrowRight, BookOpen, Users, BarChart3, Brain } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { SupabaseTest } from '@/components/supabase-test'
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Header */}
-      <header className="border-b bg-white">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-primary">Edunexia</h1>
-            <span className="text-sm bg-primary/10 text-primary px-2 py-0.5 rounded-full">LMS</span>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <Link 
-              href="/auth/login" 
-              className="text-sm font-medium hover:underline"
-            >
-              Entrar
-            </Link>
-            
-            <Link 
-              href="/auth/register" 
-              className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90"
-            >
-              Registrar
-            </Link>
-          </div>
-        </div>
-      </header>
-      
+    <div className="flex min-h-screen flex-col">
       {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-white to-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-                Plataforma de Aprendizagem com Inteligência Artificial
+      <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-white">
+        <div className="container px-4 md:px-6">
+          <div className="flex flex-col items-center space-y-4 text-center">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+                EdunexIA LMS
               </h1>
-              <p className="text-lg text-gray-600 mb-8">
-                Edunexia é uma plataforma completa para instituições educacionais, 
-                com tutoria de IA, gestão financeira e recursos avançados para uma 
-                experiência de aprendizagem moderna.
+              <p className="mx-auto max-w-[700px] text-zinc-500 md:text-xl">
+                Plataforma de Aprendizagem com Inteligência Artificial para instituições educacionais.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
-                  href="/auth/login" 
-                  className="bg-primary text-white px-6 py-3 rounded-md text-center font-medium hover:bg-primary/90 flex items-center justify-center gap-2"
-                >
-                  Acessar Plataforma
-                  <ArrowRight size={18} />
-                </Link>
-                <Link 
-                  href="/pricing" 
-                  className="border border-gray-300 bg-white px-6 py-3 rounded-md text-center font-medium hover:bg-gray-50 flex items-center justify-center"
-                >
-                  Conhecer Planos
-                </Link>
-              </div>
             </div>
-            <div className="flex justify-center">
-              <div className="relative w-full max-w-md h-[400px] bg-gray-200 rounded-lg overflow-hidden">
-                {/* Placeholder for hero image */}
-                <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                  Imagem da Plataforma
-                </div>
-              </div>
+            <div className="flex flex-col gap-2 min-[400px]:flex-row">
+              <Link href="/auth/login">
+                <Button variant="default" size="lg">
+                  Acessar Plataforma
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link href="/precos">
+                <Button variant="outline" size="lg">
+                  Conhecer Planos
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
       </section>
-      
+
       {/* Features Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Principais Recursos</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <BookOpen className="text-primary" size={24} />
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-zinc-50">
+        <div className="container px-4 md:px-6">
+          <div className="grid gap-6 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
+            <div className="flex flex-col items-center space-y-4 p-6 bg-white rounded-lg shadow-sm">
+              <div className="p-3 rounded-full bg-blue-50">
+                <BookOpen className="w-6 h-6 text-blue-500" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Gestão de Cursos</h3>
-              <p className="text-gray-600">
+              <h3 className="text-lg font-semibold">Gestão de Cursos</h3>
+              <p className="text-sm text-zinc-500 text-center">
                 Crie e gerencie cursos com facilidade, organize conteúdos e avaliações.
               </p>
             </div>
             
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <Brain className="text-primary" size={24} />
+            <div className="flex flex-col items-center space-y-4 p-6 bg-white rounded-lg shadow-sm">
+              <div className="p-3 rounded-full bg-blue-50">
+                <Brain className="w-6 h-6 text-blue-500" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Tutoria com IA</h3>
-              <p className="text-gray-600">
+              <h3 className="text-lg font-semibold">Tutoria com IA</h3>
+              <p className="text-sm text-zinc-500 text-center">
                 Ofereça suporte personalizado aos alunos com nossa tutora virtual Prof. Ana.
               </p>
             </div>
             
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <Users className="text-primary" size={24} />
+            <div className="flex flex-col items-center space-y-4 p-6 bg-white rounded-lg shadow-sm">
+              <div className="p-3 rounded-full bg-blue-50">
+                <Users className="w-6 h-6 text-blue-500" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Fóruns de Discussão</h3>
-              <p className="text-gray-600">
+              <h3 className="text-lg font-semibold">Fóruns de Discussão</h3>
+              <p className="text-sm text-zinc-500 text-center">
                 Promova a interação entre alunos e instrutores com fóruns temáticos.
               </p>
             </div>
             
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <BarChart3 className="text-primary" size={24} />
+            <div className="flex flex-col items-center space-y-4 p-6 bg-white rounded-lg shadow-sm">
+              <div className="p-3 rounded-full bg-blue-50">
+                <BarChart3 className="w-6 h-6 text-blue-500" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Gestão Financeira</h3>
-              <p className="text-gray-600">
+              <h3 className="text-lg font-semibold">Gestão Financeira</h3>
+              <p className="text-sm text-zinc-500 text-center">
                 Controle mensalidades, pagamentos e ofereça opções flexíveis aos alunos.
               </p>
             </div>
           </div>
         </div>
       </section>
-      
-      {/* Footer */}
-      <footer className="mt-auto bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4">Edunexia LMS</h3>
-              <p className="text-gray-400">
-                Plataforma completa de gestão de aprendizagem para instituições educacionais.
-              </p>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Links Rápidos</h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="/auth/login" className="text-gray-400 hover:text-white">
-                    Entrar
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/auth/register" className="text-gray-400 hover:text-white">
-                    Registrar
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/pricing" className="text-gray-400 hover:text-white">
-                    Planos
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Contato</h4>
-              <p className="text-gray-400">
-                contato@edunexia.com.br
-              </p>
-            </div>
+
+      {/* Supabase Test Section - Apenas em desenvolvimento */}
+      {process.env.NODE_ENV === 'development' && (
+        <section className="w-full py-12 bg-white">
+          <div className="container px-4 md:px-6">
+            <SupabaseTest />
           </div>
-          
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
-            <p>&copy; {new Date().getFullYear()} Edunexia. Todos os direitos reservados.</p>
-          </div>
-        </div>
-      </footer>
+        </section>
+      )}
     </div>
   );
 }

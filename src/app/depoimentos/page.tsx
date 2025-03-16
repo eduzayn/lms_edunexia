@@ -1,106 +1,86 @@
-import React from "react";
-import { Card } from "../../components/ui/card";
+import { Star } from "lucide-react";
 
-import Link from "next/link";
-import { Button } from "../../components/ui/button";
+const testimonials = [
+  {
+    name: "Maria Silva",
+    role: "Diretora Acadêmica",
+    institution: "Colégio Inovação",
+    content: "A EdunexIA revolucionou nossa forma de ensinar. A tutoria com IA tem sido fundamental para o desenvolvimento personalizado dos nossos alunos. Em apenas 6 meses, vimos uma melhoria significativa no engajamento e resultados.",
+    rating: 5,
+    image: "https://i.pravatar.cc/150?img=1"
+  },
+  {
+    name: "João Santos",
+    role: "Professor de Matemática",
+    institution: "Instituto Educacional Futuro",
+    content: "Como professor, posso dizer que a plataforma tornou meu trabalho muito mais eficiente. O sistema de gestão de conteúdo é intuitivo e a análise de desempenho dos alunos me ajuda a identificar pontos de melhoria rapidamente.",
+    rating: 5,
+    image: "https://i.pravatar.cc/150?img=2"
+  },
+  {
+    name: "Ana Oliveira",
+    role: "Coordenadora Pedagógica",
+    institution: "Escola Novos Caminhos",
+    content: "A integração da IA no processo de aprendizagem é impressionante. Os alunos recebem suporte 24/7 e os relatórios detalhados nos permitem tomar decisões baseadas em dados reais.",
+    rating: 5,
+    image: "https://i.pravatar.cc/150?img=3"
+  },
+  {
+    name: "Carlos Mendes",
+    role: "Diretor Financeiro",
+    institution: "Centro Educacional Progresso",
+    content: "O módulo financeiro da EdunexIA nos ajudou a reduzir a inadimplência em 40%. A gestão de mensalidades e pagamentos ficou muito mais simples e transparente.",
+    rating: 5,
+    image: "https://i.pravatar.cc/150?img=4"
+  }
+];
 
 export default function DepoimentosPage() {
-  const testimonials = [
-    {
-      id: 1,
-      name: "Ana Silva",
-      role: "Diretora Acadêmica",
-      company: "Instituto Educacional Avançar",
-      image: "/avatars/avatar-1.png",
-      content: "A plataforma Edunexia transformou completamente nossa abordagem de ensino à distância. A integração com IA e o sistema financeiro são diferenciais que nos ajudaram a melhorar a experiência dos alunos e a gestão administrativa."
-    },
-    {
-      id: 2,
-      name: "Carlos Mendes",
-      role: "Coordenador de EAD",
-      company: "Faculdade Tecnológica do Brasil",
-      image: "/avatars/avatar-2.png",
-      content: "Implementamos o Edunexia há 6 meses e já vimos um aumento significativo na retenção de alunos. O tutor de IA é impressionante e os alunos adoram a assistência 24/7 que recebem."
-    },
-    {
-      id: 3,
-      name: "Patrícia Oliveira",
-      role: "Gerente Financeira",
-      company: "Grupo Educacional Futuro",
-      image: "/avatars/avatar-3.png",
-      content: "O módulo financeiro do Edunexia reduziu drasticamente nossa inadimplência. A automação de notificações e a facilidade para os alunos visualizarem suas pendências financeiras fizeram toda a diferença."
-    },
-    {
-      id: 4,
-      name: "Roberto Almeida",
-      role: "Professor",
-      company: "Universidade Digital",
-      image: "/avatars/avatar-4.png",
-      content: "Como professor, posso dizer que a plataforma é extremamente intuitiva. A criação de conteúdo com sugestões de IA e a análise de desempenho dos alunos me ajudam a melhorar constantemente minhas aulas."
-    },
-    {
-      id: 5,
-      name: "Fernanda Costa",
-      role: "Diretora de Tecnologia",
-      company: "Instituto de Ensino Superior",
-      image: "/avatars/avatar-5.png",
-      content: "A arquitetura modular do Edunexia nos permitiu implementar apenas os recursos que precisávamos inicialmente e expandir conforme nossa necessidade. A equipe de suporte é excepcional."
-    },
-    {
-      id: 6,
-      name: "Marcelo Santos",
-      role: "Diretor Executivo",
-      company: "Rede de Escolas Profissionalizantes",
-      image: "/avatars/avatar-6.png",
-      content: "Escolhemos o Edunexia após comparar várias soluções no mercado. O retorno sobre o investimento foi rápido e a satisfação dos alunos aumentou significativamente. Recomendo fortemente."
-    }
-  ];
-
   return (
-    <div className="container mx-auto py-12">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Depoimentos</h1>
-        <p className="text-muted-foreground mb-8">
-          Veja o que nossos clientes estão dizendo sobre a plataforma Edunexia LMS.
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          {testimonials.map((testimonial) => (
-            <Card key={testimonial.id} className="p-6">
-              <div className="flex items-start gap-4">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-                  {/* Fallback avatar if image fails to load */}
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-lg font-semibold">
-                    {testimonial.name.charAt(0)}
-                  </div>
-                  {/* We're using a placeholder since actual images might not exist */}
-                  {/* In a real implementation, you would use actual images */}
-                </div>
+    <div className="py-12 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <div className="max-w-3xl mx-auto text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">
+            O que dizem sobre a EdunexIA
+          </h1>
+          <p className="text-lg text-gray-600">
+            Conheça as experiências de instituições que já transformaram sua gestão educacional com nossa plataforma.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {testimonials.map((testimonial, index) => (
+            <div 
+              key={index}
+              className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <img
+                  src={testimonial.image}
+                  alt={testimonial.name}
+                  className="w-12 h-12 rounded-full object-cover"
+                />
                 <div>
                   <h3 className="font-semibold">{testimonial.name}</h3>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.company}</p>
+                  <p className="text-sm text-gray-600">{testimonial.role}</p>
+                  <p className="text-sm text-primary">{testimonial.institution}</p>
                 </div>
               </div>
-              <div className="mt-4">
-                <p className="text-sm italic">&ldquo;{testimonial.content}&rdquo;</p>
+              
+              <div className="flex gap-0.5 mb-3">
+                {Array.from({ length: testimonial.rating }).map((_, i) => (
+                  <Star
+                    key={i}
+                    className="w-4 h-4 fill-primary text-primary"
+                  />
+                ))}
               </div>
-            </Card>
+
+              <p className="text-gray-600">
+                "{testimonial.content}"
+              </p>
+            </div>
           ))}
-        </div>
-        
-        <div className="text-center">
-          <p className="text-muted-foreground mb-4">
-            Quer saber mais sobre como o Edunexia pode transformar sua instituição de ensino?
-          </p>
-          <div className="flex justify-center gap-4">
-            <Link href="/pricing">
-              <Button>Ver Planos</Button>
-            </Link>
-            <Link href="/support">
-              <Button variant="outline">Falar com Consultor</Button>
-            </Link>
-          </div>
         </div>
       </div>
     </div>

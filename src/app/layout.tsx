@@ -4,7 +4,6 @@ import "./globals.css";
 import { MainHeader } from "@/components/layout/main-header";
 import { MainFooter } from "@/components/layout/main-footer";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -18,6 +17,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Edunexia LMS | Plataforma de Aprendizagem Online",
   description: "Plataforma de gerenciamento de aprendizagem com tutoria de IA, gestão financeira e recursos avançados para instituições educacionais.",
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
@@ -34,11 +38,9 @@ export default function RootLayout({
   
   return (
     <html lang="pt-BR">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased min-h-screen flex flex-col bg-gray-50`}>
         <MainHeader />
-        <main className="flex-grow">
+        <main className="flex-grow flex flex-col">
           {children}
         </main>
         <MainFooter />

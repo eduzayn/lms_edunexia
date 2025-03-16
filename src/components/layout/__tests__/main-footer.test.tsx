@@ -95,7 +95,7 @@ describe('MainFooter Component', () => {
     expect(screen.getByRole('link', { name: 'Edunexia' })).toHaveAttribute('href', '/');
     expect(screen.getAllByText('Início')[0].closest('a')).toHaveAttribute('href', '/');
     expect(screen.getByText('Depoimentos').closest('a')).toHaveAttribute('href', '/depoimentos');
-    expect(screen.getByText('Planos').closest('a')).toHaveAttribute('href', '/pricing');
+    expect(screen.getByText('Planos').closest('a')).toHaveAttribute('href', '/precos');
     expect(screen.getByText('Entrar').closest('a')).toHaveAttribute('href', '/auth/login');
     expect(screen.getByText('Registrar').closest('a')).toHaveAttribute('href', '/auth/register');
     
