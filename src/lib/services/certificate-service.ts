@@ -366,4 +366,5 @@ class CertificateService {
   }
 }
 
-export default CertificateService;
+export const certificateService = CertificateService.getInstance();
+export default certificateService;

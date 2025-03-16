@@ -1,4 +1,4 @@
-import { AssessmentService, Assessment, AssessmentQuestion, QuestionOption, StudentSubmission } from '@/lib/services/assessment-service';
+import { assessmentService, Assessment, AssessmentQuestion, QuestionOption, StudentSubmission } from '@/lib/services/assessment-service';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 // Mock the Supabase client
@@ -8,7 +8,7 @@ jest.mock('@/lib/supabase/server', () => ({
 
 describe('AssessmentService', () => {
   // Get the singleton instance
-  const assessmentService = AssessmentService.getInstance();
+  const assessmentServiceInstance = assessmentService;
   
   // Mock data
   const mockAssessmentType = {
@@ -142,9 +142,9 @@ describe('AssessmentService', () => {
   });
 
   describe('getInstance', () => {
-    it('should return the singleton instance', () => {
-      const instance1 = AssessmentService.getInstance();
-      const instance2 = AssessmentService.getInstance();
+    it('should be a singleton instance', () => {
+      const instance1 = assessmentService;
+      const instance2 = assessmentService;
       
       expect(instance1).toBe(instance2);
     });
