@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select } from '@/components/ui/select';
+// import { Select } from '@/components/ui/select';
 // Removed Switch import
 // Removed DatePicker import
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -182,12 +182,13 @@ export function MeetingForm({
 
           <div className="space-y-2">
             <Label htmlFor="platform_id">Plataforma *</Label>
-            <Select
+            <select
               id="platform_id"
               name="platform_id"
               value={formData.platform_id}
               onChange={handleInputChange}
               required
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
             >
               <option value="">Selecione uma plataforma</option>
               {platforms.map(platform => (
@@ -195,16 +196,17 @@ export function MeetingForm({
                   {platform.display_name}
                 </option>
               ))}
-            </Select>
+            </select>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="course_id">Curso (opcional)</Label>
-            <Select
+            <select
               id="course_id"
               name="course_id"
               value={formData.course_id}
               onChange={handleInputChange}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
             >
               <option value="">Selecione um curso</option>
               {courses.map(course => (
@@ -212,7 +214,7 @@ export function MeetingForm({
                   {course.title}
                 </option>
               ))}
-            </Select>
+            </select>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -263,35 +265,37 @@ export function MeetingForm({
           {formData.recurring && (
             <div className="space-y-2">
               <Label htmlFor="recurrence_pattern">Padrão de Recorrência</Label>
-              <Select
+              <select
                 id="recurrence_pattern"
                 name="recurrence_pattern"
                 value={formData.recurrence_pattern as string || ''}
                 onChange={handleInputChange}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               >
                 <option value="">Selecione um padrão</option>
                 <option value="daily">Diariamente</option>
                 <option value="weekly">Semanalmente</option>
                 <option value="biweekly">Quinzenalmente</option>
                 <option value="monthly">Mensalmente</option>
-              </Select>
+              </select>
             </div>
           )}
 
           {isEditing && (
             <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
-              <Select
+              <select
                 id="status"
                 name="status"
                 value={formData.status}
                 onChange={handleInputChange}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               >
                 <option value="scheduled">Agendada</option>
                 <option value="in_progress">Em Andamento</option>
                 <option value="completed">Concluída</option>
                 <option value="cancelled">Cancelada</option>
-              </Select>
+              </select>
             </div>
           )}
 
