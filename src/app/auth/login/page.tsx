@@ -17,12 +17,12 @@ export default function LoginPage() {
         className="object-cover"
         priority
       />
-      {/* Overlay gradiente */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/50 to-blue-600/30" />
+      {/* Overlay gradiente suave */}
+      <div className="absolute inset-0 bg-black/30" />
       
       {/* Conteúdo */}
-      <div className="relative w-full max-w-4xl mx-auto px-4 py-8 space-y-8">
-        <div className="text-center mb-8">
+      <div className="relative w-full max-w-4xl mx-auto px-4 py-8">
+        <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-3 text-white">Bem-vindo de volta!</h1>
           <p className="text-white/90 text-xl">
             Escolha seu perfil e continue sua jornada de aprendizagem.
@@ -31,7 +31,7 @@ export default function LoginPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Portal do Aluno */}
-          <Card className="relative hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-md border-white/20 hover:bg-white/90 hover:scale-105">
+          <Card className="relative hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-md border-white/20 hover:bg-white hover:scale-105">
             <CardHeader className="text-center pb-2">
               <div className="mx-auto bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <User className="w-6 h-6 text-blue-600" />
@@ -49,7 +49,7 @@ export default function LoginPage() {
           </Card>
 
           {/* Portal do Professor */}
-          <Card className="relative hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-md border-white/20 hover:bg-white/90 hover:scale-105">
+          <Card className="relative hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-md border-white/20 hover:bg-white hover:scale-105">
             <CardHeader className="text-center pb-2">
               <div className="mx-auto bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <BookOpen className="w-6 h-6 text-green-600" />
@@ -67,7 +67,7 @@ export default function LoginPage() {
           </Card>
 
           {/* Portal Administrativo */}
-          <Card className="relative hover:shadow-xl transition-all duration-300 bg-white/80 backdrop-blur-md border-white/20 hover:bg-white/90 hover:scale-105">
+          <Card className="relative hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-md border-white/20 hover:bg-white hover:scale-105">
             <CardHeader className="text-center pb-2">
               <div className="mx-auto bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <BarChart className="w-6 h-6 text-purple-600" />
