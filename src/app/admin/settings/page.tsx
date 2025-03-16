@@ -79,21 +79,61 @@ export default function AdminSettingsPage() {
                 placeholder="sk-..."
               />
             </div>
+            
+            <h3 className="text-lg font-medium mt-6 mb-3">Integração Lytex (Matrículas)</h3>
             <div>
-              <label className="block text-sm font-medium mb-1">API Key Gateway de Pagamento</label>
+              <label className="block text-sm font-medium mb-1">API Key Lytex</label>
               <input 
                 type="password" 
                 className="w-full p-2 border rounded-md" 
-                placeholder="api-key-..."
+                placeholder="lytex-api-key-..."
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Webhook URL</label>
+              <label className="block text-sm font-medium mb-1">Lytex API URL</label>
               <input 
                 type="text" 
                 className="w-full p-2 border rounded-md" 
-                placeholder="https://sua-url.com/webhook"
+                placeholder="https://api.lytex.com/v1"
               />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Webhook URL - Matrículas</label>
+              <input 
+                type="text" 
+                className="w-full p-2 border rounded-md" 
+                placeholder="https://sua-url.com/api/webhooks/lytex"
+                readOnly
+              />
+              <p className="text-xs text-muted-foreground mt-1">Configure este URL no painel da Lytex para receber atualizações de matrículas</p>
+            </div>
+            
+            <h3 className="text-lg font-medium mt-6 mb-3">Integração InfinityPay (Pagamentos)</h3>
+            <div>
+              <label className="block text-sm font-medium mb-1">API Key InfinityPay</label>
+              <input 
+                type="password" 
+                className="w-full p-2 border rounded-md" 
+                placeholder="infinitypay-api-key-..."
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">InfinityPay API URL</label>
+              <input 
+                type="text" 
+                className="w-full p-2 border rounded-md" 
+                placeholder="https://api.infinitypay.com/v1"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Webhook URL - Pagamentos</label>
+              <input 
+                type="text" 
+                className="w-full p-2 border rounded-md" 
+                placeholder="https://sua-url.com/api/webhooks/infinitypay"
+                readOnly
+              />
+              <p className="text-xs text-muted-foreground mt-1">Configure este URL no painel do InfinityPay para receber atualizações de pagamentos</p>
             </div>
           </div>
         </Card>
