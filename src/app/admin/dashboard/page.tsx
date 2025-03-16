@@ -1,94 +1,113 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LineChart } from "@/components/analytics/chart-components";
-import { Users, BookOpen, GraduationCap, DollarSign } from "lucide-react";
+import { Card } from "../../../components/ui/card";
+import { Button } from "../../../components/ui/button";
+import Link from "next/link";
 
 export default function AdminDashboardPage() {
-  // Dados de exemplo - em produção viriam do backend
-  const userGrowthData = {
-    labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"],
-    datasets: [{
-      label: "Novos Usuários",
-      data: [65, 78, 90, 85, 95, 110],
-      borderColor: "rgb(37, 99, 235)",
-      backgroundColor: "rgba(37, 99, 235, 0.1)",
-    }]
-  };
-
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Dashboard Administrativo</h1>
+    <div className="container mx-auto py-8">
+      <h1 className="text-3xl font-bold mb-6">Dashboard Administrativo</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Usuários */}
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Usuários</h2>
+          <p className="text-muted-foreground mb-4">
+            Gerencie usuários, permissões e perfis.
+          </p>
+          <Link href="/admin/users">
+            <Button className="w-full">Gerenciar Usuários</Button>
+          </Link>
+        </Card>
+        
+        {/* Cursos */}
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Cursos</h2>
+          <p className="text-muted-foreground mb-4">
+            Administre cursos, categorias e matrículas.
+          </p>
+          <Link href="/admin/courses/list">
+            <Button className="w-full">Gerenciar Cursos</Button>
+          </Link>
+        </Card>
+        
+        {/* Conteúdo */}
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Conteúdo</h2>
+          <p className="text-muted-foreground mb-4">
+            Gerencie conteúdos e recursos educacionais.
+          </p>
+          <Link href="/admin/content/list">
+            <Button className="w-full">Gerenciar Conteúdo</Button>
+          </Link>
+        </Card>
+        
+        {/* Módulos */}
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Módulos</h2>
+          <p className="text-muted-foreground mb-4">
+            Configure módulos e funcionalidades da plataforma.
+          </p>
+          <Link href="/admin/modules">
+            <Button className="w-full">Configurar Módulos</Button>
+          </Link>
+        </Card>
+        
+        {/* Financeiro */}
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Financeiro</h2>
+          <p className="text-muted-foreground mb-4">
+            Gerencie pagamentos, faturas e configurações financeiras.
+          </p>
+          <Link href="/admin/financial">
+            <Button className="w-full">Gestão Financeira</Button>
+          </Link>
+        </Card>
+        
+        {/* Relatórios */}
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Relatórios</h2>
+          <p className="text-muted-foreground mb-4">
+            Visualize relatórios e análises da plataforma.
+          </p>
+          <Link href="/admin/reports">
+            <Button className="w-full">Ver Relatórios</Button>
+          </Link>
+        </Card>
+        
+        {/* Analytics */}
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Analytics</h2>
+          <p className="text-muted-foreground mb-4">
+            Acesse dados analíticos detalhados da plataforma.
+          </p>
+          <Link href="/admin/analytics/dashboard">
+            <Button className="w-full">Ver Analytics</Button>
+          </Link>
+        </Card>
+        
+        {/* Avaliações */}
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Avaliações</h2>
+          <p className="text-muted-foreground mb-4">
+            Gerencie avaliações e questionários.
+          </p>
+          <Link href="/admin/assessments/list">
+            <Button className="w-full">Gerenciar Avaliações</Button>
+          </Link>
+        </Card>
+        
+        {/* Configurações */}
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Configurações</h2>
+          <p className="text-muted-foreground mb-4">
+            Configure parâmetros gerais da plataforma.
+          </p>
+          <Link href="/admin/settings">
+            <Button className="w-full">Configurações</Button>
+          </Link>
+        </Card>
       </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {/* Card de Usuários */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Usuários</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">1,234</div>
-            <p className="text-xs text-muted-foreground">+180 este mês</p>
-          </CardContent>
-        </Card>
-
-        {/* Card de Cursos */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Cursos Ativos</CardTitle>
-            <BookOpen className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">48</div>
-            <p className="text-xs text-muted-foreground">+6 este mês</p>
-          </CardContent>
-        </Card>
-
-        {/* Card de Matrículas */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Matrículas</CardTitle>
-            <GraduationCap className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">3,567</div>
-            <p className="text-xs text-muted-foreground">+250 este mês</p>
-          </CardContent>
-        </Card>
-
-        {/* Card de Receita */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Receita Mensal</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">R$ 45.231</div>
-            <p className="text-xs text-muted-foreground">+12% este mês</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="reports">Relatórios</TabsTrigger>
-        </TabsList>
-        <TabsContent value="overview" className="space-y-4">
-          <Card className="col-span-4">
-            <CardHeader>
-              <CardTitle>Crescimento de Usuários</CardTitle>
-            </CardHeader>
-            <CardContent className="pl-2">
-              <LineChart data={userGrowthData} />
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
     </div>
   );
 }

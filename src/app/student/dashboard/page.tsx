@@ -31,17 +31,6 @@ export default function StudentDashboardPage() {
           </Link>
         </Card>
         
-        {/* Financeiro */}
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Financeiro</h2>
-          <p className="text-muted-foreground mb-4">
-            Gerencie mensalidades, faturas e métodos de pagamento.
-          </p>
-          <Link href="/student/financial">
-            <Button className="w-full">Área Financeira</Button>
-          </Link>
-        </Card>
-        
         {/* Certificados */}
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Certificados</h2>
@@ -53,6 +42,17 @@ export default function StudentDashboardPage() {
           </Link>
         </Card>
         
+        {/* Gamificação */}
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Gamificação</h2>
+          <p className="text-muted-foreground mb-4">
+            Acompanhe suas conquistas, pontos e nível na plataforma.
+          </p>
+          <Link href="/student/gamification">
+            <Button className="w-full">Minhas Conquistas</Button>
+          </Link>
+        </Card>
+        
         {/* Tutor IA */}
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Tutor IA</h2>
@@ -61,6 +61,17 @@ export default function StudentDashboardPage() {
           </p>
           <Link href="/student/ai-tutor">
             <Button className="w-full">Acessar Tutor IA</Button>
+          </Link>
+        </Card>
+        
+        {/* Financeiro */}
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Financeiro</h2>
+          <p className="text-muted-foreground mb-4">
+            Gerencie mensalidades, faturas e métodos de pagamento.
+          </p>
+          <Link href="/student/financial">
+            <Button className="w-full">Área Financeira</Button>
           </Link>
         </Card>
         
