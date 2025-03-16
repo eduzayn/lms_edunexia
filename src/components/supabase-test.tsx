@@ -1,58 +1,32 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@supabase/supabase-js'
 
-export function SupabaseTest() {
-  const [tables, setTables] = useState<string[]>([])
-  const [error, setError] = useState<string | null>(null)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-  useEffect(() => {
-    async function fetchTables() {
-      try {
-        const supabase = createClient()
-        const { data, error } = await supabase.from('pg_tables')
-          .select('tablename')
-          .eq('schemaname', 'public')
-        
-        if (error) {
-          throw error
-        }
+export default function SupabaseTest() {
+  const supabase = createClient(supabaseUrl, supabaseKey)
 
-        if (data) {
-          setTables(data.map(table => table.tablename))
-        }
-      } catch (err) {
-        console.error('Erro ao buscar tabelas:', err)
-        setError(err instanceof Error ? err.message : 'Erro desconhecido')
-      }
+  const fetchTables = async () => {
+    try {
+      const { data, error } = await supabase.from('your_table').select('*')
+      if (error) throw error
+      console.log('Data:', data)
+    } catch (error) {
+      console.error('Error:', error)
     }
-
-    fetchTables()
-  }, [])
+  }
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Teste de Conexão Supabase</h2>
-      {error ? (
-        <div className="text-red-500">
-          <p>Erro na conexão:</p>
-          <pre>{error}</pre>
-        </div>
-      ) : (
-        <div>
-          <p className="mb-2">Tabelas encontradas:</p>
-          {tables.length > 0 ? (
-            <ul className="list-disc pl-5">
-              {tables.map(table => (
-                <li key={table}>{table}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>Nenhuma tabela encontrada</p>
-          )}
-        </div>
-      )}
+      <h1 className="text-2xl font-bold mb-4">Supabase Test</h1>
+      <button
+        onClick={fetchTables}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Fetch Tables
+      </button>
     </div>
   )
 } 
