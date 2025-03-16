@@ -17,8 +17,8 @@ export default function LoginPage() {
         className="object-cover"
         priority
       />
-      {/* Overlay gradiente azul */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/70 via-blue-600/50 to-blue-600/40" />
+      {/* Overlay gradiente */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/50 to-blue-600/30" />
       
       {/* Conteúdo */}
       <div className="relative w-full max-w-4xl mx-auto px-4 py-8 space-y-8">
@@ -42,7 +42,7 @@ export default function LoginPage() {
               <CardDescription className="min-h-[100px] text-gray-600">
                 Acesse seus cursos, atividades, notas e certificados. Interaja com professores e colegas.
               </CardDescription>
-              <Link href="/portal/aluno" className="block">
+              <Link href="/auth/student-login" className="block">
                 <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700">Acessar Portal</Button>
               </Link>
             </CardContent>
@@ -60,7 +60,7 @@ export default function LoginPage() {
               <CardDescription className="min-h-[100px] text-gray-600">
                 Gerencie suas turmas, crie conteúdos, avaliações e acompanhe o desempenho dos alunos.
               </CardDescription>
-              <Link href="/portal/professor" className="block">
+              <Link href="/auth/teacher-login" className="block">
                 <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700">Acessar Portal</Button>
               </Link>
             </CardContent>
@@ -78,7 +78,7 @@ export default function LoginPage() {
               <CardDescription className="min-h-[100px] text-gray-600">
                 Configure a plataforma, gerencie usuários, módulos, relatórios e aspectos financeiros.
               </CardDescription>
-              <Link href="/admin/dashboard" className="block">
+              <Link href="/auth/admin-login" className="block">
                 <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700">Acessar Portal</Button>
               </Link>
             </CardContent>
