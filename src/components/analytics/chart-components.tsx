@@ -1,24 +1,87 @@
-import * as React from "react";
+"use client";
 
-// These are placeholder components that would be replaced with actual chart libraries
-// like Chart.js, Recharts, or similar in a real implementation
+import React from "react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+} from "chart.js";
+import { Line, Doughnut } from "react-chartjs-2";
+
+// Registrando os componentes do Chart.js
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+);
+
+// Opções padrão para gráficos de linha
+const lineOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: "bottom" as const,
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+  },
+};
+
+// Opções padrão para gráficos de rosca
+const doughnutOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: "bottom" as const,
+    },
+  },
+};
 
 interface ChartData {
   labels: string[];
   datasets: {
-    label?: string;
+    label: string;
     data: number[];
+    borderColor?: string;
     backgroundColor?: string | string[];
-    borderColor?: string | string[];
-    borderWidth?: number;
-    tension?: number;
-    fill?: boolean;
   }[];
 }
 
 interface ChartProps {
   data: ChartData;
-  options?: Record<string, unknown>;
+  height?: number;
+}
+
+export function LineChart({ data, height = 300 }: ChartProps) {
+  return (
+    <div style={{ height }}>
+      <Line options={lineOptions} data={data} />
+    </div>
+  );
+}
+
+export function DoughnutChart({ data, height = 300 }: ChartProps) {
+  return (
+    <div style={{ height }}>
+      <Doughnut options={doughnutOptions} data={data} />
+    </div>
+  );
 }
 
 export function BarChart(_props: ChartProps) { // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -36,21 +99,6 @@ export function BarChart(_props: ChartProps) { // eslint-disable-line @typescrip
   );
 }
 
-export function LineChart(_props: ChartProps) { // eslint-disable-line @typescript-eslint/no-unused-vars
-  // This is a placeholder component
-  // In a real implementation, this would use a chart library
-  return (
-    <div className="w-full h-full flex items-center justify-center bg-muted/20 rounded-md">
-      <div className="text-center">
-        <p className="text-muted-foreground">Gráfico de Linha</p>
-        <p className="text-xs text-muted-foreground mt-1">
-          (Implementação real usaria Chart.js ou similar)
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export function PieChart(_props: ChartProps) { // eslint-disable-line @typescript-eslint/no-unused-vars
   // This is a placeholder component
   // In a real implementation, this would use a chart library
@@ -58,21 +106,6 @@ export function PieChart(_props: ChartProps) { // eslint-disable-line @typescrip
     <div className="w-full h-full flex items-center justify-center bg-muted/20 rounded-md">
       <div className="text-center">
         <p className="text-muted-foreground">Gráfico de Pizza</p>
-        <p className="text-xs text-muted-foreground mt-1">
-          (Implementação real usaria Chart.js ou similar)
-        </p>
-      </div>
-    </div>
-  );
-}
-
-export function DoughnutChart(_props: ChartProps) { // eslint-disable-line @typescript-eslint/no-unused-vars
-  // This is a placeholder component
-  // In a real implementation, this would use a chart library
-  return (
-    <div className="w-full h-full flex items-center justify-center bg-muted/20 rounded-md">
-      <div className="text-center">
-        <p className="text-muted-foreground">Gráfico de Rosca</p>
         <p className="text-xs text-muted-foreground mt-1">
           (Implementação real usaria Chart.js ou similar)
         </p>
