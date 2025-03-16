@@ -20,6 +20,8 @@ export default function HomePage() {
           priority
           quality={100}
         />
+        {/* Overlay sutil para legibilidade do texto */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent" />
         
         {/* Conteúdo */}
         <div className="relative container mx-auto px-4 h-full flex items-center justify-end">
