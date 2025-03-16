@@ -7,7 +7,7 @@ import { Button } from "../../../components/ui/button";
 import { Card } from "../../../components/ui/card";
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
-import { supabase } from "../../../lib/supabase/client";
+import { createClient } from "../../../lib/supabase/client";
 
 export default function TeacherLoginPage() {
   const [email, setEmail] = React.useState("");
@@ -28,6 +28,7 @@ export default function TeacherLoginPage() {
         return;
       }
 
+      const supabase = createClient();
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -58,6 +59,7 @@ export default function TeacherLoginPage() {
         return;
       }
 
+      const supabase = createClient();
       const { error: signInError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -86,6 +88,7 @@ export default function TeacherLoginPage() {
         return;
       }
 
+      const supabase = createClient();
       const { error: signInError } = await supabase.auth.signInWithOAuth({
         provider: 'azure',
         options: {

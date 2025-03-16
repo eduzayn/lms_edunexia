@@ -15,7 +15,7 @@ import { GoogleIcon, MicrosoftIcon } from "@/components/ui/icons";
 import { Loading } from "@/components/ui/loading";
 import { ErrorMessage } from "@/components/ui/error-message";
 import { Separator } from "@/components/ui/separator";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -48,6 +48,7 @@ export default function StudentLoginPage() {
         return;
       }
 
+      const supabase = createClient();
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
@@ -79,6 +80,7 @@ export default function StudentLoginPage() {
         return;
       }
 
+      const supabase = createClient();
       const { error: signInError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -109,6 +111,7 @@ export default function StudentLoginPage() {
         return;
       }
 
+      const supabase = createClient();
       const { error: signInError } = await supabase.auth.signInWithOAuth({
         provider: 'azure',
         options: {
@@ -133,8 +136,7 @@ export default function StudentLoginPage() {
       <div className="flex items-center gap-2">
         <Link
           href="/auth/login"
-          variant="muted"
-          className="inline-flex items-center gap-1 text-sm"
+          className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Voltar para seleção de portal</span>
@@ -180,8 +182,7 @@ export default function StudentLoginPage() {
                     <FormLabel>Senha</FormLabel>
                     <Link 
                       href="/auth/reset-password" 
-                      variant="primary"
-                      className="text-sm"
+                      className="text-sm text-primary hover:underline"
                     >
                       Esqueceu a senha?
                     </Link>
@@ -248,7 +249,7 @@ export default function StudentLoginPage() {
         
         <p className="px-8 text-center text-sm text-muted-foreground">
           Ainda não tem uma conta?{" "}
-          <Link href="/auth/register" variant="primary">
+          <Link href="/auth/register" className="text-primary hover:underline">
             Criar conta
           </Link>
         </p>
