@@ -1,15 +1,18 @@
-import React from "react";
+import * as React from "react"
+import Link from "next/link"
+import { ArrowLeft } from "lucide-react"
+import { Logo } from "@/components/ui/logo"
+import { Container } from "@/components/ui/container"
+import { Blockquote } from "@/components/ui/blockquote"
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+interface AuthLayoutProps {
+  children: React.ReactNode
+}
+
+export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className="flex min-h-screen flex-col">
-      <div className="flex-1">
-        {children}
-      </div>
+    <div className="min-h-screen">
+      {children}
     </div>
-  );
+  )
 }

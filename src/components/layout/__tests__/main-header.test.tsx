@@ -22,7 +22,7 @@ describe('MainHeader Component', () => {
     render(<MainHeader />);
     
     // Check if the logo is displayed
-    expect(screen.getByText('Edunexia')).toBeInTheDocument();
+    expect(screen.getByText('EdunexIA LMS')).toBeInTheDocument();
     
     // Check if navigation links are displayed
     expect(screen.getByText('Início')).toBeInTheDocument();
@@ -74,8 +74,8 @@ describe('MainHeader Component', () => {
     // Check href attributes for navigation links
     expect(screen.getByText('Início').closest('a')).toHaveAttribute('href', '/');
     expect(screen.getByText('Depoimentos').closest('a')).toHaveAttribute('href', '/depoimentos');
-    expect(screen.getByText('Preços').closest('a')).toHaveAttribute('href', '/pricing');
-    expect(screen.getByText('Suporte').closest('a')).toHaveAttribute('href', '/support');
+    expect(screen.getByText('Preços').closest('a')).toHaveAttribute('href', '/precos');
+    expect(screen.getByText('Suporte').closest('a')).toHaveAttribute('href', '/suporte');
     
     // Check href attributes for action buttons
     expect(screen.getByText('Entrar').closest('a')).toHaveAttribute('href', '/auth/login');

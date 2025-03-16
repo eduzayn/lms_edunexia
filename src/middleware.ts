@@ -1,55 +1,72 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-export function middleware(request: NextRequest) {
-  // Get the pathname of the request
-  const path = request.nextUrl.pathname;
-  
-  // Bypass authentication when enabled
-  // This allows developers to access protected routes without authentication
-  const bypassAuth = process.env.NEXT_PUBLIC_BYPASS_AUTH === 'true';
-  if (bypassAuth) {
-    // Skip authentication checks when bypass is enabled
-    console.log('Bypass mode: Skipping authentication middleware');
-    return NextResponse.next();
-  }
-  
-  // Check if the user is authenticated (has a session token)
-  const isAuthenticated = request.cookies.has('sb-access-token') || 
-                          request.cookies.has('supabase-auth-token') ||
-                          request.cookies.has('sb:token') ||
-                          request.cookies.has('sb-refresh-token');
-  
-  // Define public paths that don't require authentication
-  const isPublicPath = path === '/' || 
-                       path.startsWith('/auth/') || 
-                       path.startsWith('/pricing') ||
-                       path === '/student/login' ||
-                       path === '/teacher/login' ||
-                       path === '/admin/login';
-  
-  // If the user is on a public path and is authenticated, redirect to appropriate dashboard
-  if (isPublicPath && isAuthenticated) {
-    // Determine which dashboard to redirect to based on the path
-    let dashboardPath = '/student/dashboard'; // Default
-    
-    if (path === '/admin/login') {
-      dashboardPath = '/admin/dashboard';
-    } else if (path === '/teacher/login') {
-      dashboardPath = '/teacher/dashboard';
+export async function middleware(request: NextRequest) {
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  })
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return request.cookies.get(name)?.value
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          response.cookies.set({
+            name,
+            value,
+            ...options,
+          })
+        },
+        remove(name: string, options: CookieOptions) {
+          response.cookies.set({
+            name,
+            value: '',
+            ...options,
+          })
+        },
+      },
     }
-    
-    return NextResponse.redirect(new URL(dashboardPath, request.url));
+  )
+
+  const path = request.nextUrl.pathname
+
+  // Bypass authentication in development mode
+  if (process.env.NEXT_PUBLIC_BYPASS_AUTH === 'true') {
+    console.log('Bypass mode: Skipping authentication middleware')
+    return response
   }
-  
-  // If the user is on a protected path and is not authenticated, redirect to login
-  if (!isPublicPath && !isAuthenticated) {
-    return NextResponse.redirect(new URL('/auth/login', request.url));
+
+  // Public routes that don't require authentication
+  if (
+    path === '/' ||
+    path === '/auth/login' ||
+    path === '/auth/register' ||
+    path === '/auth/reset-password' ||
+    path.startsWith('/depoimentos') ||
+    path.startsWith('/precos') ||
+    path.startsWith('/suporte') ||
+    path.startsWith('/termos') ||
+    path.startsWith('/privacidade')
+  ) {
+    return response
   }
-  
-  return NextResponse.next();
+
+  // Check if user is authenticated
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) {
+    return NextResponse.redirect(new URL('/auth/login', request.url))
+  }
+
+  return response
 }
 
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
-};
+}

@@ -1,15 +1,22 @@
-import * as React from "react";
+import { ComponentProps } from "react"
 
-// Using type instead of interface to avoid empty interface warning
-export type ContainerProps = React.HTMLAttributes<HTMLDivElement>;
+interface ContainerProps extends ComponentProps<"div"> {
+  size?: "sm" | "md" | "lg" | "xl" | "2xl"
+}
 
-export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
-  ({ className, ...props }, ref) => (
+const sizeStyles = {
+  sm: "max-w-screen-sm",
+  md: "max-w-screen-md",
+  lg: "max-w-screen-lg",
+  xl: "max-w-screen-xl",
+  "2xl": "max-w-screen-2xl"
+}
+
+export function Container({ size = "md", className = "", ...props }: ContainerProps) {
+  return (
     <div
-      ref={ref}
-      className={`container mx-auto px-4 sm:px-6 lg:px-8 ${className || ''}`}
+      className={`mx-auto w-full px-4 ${sizeStyles[size]} ${className}`}
       {...props}
     />
   )
-);
-Container.displayName = "Container";
+}
