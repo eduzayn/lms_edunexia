@@ -9,8 +9,10 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   env: {
-    NEXT_PUBLIC_BYPASS_AUTH: process.env.NEXT_PUBLIC_BYPASS_AUTH || 'false',
+    NEXT_PUBLIC_BYPASS_AUTH: 'true',
   },
+  // Explicitly configure server to listen on all interfaces
+  serverExternalPackages: ['@supabase/ssr'],
 };
 
 module.exports = nextConfig;
