@@ -55,6 +55,12 @@ export function TeacherSidebar() {
           Fóruns
         </Link>
         <Link 
+          href="/teacher/videoconference" 
+          className={`block px-4 py-2 rounded-md ${isActive('/teacher/videoconference') ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'}`}
+        >
+          Videoconferência
+        </Link>
+        <Link 
           href="/teacher/reports" 
           className={`block px-4 py-2 rounded-md ${isActive('/teacher/reports') ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'}`}
         >
