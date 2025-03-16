@@ -42,6 +42,9 @@ export function MeetingCard({
 
   const canJoin = meeting.status === 'in_progress' || 
     (meeting.status === 'scheduled' && new Date(meeting.start_time) <= new Date());
+  
+  // Use isTeacher prop to conditionally render teacher-specific actions
+  const showTeacherActions = isTeacher;
 
   return (
     <Card className="hover:shadow-md transition-shadow">
