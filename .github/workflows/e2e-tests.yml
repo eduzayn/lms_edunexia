@@ -52,6 +52,7 @@ jobs:
       id: deploy
       with:
         vercel-token: '5GmB2Jl44nwRPKWLg5YBw90y'
+        vercel-org-id: 'fqBFjiSulYlTgqiMdJLojou7'
         vercel-project-id: 'prj_LGMVH4OGmCGJRLba176BZ4B7JyVl'
         github-comment: false
         vercel-args: '--prod'
