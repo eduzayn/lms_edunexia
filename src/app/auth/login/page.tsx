@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { LoginForm } from '@/components/auth/login-form'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Login | EdunexIA LMS',
@@ -8,53 +8,91 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-      <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
-        <div className="absolute inset-0 bg-zinc-900" />
-        <div className="relative z-20 flex items-center text-lg font-medium">
-          <img 
-            src="/logo.png"
-            alt="EdunexIA Logo"
-            className="h-8 w-auto"
-          />
-        </div>
-        <div className="relative z-20 mt-auto">
-          <blockquote className="space-y-2">
-            <p className="text-lg">
-              "A EdunexIA revolucionou a forma como gerenciamos nossa instituição de ensino. A plataforma é intuitiva e a integração com IA nos ajuda a oferecer uma experiência personalizada para cada aluno."
-            </p>
-            <footer className="text-sm">Sofia Mendes - Diretora Acadêmica</footer>
-          </blockquote>
-        </div>
+    <div className="flex min-h-screen flex-col items-center justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+          Bem-vindo de volta
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-600">
+          Entre com seu email e senha para acessar sua conta
+        </p>
       </div>
-      <div className="lg:p-8">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-          <div className="flex flex-col space-y-2 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Bem-vindo(a) de volta
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Entre com seu e-mail e senha para acessar a plataforma
-            </p>
+
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
+          <form className="space-y-6" action="/api/auth/login" method="POST">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <div className="mt-1">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Senha
+              </label>
+              <div className="mt-1">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Entrar
+              </button>
+            </div>
+          </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="bg-white px-2 text-gray-500">Ou</span>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <div>
+                <Link
+                  href="/auth/register"
+                  className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+                >
+                  Criar conta
+                </Link>
+              </div>
+
+              <div>
+                <Link
+                  href="/auth/reset-password"
+                  className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+                >
+                  Esqueci a senha
+                </Link>
+              </div>
+            </div>
           </div>
-          <LoginForm />
-          <p className="px-8 text-center text-sm text-muted-foreground">
-            Ao clicar em continuar, você concorda com nossos{" "}
-            <a
-              href="/terms"
-              className="underline underline-offset-4 hover:text-primary"
-            >
-              Termos de Serviço
-            </a>{" "}
-            e{" "}
-            <a
-              href="/privacy"
-              className="underline underline-offset-4 hover:text-primary"
-            >
-              Política de Privacidade
-            </a>
-            .
-          </p>
         </div>
       </div>
     </div>

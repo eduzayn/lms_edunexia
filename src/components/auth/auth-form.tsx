@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useState } from 'react'
+import { useState } from "react"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -46,7 +46,7 @@ type FormData =
   | z.infer<typeof resetSchema>
 
 export function AuthForm({ mode }: AuthFormProps) {
-  const [loading, setLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
 
   const schema = mode === 'register' ? registerSchema : mode === 'reset' ? resetSchema : loginSchema
@@ -61,7 +61,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   })
 
   async function onSubmit(values: FormData) {
-    setLoading(true)
+    setIsLoading(true)
     try {
       if (mode === 'register') {
         const result = await signUp({
@@ -112,7 +112,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         }
       }
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
@@ -163,8 +163,8 @@ export function AuthForm({ mode }: AuthFormProps) {
               )}
             />
           )}
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? (
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? (
               <div className="flex items-center gap-2">
                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                 Aguarde...

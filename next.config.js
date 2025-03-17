@@ -21,10 +21,6 @@ const nextConfig = {
     domains: ['lh3.googleusercontent.com', 'avatars.githubusercontent.com'],
   },
   experimental: {
-    // Habilita o App Router
-    appDir: true,
-    // Desabilita o Server Actions warning
-    serverActions: true,
     typedRoutes: true,
     serverComponentsExternalPackages: ['@prisma/client'],
   },
@@ -42,8 +38,10 @@ const nextConfig = {
     }
     return config;
   },
-  // Desabilita a geração estática durante o build
+  // Configuração de output
   output: 'standalone',
+  // Configuração de páginas estáticas
+  staticPageGenerationTimeout: 120,
 };
 
 module.exports = nextConfig;
