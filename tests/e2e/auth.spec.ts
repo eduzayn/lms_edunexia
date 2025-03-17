@@ -35,4 +35,16 @@ test.describe('Autenticação e Seleção de Portal', () => {
     await login(page);
     await logout(page);
   });
-}); 
+});
+
+test.describe('Autenticação', () => {
+  test('deve mostrar a página de login', async ({ page }) => {
+    await page.goto('/auth/login')
+    
+    // Verifica se os elementos principais estão presentes
+    await expect(page.getByRole('heading', { name: /entrar/i })).toBeVisible()
+    await expect(page.getByLabel(/email/i)).toBeVisible()
+    await expect(page.getByLabel(/senha/i)).toBeVisible()
+    await expect(page.getByRole('button', { name: /entrar/i })).toBeVisible()
+  })
+}) 
