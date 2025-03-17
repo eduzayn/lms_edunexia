@@ -6,85 +6,58 @@ import { usePathname } from "next/navigation";
 export function StudentSidebar() {
   const pathname = usePathname();
   
+  const navItems = [
+    { href: '/aluno/dashboard', label: 'Dashboard', icon: '📊' },
+    { href: '/aluno/cursos', label: 'Meus Cursos', icon: '📚' },
+    { href: '/aluno/progresso', label: 'Meu Progresso', icon: '📈' },
+    { href: '/aluno/financeiro', label: 'Financeiro', icon: '💰' },
+    { href: '/aluno/certificados', label: 'Certificados', icon: '🎓' },
+    { href: '/aluno/ai-tutor', label: 'Tutor IA', icon: '🤖' },
+    { href: '/aluno/atividades', label: 'Atividades', icon: '✏️' },
+    { href: '/forums/list', label: 'Fóruns', icon: '💬' },
+    { href: '/aluno/videoconferencia', label: 'Videoconferência', icon: '🎥' }
+  ];
+  
   const isActive = (path: string) => {
-    return pathname === path || pathname.startsWith(`${path}/`);
+    return pathname?.startsWith(path);
   };
   
   return (
-    <aside className="w-64 bg-gray-50 h-screen p-4">
-      <div className="mb-6">
-        <Link href="/student/dashboard" className="text-xl font-bold text-primary">
-          Portal do Aluno
-        </Link>
+    <aside className="w-64 bg-gray-50 h-screen p-4 border-r">
+      <div className="mb-8">
+        <h2 className="text-xl font-bold text-primary">Portal do Aluno</h2>
       </div>
+
       <nav className="space-y-1">
-        <Link 
-          href="/student/dashboard" 
-          className={`block px-4 py-2 rounded-md ${isActive('/student/dashboard') ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-        >
-          Dashboard
-        </Link>
-        <Link 
-          href="/student/courses" 
-          className={`block px-4 py-2 rounded-md ${isActive('/student/courses') ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-        >
-          Meus Cursos
-        </Link>
-        <Link 
-          href="/student/progress" 
-          className={`block px-4 py-2 rounded-md ${isActive('/student/progress') ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-        >
-          Meu Progresso
-        </Link>
-        <Link 
-          href="/student/financial" 
-          className={`block px-4 py-2 rounded-md ${isActive('/student/financial') ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-        >
-          Financeiro
-        </Link>
-        <Link 
-          href="/student/certificates" 
-          className={`block px-4 py-2 rounded-md ${isActive('/student/certificates') ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-        >
-          Certificados
-        </Link>
-        <Link 
-          href="/student/ai-tutor" 
-          className={`block px-4 py-2 rounded-md ${isActive('/student/ai-tutor') ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-        >
-          Tutor IA
-        </Link>
-        <Link 
-          href="/student/activities" 
-          className={`block px-4 py-2 rounded-md ${isActive('/student/activities') ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-        >
-          Atividades
-        </Link>
-        <Link 
-          href="/forums/list" 
-          className={`block px-4 py-2 rounded-md ${isActive('/forums/list') ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-        >
-          Fóruns
-        </Link>
-        <Link 
-          href="/student/videoconference" 
-          className={`block px-4 py-2 rounded-md ${isActive('/student/videoconference') ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-        >
-          Videoconferência
-        </Link>
+        {navItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${
+              isActive(item.href)
+                ? 'bg-primary text-white'
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <span className="mr-3">{item.icon}</span>
+            {item.label}
+          </Link>
+        ))}
       </nav>
-      
-      <div className="mt-8 pt-6 border-t border-gray-200">
-        <Link 
-          href="/support" 
-          className="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+
+      <div className="absolute bottom-4 space-y-1 w-56">
+        <Link
+          href="/suporte"
+          className="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
         >
+          <span className="mr-3">❓</span>
           Suporte
         </Link>
-        <Link 
-          href="/auth/login" 
-          className="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100"
+        <Link
+          href="/auth/login"
+          className="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
         >
+          <span className="mr-3">🚪</span>
           Sair
         </Link>
       </div>
