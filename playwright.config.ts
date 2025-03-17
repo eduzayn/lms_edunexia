@@ -16,6 +16,11 @@ export default defineConfig({
     baseURL: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3001',
     trace: 'on-first-retry',
     video: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    // Configurações adicionais para CI
+    launchOptions: {
+      args: process.env.CI ? ['--no-sandbox', '--disable-setuid-sandbox'] : [],
+    },
   },
   projects: [
     {
@@ -31,4 +36,11 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
     },
   ],
+  // Configurações específicas para CI
+  webServer: process.env.CI ? {
+    command: 'pnpm start',
+    url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3001',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000,
+  } : undefined,
 }); 
