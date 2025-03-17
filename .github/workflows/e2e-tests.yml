@@ -9,6 +9,8 @@ on:
 env:
   NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
   NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+  TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
   PORT: 3001
 
 jobs:
@@ -58,18 +60,20 @@ jobs:
           # Inicia o servidor em background na porta 3001
           PORT=3001 pnpm start &
           
-          # Aguarda o servidor iniciar
+          # Aguarda o servidor iniciar (aumentado para 60 segundos)
           echo "Aguardando o servidor iniciar..."
-          timeout 30 bash -c 'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done' || (echo "Servidor não iniciou" && exit 1)
+          timeout 60 bash -c 'until curl -s http://localhost:3001 > /dev/null; do sleep 2; echo "Ainda aguardando..."; done' || (echo "Servidor não iniciou" && exit 1)
           echo "Servidor iniciado com sucesso"
           
-          # Executa os testes
-          pnpm test:e2e
+          # Executa os testes com mais detalhes
+          DEBUG=pw:api pnpm test:e2e
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: playwright-report/
+          path: |
+            playwright-report/
+            test-results/
           retention-days: 30 
