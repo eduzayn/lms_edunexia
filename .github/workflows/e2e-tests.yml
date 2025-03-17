@@ -46,15 +46,20 @@ jobs:
       
     - name: Install Playwright Browsers
       run: pnpm exec playwright install --with-deps
-      
-    - name: Build application
-      run: pnpm build
-      
-    - name: Start server and run tests
+
+    - name: Deploy to Vercel
+      uses: amondnet/vercel-action@v25
+      id: deploy
+      with:
+        vercel-token: '5GmB2Jl44nwRPKWLg5YBw90y'
+        vercel-project-id: 'prj_LGMVH4OGmCGJRLba176BZ4B7JyVl'
+        github-comment: false
+        vercel-args: '--prod'
+        working-directory: ./
+        
+    - name: Run E2E Tests
       run: |
-        pnpm dev & 
-        sleep 30
-        pnpm test:e2e
+        PLAYWRIGHT_TEST_BASE_URL=${{ steps.deploy.outputs.preview-url }} pnpm test:e2e
         
     - name: Upload test results
       if: always()
