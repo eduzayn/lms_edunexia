@@ -1,7 +1,8 @@
 'use server'
 
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import { type RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 
 export async function createClient() {
   const cookieStore = cookies()
@@ -14,11 +15,19 @@ export async function createClient() {
         get(name: string) {
           return cookieStore.get(name)?.value
         },
-        set(name: string, value: string, options: any) {
-          cookieStore.set(name, value, options)
+        set(name: string, value: string, options: CookieOptions) {
+          try {
+            cookieStore.set({ name, value, ...options })
+          } catch (error) {
+            // Handle error silently - allows client-side code to work
+          }
         },
-        remove(name: string, options: any) {
-          cookieStore.set(name, '', { ...options, maxAge: 0 })
+        remove(name: string, options: CookieOptions) {
+          try {
+            cookieStore.set({ name, value: '', ...options, maxAge: 0 })
+          } catch (error) {
+            // Handle error silently - allows client-side code to work
+          }
         },
       },
     }
