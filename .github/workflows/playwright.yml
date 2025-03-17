@@ -9,6 +9,7 @@ on:
 env:
   NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
   NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  PORT: 3001
 
 jobs:
   test:
@@ -54,8 +55,15 @@ jobs:
 
       - name: Start Next.js app and run tests
         run: |
-          pnpm start & # Inicia o servidor em background
-          sleep 10 # Aguarda o servidor iniciar
+          # Inicia o servidor em background na porta 3001
+          PORT=3001 pnpm start &
+          
+          # Aguarda o servidor iniciar
+          echo "Aguardando o servidor iniciar..."
+          timeout 30 bash -c 'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done' || (echo "Servidor não iniciou" && exit 1)
+          echo "Servidor iniciado com sucesso"
+          
+          # Executa os testes
           pnpm test:e2e
 
       - name: Upload test results
