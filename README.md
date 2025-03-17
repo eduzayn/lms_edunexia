@@ -1,29 +1,51 @@
-# EdunexIA LMS
+# LMS EdunexIA
 
-Sistema de Gestão de Aprendizagem com Tutoria por IA
+Sistema de Gestão de Aprendizagem com Inteligência Artificial
 
 ## Variáveis de Ambiente
 
 O projeto requer as seguintes variáveis de ambiente:
 
 ```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY
-SUPABASE_SERVICE_ROLE_KEY
+# Supabase (Obrigatório)
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
 
-# Next Auth
-NEXTAUTH_URL
-NEXTAUTH_SECRET
+# Next Auth (Obrigatório)
+NEXTAUTH_URL=
+NEXTAUTH_SECRET=
 
-# Database
-DATABASE_URL
+# Database (Obrigatório)
+DATABASE_URL=
 
-# OpenAI
-OPENAI_API_KEY
+# OpenAI (Opcional)
+OPENAI_API_KEY=
 ```
 
-Certifique-se de configurar todas as variáveis no seu ambiente local e no ambiente de produção.
+Certifique-se de configurar todas as variáveis obrigatórias no seu ambiente local e no ambiente de produção.
+
+## Desenvolvimento
+
+```bash
+# Instalar dependências
+pnpm install
+
+# Iniciar servidor de desenvolvimento
+pnpm dev
+
+# Construir para produção
+pnpm build
+
+# Iniciar servidor de produção
+pnpm start
+```
+
+## Configuração do Ambiente
+
+1. Configure as variáveis de ambiente no arquivo `.env`
+2. Configure as mesmas variáveis no Vercel para deploy
+3. Certifique-se que os nomes das variáveis estão exatamente iguais
 
 ## Tecnologias
 
