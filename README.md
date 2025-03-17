@@ -1,49 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EdunexIA - Plataforma de Ensino Inteligente
 
-## Features
+EdunexIA é uma plataforma de ensino moderna que integra inteligência artificial para proporcionar uma experiência de aprendizado personalizada e eficiente.
 
-- Course Management
-- Student Progress Tracking
-- Content Creation Tools
-- Analytics Dashboard
-- Assessment Engine
-- SCORM 1.2 and 2004 Support
-- LTI 1.3 Integration
-- Videoconference Integration (Zoom, Teams, BigBlueButton)
-- Class Scheduling and Recording
-- Attendance Tracking
+## Características Principais
 
-## Getting Started
+- 🎓 Múltiplos portais de acesso (Aluno, Professor, Polo, Admin)
+- 🤖 Tutoria com IA integrada
+- 📊 Dashboard personalizado para cada tipo de usuário
+- 💰 Sistema de comissões para parceiros
+- 📝 Fóruns de discussão
+- 🎥 Videoconferências integradas
+- 📱 Design responsivo e moderno
 
-First, run the development server:
+## Tecnologias Utilizadas
 
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS
+- Shadcn UI
+- Supabase
+- Vercel AI SDK
+
+## Pré-requisitos
+
+- Node.js 18.x ou superior
+- npm ou yarn
+- Supabase CLI (para desenvolvimento local)
+
+## Configuração do Ambiente
+
+1. Clone o repositório
+2. Instale as dependências:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+# ou
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Configure as variáveis de ambiente:
+```bash
+cp .env.example .env.local
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Inicie o servidor de desenvolvimento:
+```bash
+npm run dev
+# ou
+yarn dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Estrutura do Projeto
 
-## Learn More
+```
+src/
+├── app/                    # Rotas e páginas da aplicação
+├── components/            # Componentes reutilizáveis
+├── lib/                   # Utilitários e configurações
+├── types/                # Definições de tipos TypeScript
+└── styles/               # Estilos globais
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Contribuição
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Por favor, leia nosso guia de contribuição antes de submeter pull requests.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Licença
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Este projeto é proprietário e confidencial. Todos os direitos reservados.
