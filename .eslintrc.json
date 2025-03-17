@@ -1,15 +1,24 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "rules": {
-    "@typescript-eslint/no-empty-object-type": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "react-hooks/exhaustive-deps": "off",
-    "react/no-unescaped-entities": "off",
-    "@next/next/no-img-element": "off",
-    "@next/next/no-assign-module-variable": "off",
-    "@typescript-eslint/ban-ts-comment": "off",
-    "jsx-a11y/alt-text": "off"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/no-empty-interface": "warn",
+    "@typescript-eslint/no-inferrable-types": "warn",
+    "@typescript-eslint/no-non-null-assertion": "warn",
+    "@typescript-eslint/no-var-requires": "warn",
+    "@typescript-eslint/prefer-as-const": "warn",
+    "@typescript-eslint/prefer-namespace-keyword": "warn",
+    "@typescript-eslint/triple-slash-reference": "warn",
+    "@typescript-eslint/no-namespace": "warn"
   },
   "ignorePatterns": ["**/*.d.ts", "src/types/next.d.ts", "src/app/student/ai-tutor/page.tsx"]
 }

@@ -2,6 +2,7 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
+import type { UserRole } from '@/types/supabase'
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next({
@@ -75,6 +76,79 @@ export async function middleware(request: NextRequest) {
   // Se estiver autenticado e tentar acessar uma rota de autenticação
   if (session && request.nextUrl.pathname.startsWith('/auth')) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
+
+  // Verifica se o usuário está autenticado
+  const {
+    data: { session: supabaseSession },
+  } = await supabase.auth.getSession()
+
+  // Rotas públicas
+  const publicRoutes = [
+    '/',
+    '/auth/login',
+    '/auth/register',
+    '/auth/verify-email',
+    '/auth/reset-password',
+  ]
+
+  // Rotas protegidas por papel
+  const protectedRoutes: Record<UserRole, string[]> = {
+    admin: ['/admin'],
+    professor: ['/professor'],
+    aluno: ['/aluno'],
+    polo: ['/polo'],
+    parceiro: ['/parceiro'],
+  }
+
+  // Verifica se a rota atual é pública
+  const isPublicRoute = publicRoutes.some((route) =>
+    request.nextUrl.pathname.startsWith(route)
+  )
+
+  // Se for uma rota pública e o usuário estiver autenticado, redireciona para o dashboard apropriado
+  if (isPublicRoute && supabaseSession) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', supabaseSession.user.id)
+      .single()
+
+    if (profile?.role && profile.role in protectedRoutes) {
+      const dashboardRoutes: Record<UserRole, string> = {
+        admin: '/admin/dashboard',
+        professor: '/professor/dashboard',
+        aluno: '/aluno/dashboard',
+        polo: '/polo/dashboard',
+        parceiro: '/parceiro/dashboard',
+      }
+
+      return NextResponse.redirect(
+        new URL(dashboardRoutes[profile.role as UserRole], request.url)
+      )
+    }
+  }
+
+  // Se o usuário estiver autenticado, verifica se ele tem permissão para acessar a rota
+  if (supabaseSession) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', supabaseSession.user.id)
+      .single()
+
+    if (profile?.role) {
+      // Verifica se a rota atual pertence a outro papel
+      const isUnauthorizedRoute = Object.entries(protectedRoutes).some(
+        ([role, routes]) =>
+          role !== profile.role &&
+          routes.some((route) => request.nextUrl.pathname.startsWith(route))
+      )
+
+      if (isUnauthorizedRoute) {
+        return NextResponse.redirect(new URL('/', request.url))
+      }
+    }
   }
 
   return response

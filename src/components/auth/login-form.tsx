@@ -1,12 +1,14 @@
 'use client'
 
-import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
+import { z } from 'zod'
 import { useRouter } from 'next/navigation'
+import { useTransition } from 'react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   Form,
   FormControl,
@@ -15,24 +17,23 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useToast } from '@/components/ui/use-toast'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { login } from '@/app/actions/auth'
+import type { UserRole } from '@/types/supabase'
 
 const formSchema = z.object({
   email: z.string().email('Email inválido'),
   password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
 })
 
-type FormData = z.infer<typeof formSchema>
+interface LoginFormProps {
+  userRole: UserRole
+}
 
-export function LoginForm() {
+export function LoginForm({ userRole }: LoginFormProps) {
   const router = useRouter()
-  const { toast } = useToast()
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [isPending, startTransition] = useTransition()
 
-  const form = useForm<FormData>({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
@@ -40,136 +41,82 @@ export function LoginForm() {
     },
   })
 
-  async function onSubmit(data: FormData) {
-    setIsLoading(true)
-    try {
-      const result = await login(data)
-      
-      if (result.validationErrors) {
-        toast({
-          variant: 'destructive',
-          title: 'Erro de validação',
-          description: 'Por favor, verifique os dados informados.',
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    startTransition(async () => {
+      try {
+        const result = await login({
+          ...values,
+          role: userRole,
         })
-        return
-      }
 
-      if (result.serverError) {
-        toast({
-          variant: 'destructive',
-          title: 'Erro ao fazer login',
-          description: 'Ocorreu um erro ao tentar fazer login.',
-        })
-        return
-      }
+        if (!result.data) {
+          toast.error('Erro ao fazer login')
+          return
+        }
 
-      if (!result.data.success) {
-        toast({
-          variant: 'destructive',
-          title: 'Erro ao fazer login',
-          description: result.data.error?.message || 'Ocorreu um erro ao tentar fazer login.',
-        })
-        return
-      }
+        // Redireciona para o dashboard apropriado
+        const dashboardRoutes = {
+          admin: '/admin/dashboard',
+          professor: '/professor/dashboard',
+          aluno: '/aluno/dashboard',
+          polo: '/polo/dashboard',
+          parceiro: '/parceiro/dashboard',
+        }
 
-      toast({
-        title: 'Login realizado com sucesso!',
-        description: 'Você será redirecionado para o dashboard.',
-      })
-      router.push('/dashboard')
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Erro ao fazer login',
-        description: error instanceof Error ? error.message : 'Ocorreu um erro ao tentar fazer login.',
-      })
-    } finally {
-      setIsLoading(false)
-    }
+        router.push(dashboardRoutes[userRole])
+        toast.success('Login realizado com sucesso!')
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : 'Erro ao fazer login')
+      }
+    })
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Login</CardTitle>
-        <CardDescription>
-          Entre com seu email e senha para acessar sua conta
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="seu@email.com"
-                      {...field}
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Senha</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="••••••••"
-                      {...field}
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading}
-            >
-              {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Entrar
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-      <CardFooter className="flex flex-col space-y-4">
-        <Button
-          variant="link"
-          className="text-sm"
-          onClick={() => router.push('/auth/forgot-password')}
-          disabled={isLoading}
-        >
-          Esqueceu sua senha?
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  type="email"
+                  placeholder="Digite seu email"
+                  disabled={isPending}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Senha</FormLabel>
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder="Digite sua senha"
+                  disabled={isPending}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? 'Entrando...' : 'Entrar'}
         </Button>
-        <div className="text-sm text-center">
-          Não tem uma conta?{' '}
-          <Button
-            variant="link"
-            className="px-1"
-            onClick={() => router.push('/auth/register')}
-            disabled={isLoading}
-          >
-            Cadastre-se
-          </Button>
-        </div>
-      </CardFooter>
-    </Card>
+      </form>
+    </Form>
   )
 }
 

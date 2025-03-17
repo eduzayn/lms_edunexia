@@ -6,6 +6,8 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+export type UserRole = 'admin' | 'professor' | 'aluno' | 'polo' | 'parceiro'
+
 export interface Database {
   public: {
     Tables: {
@@ -13,32 +15,180 @@ export interface Database {
         Row: {
           id: string
           email: string
-          full_name: string | null
-          role: string
+          full_name: string
+          role: UserRole
           active: boolean
           email_verified: boolean
           created_at: string
           updated_at: string
+          avatar_url?: string
+          institution_id?: string
+          course_id?: string
+          registration_number?: string
+          phone?: string
+          address?: string
+          city?: string
+          state?: string
+          zip_code?: string
+          company_name: string | null
+          cnpj: string | null
+          website: string | null
+          partnership_type: 'content' | 'technology' | 'infrastructure' | 'marketing' | null
+          partnership_details?: Json
+          commission_rate: number | null
+          email_notifications: boolean
+          push_notifications: boolean
+          marketing_emails: boolean
+          security_alerts: boolean
         }
         Insert: {
           id: string
           email: string
-          full_name?: string | null
-          role?: string
+          full_name: string
+          role: UserRole
           active?: boolean
           email_verified?: boolean
           created_at?: string
           updated_at?: string
+          avatar_url?: string
+          institution_id?: string
+          course_id?: string
+          registration_number?: string
+          phone?: string
+          address?: string
+          city?: string
+          state?: string
+          zip_code?: string
+          company_name?: string | null
+          cnpj?: string | null
+          website?: string | null
+          partnership_type?: 'content' | 'technology' | 'infrastructure' | 'marketing' | null
+          partnership_details?: Json
+          commission_rate?: number | null
+          email_notifications?: boolean
+          push_notifications?: boolean
+          marketing_emails?: boolean
+          security_alerts?: boolean
         }
         Update: {
           id?: string
           email?: string
-          full_name?: string | null
-          role?: string
+          full_name?: string
+          role?: UserRole
           active?: boolean
           email_verified?: boolean
           created_at?: string
           updated_at?: string
+          avatar_url?: string
+          institution_id?: string
+          course_id?: string
+          registration_number?: string
+          phone?: string
+          address?: string
+          city?: string
+          state?: string
+          zip_code?: string
+          company_name?: string | null
+          cnpj?: string | null
+          website?: string | null
+          partnership_type?: 'content' | 'technology' | 'infrastructure' | 'marketing' | null
+          partnership_details?: Json
+          commission_rate?: number | null
+          email_notifications?: boolean
+          push_notifications?: boolean
+          marketing_emails?: boolean
+          security_alerts?: boolean
+        }
+      }
+      institutions: {
+        Row: {
+          id: string
+          name: string
+          type: 'university' | 'school' | 'company'
+          active: boolean
+          created_at: string
+          updated_at: string
+          logo_url?: string
+          website?: string
+          phone?: string
+          address?: string
+          city?: string
+          state?: string
+          zip_code?: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          type: 'university' | 'school' | 'company'
+          active?: boolean
+          created_at?: string
+          updated_at?: string
+          logo_url?: string
+          website?: string
+          phone?: string
+          address?: string
+          city?: string
+          state?: string
+          zip_code?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          type?: 'university' | 'school' | 'company'
+          active?: boolean
+          created_at?: string
+          updated_at?: string
+          logo_url?: string
+          website?: string
+          phone?: string
+          address?: string
+          city?: string
+          state?: string
+          zip_code?: string
+        }
+      }
+      courses: {
+        Row: {
+          id: string
+          name: string
+          description: string
+          institution_id: string
+          active: boolean
+          created_at: string
+          updated_at: string
+          start_date?: string
+          end_date?: string
+          workload?: number
+          price?: number
+          image_url?: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description: string
+          institution_id: string
+          active?: boolean
+          created_at?: string
+          updated_at?: string
+          start_date?: string
+          end_date?: string
+          workload?: number
+          price?: number
+          image_url?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string
+          institution_id?: string
+          active?: boolean
+          created_at?: string
+          updated_at?: string
+          start_date?: string
+          end_date?: string
+          workload?: number
+          price?: number
+          image_url?: string
         }
       }
       audit_logs: {
@@ -46,57 +196,22 @@ export interface Database {
           id: string
           user_id: string
           action: string
-          details: Json | null
+          details: Json
           created_at: string
         }
         Insert: {
           id?: string
           user_id: string
           action: string
-          details?: Json | null
+          details: Json
           created_at?: string
         }
         Update: {
           id?: string
           user_id?: string
           action?: string
-          details?: Json | null
+          details?: Json
           created_at?: string
-        }
-      }
-      courses: {
-        Row: {
-          id: string
-          created_at: string
-          updated_at: string
-          title: string
-          description: string
-          instructor_id: string
-          published: boolean
-          cover_image: string | null
-          duration: number | null
-        }
-        Insert: {
-          id?: string
-          created_at?: string
-          updated_at?: string
-          title: string
-          description: string
-          instructor_id: string
-          published?: boolean
-          cover_image?: string | null
-          duration?: number | null
-        }
-        Update: {
-          id?: string
-          created_at?: string
-          updated_at?: string
-          title?: string
-          description?: string
-          instructor_id?: string
-          published?: boolean
-          cover_image?: string | null
-          duration?: number | null
         }
       }
       lessons: {
@@ -316,6 +431,99 @@ export interface Database {
           due_date?: string
           items?: Json
           paid_at?: string | null
+        }
+      }
+      referrals: {
+        Row: {
+          id: string
+          partner_id: string
+          name: string
+          email: string
+          phone: string
+          type: 'student' | 'institution'
+          notes: string | null
+          status: 'pending' | 'approved' | 'rejected'
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          partner_id: string
+          name: string
+          email: string
+          phone: string
+          type: 'student' | 'institution'
+          notes?: string | null
+          status?: 'pending' | 'approved' | 'rejected'
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          partner_id?: string
+          name?: string
+          email?: string
+          phone?: string
+          type?: 'student' | 'institution'
+          notes?: string | null
+          status?: 'pending' | 'approved' | 'rejected'
+          updated_at?: string
+        }
+      }
+      commissions: {
+        Row: {
+          id: string
+          partner_id: string
+          amount: number
+          status: 'pending' | 'paid'
+          payment_date: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          partner_id: string
+          amount: number
+          status?: 'pending' | 'paid'
+          payment_date?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          partner_id?: string
+          amount?: number
+          status?: 'pending' | 'paid'
+          payment_date?: string | null
+          updated_at?: string
+        }
+      }
+      materials: {
+        Row: {
+          id: string
+          title: string
+          description: string
+          file_url: string
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description: string
+          file_url: string
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string
+          file_url?: string
+          is_active?: boolean
+          updated_at?: string
         }
       }
     }
