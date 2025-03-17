@@ -2,6 +2,29 @@
 
 Sistema de Gestão de Aprendizagem com Tutoria por IA
 
+## Variáveis de Ambiente
+
+O projeto requer as seguintes variáveis de ambiente:
+
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY
+
+# Next Auth
+NEXTAUTH_URL
+NEXTAUTH_SECRET
+
+# Database
+DATABASE_URL
+
+# OpenAI
+OPENAI_API_KEY
+```
+
+Certifique-se de configurar todas as variáveis no seu ambiente local e no ambiente de produção.
+
 ## Tecnologias
 
 - [Next.js 14](https://nextjs.org/)
