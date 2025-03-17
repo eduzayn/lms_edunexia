@@ -115,3 +115,7 @@ src/
 ## Licença
 
 Este projeto está licenciado sob a licença MIT - consulte o arquivo [LICENSE](LICENSE) para obter detalhes.
+
+## Deployment
+
+Este projeto está configurado para deploy automático no Vercel.
