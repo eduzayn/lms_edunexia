@@ -12,6 +12,8 @@ env:
   TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
   TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
   PORT: 3001
+  NODE_ENV: production
+  CI: true
 
 jobs:
   test:
@@ -47,7 +49,15 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          echo "Verificando versão do Node.js"
+          node --version
+          echo "Verificando versão do pnpm"
+          pnpm --version
+          echo "Limpando cache do pnpm"
+          pnpm store prune
+          echo "Instalando dependências com verbose"
+          pnpm install --no-frozen-lockfile --verbose
 
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
