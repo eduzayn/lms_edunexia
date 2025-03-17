@@ -1,9 +1,9 @@
 'use server'
 
-import { createSafeActionClient } from 'next-safe-action'
-import { z } from 'zod'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import { createClient } from '@/lib/supabase/client'
+import { z } from 'zod'
+import { createSafeActionClient } from 'next-safe-action'
 import { appErrors } from '@/lib/errors'
 import type { UserRole } from '@/types/supabase'
 
@@ -34,7 +34,25 @@ export const login = createSafeActionClient()
   .schema(loginSchema)
   .action(async ({ parsedInput }) => {
     try {
-      const supabase = createClient()
+      const cookieStore = cookies()
+
+      const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+          cookies: {
+            get(name: string) {
+              return cookieStore.get(name)?.value
+            },
+            set(name: string, value: string, options: any) {
+              cookieStore.set({ name, value, ...options })
+            },
+            remove(name: string, options: any) {
+              cookieStore.delete({ name, ...options })
+            },
+          },
+        }
+      )
 
       const { data: authData, error } = await supabase.auth.signInWithPassword({
         email: parsedInput.email,
@@ -60,23 +78,12 @@ export const login = createSafeActionClient()
         throw new Error('Usuário não tem permissão para acessar este portal')
       }
 
-      // Armazena o token de acesso nos cookies
-      const cookieStore = cookies()
-      cookieStore.set({
-        name: 'access_token',
-        value: authData.session?.access_token || '',
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-      })
-
-      return authData
+      return { success: true, data: authData }
     } catch (error) {
-      if (error instanceof Error) {
-        throw error
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro ao fazer login',
       }
-      throw new Error('Erro inesperado')
     }
   })
 
@@ -84,7 +91,23 @@ export const register = createSafeActionClient()
   .schema(registerSchema)
   .action(async ({ parsedInput }) => {
     try {
-      const supabase = createClient()
+      const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+          cookies: {
+            get(name: string) {
+              return cookies().get(name)?.value
+            },
+            set(name: string, value: string, options: any) {
+              cookies().set({ name, value, ...options })
+            },
+            remove(name: string, options: any) {
+              cookies().delete({ name, ...options })
+            },
+          },
+        }
+      )
 
       // Registra o usuário
       const { data: authData, error: signUpError } = await supabase.auth.signUp({

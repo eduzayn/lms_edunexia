@@ -4,7 +4,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { GraduationCap, Building2, Users, Building } from 'lucide-react'
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Selecione o Portal | EdunexIA LMS',
   description: 'Escolha o portal adequado ao seu perfil',
 }
