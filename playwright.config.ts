@@ -14,7 +14,7 @@ export default defineConfig({
   use: {
     baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
-    video: 'on-first-retry',
+    video: 'retain-on-failure',
     screenshot: 'only-on-failure',
     // Configurações adicionais para CI
     launchOptions: {
@@ -36,10 +36,13 @@ export default defineConfig({
     },
   ],
   // Configurações específicas para CI
-  webServer: process.env.CI ? {
-    command: 'pnpm start',
-    url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3001',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000,
-  } : undefined,
+  webServer: process.env.PLAYWRIGHT_TEST_BASE_URL
+    ? undefined
+    : {
+        command: 'pnpm dev',
+        url: 'http://localhost:3000',
+        reuseExistingServer: !process.env.CI,
+        stdout: 'pipe',
+        stderr: 'pipe'
+      },
 }); 

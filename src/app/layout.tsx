@@ -1,19 +1,13 @@
-import { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { AuthProvider } from '@/contexts/auth'
-import { ThemeProvider } from '@/components/theme-provider'
-import { Header } from '@/components/header'
-import { Providers } from '@/components/providers'
-import './globals.css'
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
+import { ThemeProvider } from "@/components/theme-provider"
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: {
-    default: 'EdunexIA LMS',
-    template: '%s | EdunexIA LMS',
-  },
-  description: 'Plataforma de ensino com tutoria por IA',
+  title: "Editor de Texto Rico",
+  description: "Um editor de texto rico construído com TipTap e Shadcn UI",
 }
 
 export default function RootLayout({
@@ -30,12 +24,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>
-            <Providers>
-              <Header />
-              {children}
-            </Providers>
-          </AuthProvider>
+          {children}
         </ThemeProvider>
       </body>
     </html>

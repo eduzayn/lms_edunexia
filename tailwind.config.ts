@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss'
 import { fontFamily } from 'tailwindcss/defaultTheme'
 import animate from 'tailwindcss-animate'
+import typography from "@tailwindcss/typography"
 
 const config = {
   darkMode: ['class'],
@@ -27,20 +28,16 @@ const config = {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
-          DEFAULT: '#4263EB',
-          foreground: '#FFFFFF',
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
-          DEFAULT: '#2AB573',
-          foreground: '#FFFFFF',
-        },
-        tertiary: {
-          DEFAULT: '#9747FF',
-          foreground: '#FFFFFF',
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
         destructive: {
-          DEFAULT: '#E03131',
-          foreground: '#FFFFFF',
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
@@ -97,7 +94,7 @@ const config = {
       },
     },
   },
-  plugins: [animate],
+  plugins: [animate, typography],
 } satisfies Config
 
 export default config 
