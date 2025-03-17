@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { AuthForm } from '@/components/auth/auth-form'
+import { LoginForm } from '@/components/auth/login-form'
 
 export const metadata: Metadata = {
   title: 'Login | EdunexIA LMS',
@@ -20,7 +20,7 @@ export default function LoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
-          <AuthForm mode="login" />
+          <LoginForm />
         </div>
       </div>
     </div>

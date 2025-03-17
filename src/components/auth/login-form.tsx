@@ -1,6 +1,7 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
+import * as React from "react"
+import { useState } from "react"
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -23,13 +24,13 @@ const loginSchema = z.object({
   password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
 })
 
-type LoginFormData = z.infer<typeof loginSchema>
+type FormData = z.infer<typeof loginSchema>
 
 export function LoginForm() {
-  const [loading, setLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
 
-  const form = useForm<LoginFormData>({
+  const form = useForm<FormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
@@ -37,10 +38,13 @@ export function LoginForm() {
     },
   })
 
-  async function onSubmit(values: LoginFormData) {
-    setLoading(true)
+  async function onSubmit(values: FormData) {
+    setIsLoading(true)
     try {
-      const result = await signIn(values)
+      const result = await signIn({
+        email: values.email,
+        password: values.password,
+      })
       if (!result?.success) {
         toast({
           title: 'Erro',
@@ -50,7 +54,7 @@ export function LoginForm() {
         return
       }
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
@@ -84,8 +88,8 @@ export function LoginForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? (
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? (
               <div className="flex items-center gap-2">
                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                 Aguarde...
@@ -97,6 +101,7 @@ export function LoginForm() {
         </form>
       </Form>
       <div className="text-center text-sm">
+        Não tem uma conta?{' '}
         <Link href="/auth/register" className="text-primary hover:underline">
           Criar conta
         </Link>
