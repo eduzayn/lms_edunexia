@@ -12,30 +12,56 @@ export interface Database {
       profiles: {
         Row: {
           id: string
+          email: string
+          full_name: string | null
+          role: string
+          active: boolean
+          email_verified: boolean
           created_at: string
           updated_at: string
-          first_name: string | null
-          last_name: string | null
-          avatar_url: string | null
-          role: string
         }
         Insert: {
           id: string
+          email: string
+          full_name?: string | null
+          role?: string
+          active?: boolean
+          email_verified?: boolean
           created_at?: string
           updated_at?: string
-          first_name?: string | null
-          last_name?: string | null
-          avatar_url?: string | null
-          role?: string
         }
         Update: {
           id?: string
+          email?: string
+          full_name?: string | null
+          role?: string
+          active?: boolean
+          email_verified?: boolean
           created_at?: string
           updated_at?: string
-          first_name?: string | null
-          last_name?: string | null
-          avatar_url?: string | null
-          role?: string
+        }
+      }
+      audit_logs: {
+        Row: {
+          id: string
+          user_id: string
+          action: string
+          details: Json | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          action: string
+          details?: Json | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          action?: string
+          details?: Json | null
+          created_at?: string
         }
       }
       courses: {

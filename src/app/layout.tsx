@@ -3,12 +3,14 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { MainFooter } from "@/components/layout/main-footer";
+import { Toaster } from '@/components/ui/toaster'
+import { AuthProvider } from '@/providers/auth-provider'
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "EdunexIA LMS",
-  description: "Plataforma de Aprendizagem com Inteligência Artificial",
+  title: "LMS Edunexia",
+  description: "Sistema de Gestão de Aprendizagem",
 };
 
 export default function RootLayout({
@@ -22,11 +24,14 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={inter.className}>
-        {!isAuthPage && <Navbar />}
-        <main className={!isAuthPage ? "pt-16" : ""}>
-          {children}
-        </main>
-        {!isAuthPage && <MainFooter />}
+        <AuthProvider>
+          {!isAuthPage && <Navbar />}
+          <main className={!isAuthPage ? "pt-16" : ""}>
+            {children}
+          </main>
+          {!isAuthPage && <MainFooter />}
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );
