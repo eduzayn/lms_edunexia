@@ -18,12 +18,15 @@ const nextConfig = {
         hostname: '**',
       },
     ],
+    domains: ['lh3.googleusercontent.com', 'avatars.githubusercontent.com'],
   },
   experimental: {
     // Habilita o App Router
     appDir: true,
     // Desabilita o Server Actions warning
     serverActions: true,
+    typedRoutes: true,
+    serverComponentsExternalPackages: ['@prisma/client'],
   },
   // Desabilita a otimização de fonte durante o build
   optimizeFonts: false,
