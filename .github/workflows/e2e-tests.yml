@@ -1,41 +1,74 @@
 name: E2E Tests
 
 on:
-  deployment_status:
+  push:
+    branches: [main]
+  pull_request:
     branches: [main]
 
+env:
+  NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  PORT: 3001
+
 jobs:
-  e2e-tests:
-    if: github.event.deployment_status.state == 'success'
+  test:
+    name: Run Playwright Tests
+    timeout-minutes: 60
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
-          
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install dependencies
         run: pnpm install
-        
+
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
-        
-      - name: Run E2E tests
-        run: pnpm exec playwright test
-        env:
-          VERCEL_URL: ${{ github.event.deployment_status.target_url }}
-          # Adicione outras variáveis de ambiente necessárias aqui
+
+      - name: Build Next.js app
+        run: pnpm build
+
+      - name: Start Next.js app and run tests
+        run: |
+          # Inicia o servidor em background na porta 3001
+          PORT=3001 pnpm start &
           
+          # Aguarda o servidor iniciar
+          echo "Aguardando o servidor iniciar..."
+          timeout 30 bash -c 'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done' || (echo "Servidor não iniciou" && exit 1)
+          echo "Servidor iniciado com sucesso"
+          
+          # Executa os testes
+          pnpm test:e2e
+
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: playwright-report
           path: playwright-report/
