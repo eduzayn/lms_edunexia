@@ -1,6 +1,6 @@
 'use client'
 
-import { Card } from '@/components/ui/card'
+import React from 'react';
 import {
   LineChart,
   Line,
@@ -8,73 +8,98 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  Legend,
   ResponsiveContainer,
   BarChart,
   Bar,
-  Legend,
-} from 'recharts'
+  PieChart,
+  Pie,
+  Cell
+} from 'recharts';
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 interface ChartData {
-  name: string
-  value: number
-  [key: string]: any
+  name: string;
+  value: number;
 }
 
-interface ChartProps {
-  data: ChartData[]
-  title: string
-  type?: 'line' | 'bar'
-  color?: string
-  height?: number | string
-  dataKeys?: string[]
+interface LineChartData {
+  date: string;
+  value: number;
 }
 
-export function Chart({
-  data,
-  title,
-  type = 'line',
-  color = '#2563eb',
-  height = 300,
-  dataKeys = ['value'],
-}: ChartProps) {
+interface BarChartData {
+  category: string;
+  value: number;
+}
+
+export function CustomLineChart({ data }: { data: LineChartData[] }) {
   return (
-    <Card className="p-4">
-      <h3 className="text-lg font-semibold mb-4">{title}</h3>
-      <div style={{ width: '100%', height }}>
-        <ResponsiveContainer width="100%" height="100%">
-          {type === 'line' ? (
-            <LineChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              {dataKeys.map((key, index) => (
-                <Line
-                  key={key}
-                  type="monotone"
-                  dataKey={key}
-                  stroke={Array.isArray(color) ? color[index] : color}
-                />
-              ))}
-            </LineChart>
-          ) : (
-            <BarChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              {dataKeys.map((key, index) => (
-                <Bar
-                  key={key}
-                  dataKey={key}
-                  fill={Array.isArray(color) ? color[index] : color}
-                />
-              ))}
-            </BarChart>
-          )}
-        </ResponsiveContainer>
-      </div>
-    </Card>
-  )
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart
+        data={data}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+}
+
+export function CustomBarChart({ data }: { data: BarChartData[] }) {
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart
+        data={data}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="category" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="value" fill="#8884d8" />
+      </BarChart>
+    </ResponsiveContainer>
+  );
+}
+
+export function CustomPieChart({ data }: { data: ChartData[] }) {
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <PieChart>
+        <Pie
+          data={data}
+          cx="50%"
+          cy="50%"
+          labelLine={false}
+          outerRadius={80}
+          fill="#8884d8"
+          dataKey="value"
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <Tooltip />
+        <Legend />
+      </PieChart>
+    </ResponsiveContainer>
+  );
 } 
