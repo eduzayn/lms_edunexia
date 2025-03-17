@@ -13,6 +13,14 @@ const nextConfig = {
   },
   // Explicitly configure server to listen on all interfaces
   serverExternalPackages: ['@supabase/ssr'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

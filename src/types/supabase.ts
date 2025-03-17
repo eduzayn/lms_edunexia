@@ -6,99 +6,24 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export type UserRole = 'admin' | 'professor' | 'aluno' | 'polo' | 'parceiro'
+export type UserRole = 'admin' | 'professor' | 'aluno' | 'polo'
+
+export interface Profile {
+  id: string
+  name: string
+  email: string
+  role: UserRole
+  created_at: string
+  updated_at: string
+}
 
 export interface Database {
   public: {
     Tables: {
       profiles: {
-        Row: {
-          id: string
-          email: string
-          full_name: string
-          role: UserRole
-          active: boolean
-          email_verified: boolean
-          created_at: string
-          updated_at: string
-          avatar_url?: string
-          institution_id?: string
-          course_id?: string
-          registration_number?: string
-          phone?: string
-          address?: string
-          city?: string
-          state?: string
-          zip_code?: string
-          company_name: string | null
-          cnpj: string | null
-          website: string | null
-          partnership_type: 'content' | 'technology' | 'infrastructure' | 'marketing' | null
-          partnership_details?: Json
-          commission_rate: number | null
-          email_notifications: boolean
-          push_notifications: boolean
-          marketing_emails: boolean
-          security_alerts: boolean
-        }
-        Insert: {
-          id: string
-          email: string
-          full_name: string
-          role: UserRole
-          active?: boolean
-          email_verified?: boolean
-          created_at?: string
-          updated_at?: string
-          avatar_url?: string
-          institution_id?: string
-          course_id?: string
-          registration_number?: string
-          phone?: string
-          address?: string
-          city?: string
-          state?: string
-          zip_code?: string
-          company_name?: string | null
-          cnpj?: string | null
-          website?: string | null
-          partnership_type?: 'content' | 'technology' | 'infrastructure' | 'marketing' | null
-          partnership_details?: Json
-          commission_rate?: number | null
-          email_notifications?: boolean
-          push_notifications?: boolean
-          marketing_emails?: boolean
-          security_alerts?: boolean
-        }
-        Update: {
-          id?: string
-          email?: string
-          full_name?: string
-          role?: UserRole
-          active?: boolean
-          email_verified?: boolean
-          created_at?: string
-          updated_at?: string
-          avatar_url?: string
-          institution_id?: string
-          course_id?: string
-          registration_number?: string
-          phone?: string
-          address?: string
-          city?: string
-          state?: string
-          zip_code?: string
-          company_name?: string | null
-          cnpj?: string | null
-          website?: string | null
-          partnership_type?: 'content' | 'technology' | 'infrastructure' | 'marketing' | null
-          partnership_details?: Json
-          commission_rate?: number | null
-          email_notifications?: boolean
-          push_notifications?: boolean
-          marketing_emails?: boolean
-          security_alerts?: boolean
-        }
+        Row: Profile
+        Insert: Omit<Profile, 'created_at' | 'updated_at'>
+        Update: Partial<Omit<Profile, 'created_at' | 'updated_at'>>
       }
       institutions: {
         Row: {

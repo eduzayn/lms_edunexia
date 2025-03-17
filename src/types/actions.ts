@@ -1,6 +1,12 @@
-import type { AppError } from '@/lib/errors'
+import { AppError } from './errors'
 
-export interface ActionResponse<T = unknown> {
+export interface ActionError {
+  code: string
+  message: string
+}
+
+export interface ActionResponse<T = any> {
+  success: boolean
   data?: T
   error?: AppError
 } 

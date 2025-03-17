@@ -1,36 +1,32 @@
-# EdunexIA - Plataforma de Ensino Inteligente
+# EdunexIA LMS
 
-EdunexIA é uma plataforma de ensino moderna que integra inteligência artificial para proporcionar uma experiência de aprendizado personalizada e eficiente.
+Sistema de Gestão de Aprendizagem com Tutoria por IA
 
-## Características Principais
+## Tecnologias
 
-- 🎓 Múltiplos portais de acesso (Aluno, Professor, Polo, Admin)
-- 🤖 Tutoria com IA integrada
-- 📊 Dashboard personalizado para cada tipo de usuário
-- 💰 Sistema de comissões para parceiros
-- 📝 Fóruns de discussão
-- 🎥 Videoconferências integradas
-- 📱 Design responsivo e moderno
+- [Next.js 14](https://nextjs.org/)
+- [React 18](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Shadcn UI](https://ui.shadcn.com/)
+- [Supabase](https://supabase.com/)
 
-## Tecnologias Utilizadas
+## Requisitos
 
-- Next.js 14 (App Router)
-- TypeScript
-- Tailwind CSS
-- Shadcn UI
-- Supabase
-- Vercel AI SDK
-
-## Pré-requisitos
-
-- Node.js 18.x ou superior
+- Node.js 18+
 - npm ou yarn
-- Supabase CLI (para desenvolvimento local)
 
-## Configuração do Ambiente
+## Instalação
 
-1. Clone o repositório
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/seu-usuario/edunexia-lms.git
+cd edunexia-lms
+```
+
 2. Instale as dependências:
+
 ```bash
 npm install
 # ou
@@ -38,32 +34,39 @@ yarn install
 ```
 
 3. Configure as variáveis de ambiente:
+
 ```bash
 cp .env.example .env.local
 ```
 
 4. Inicie o servidor de desenvolvimento:
+
 ```bash
 npm run dev
 # ou
 yarn dev
 ```
 
+5. Acesse [http://localhost:3000](http://localhost:3000)
+
 ## Estrutura do Projeto
 
 ```
 src/
-├── app/                    # Rotas e páginas da aplicação
-├── components/            # Componentes reutilizáveis
-├── lib/                   # Utilitários e configurações
-├── types/                # Definições de tipos TypeScript
-└── styles/               # Estilos globais
+  ├── app/                # Rotas e páginas
+  ├── components/         # Componentes React
+  ├── contexts/          # Contextos React
+  ├── lib/              # Utilitários e configurações
+  └── types/            # Tipos TypeScript
 ```
 
-## Contribuição
+## Scripts
 
-Por favor, leia nosso guia de contribuição antes de submeter pull requests.
+- `npm run dev` - Inicia o servidor de desenvolvimento
+- `npm run build` - Compila o projeto para produção
+- `npm run start` - Inicia o servidor de produção
+- `npm run lint` - Executa o linter
 
 ## Licença
 
-Este projeto é proprietário e confidencial. Todos os direitos reservados.
+Este projeto está licenciado sob a licença MIT - consulte o arquivo [LICENSE](LICENSE) para obter detalhes.

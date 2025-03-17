@@ -1,5 +1,6 @@
 // Type definitions for Next.js 15 page components
 import { ReactNode } from 'react';
+import type { RequestCookies } from 'next/dist/server/web/spec-extension/cookies'
 
 // @ts-nocheck
 declare global {
@@ -20,4 +21,8 @@ declare module 'next' {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     searchParams?: any;
   }
+}
+
+declare module 'next/headers' {
+  function cookies(): RequestCookies
 }

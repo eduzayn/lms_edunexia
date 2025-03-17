@@ -1,12 +1,19 @@
-import type { Metadata } from 'next'
+import { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { AuthProvider } from '@/contexts/auth'
+import { ThemeProvider } from '@/components/theme-provider'
+import { Header } from '@/components/header'
+import { Toaster } from '@/components/ui/toaster'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'EdunexIA LMS',
-  description: 'Plataforma de Ensino Inteligente',
+  title: {
+    default: 'EdunexIA LMS',
+    template: '%s | EdunexIA LMS',
+  },
+  description: 'Plataforma de ensino com tutoria por IA',
 }
 
 export default function RootLayout({
@@ -15,8 +22,21 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR">
-      <body className={inter.className}>{children}</body>
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            <Header />
+            {children}
+            <Toaster />
+          </AuthProvider>
+        </ThemeProvider>
+      </body>
     </html>
   )
 } 

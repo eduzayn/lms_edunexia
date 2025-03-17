@@ -1,24 +1,13 @@
 {
   "extends": [
     "next/core-web-vitals",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
+    "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "rules": {
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/ban-ts-comment": "warn",
-    "@typescript-eslint/no-empty-function": "warn",
-    "@typescript-eslint/no-empty-interface": "warn",
-    "@typescript-eslint/no-inferrable-types": "warn",
-    "@typescript-eslint/no-non-null-assertion": "warn",
-    "@typescript-eslint/no-var-requires": "warn",
-    "@typescript-eslint/prefer-as-const": "warn",
-    "@typescript-eslint/prefer-namespace-keyword": "warn",
-    "@typescript-eslint/triple-slash-reference": "warn",
-    "@typescript-eslint/no-namespace": "warn"
-  },
-  "ignorePatterns": ["**/*.d.ts", "src/types/next.d.ts", "src/app/student/ai-tutor/page.tsx"]
+    "@typescript-eslint/ban-ts-comment": "off"
+  }
 }
