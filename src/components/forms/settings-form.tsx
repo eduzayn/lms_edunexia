@@ -43,7 +43,7 @@ export function SettingsForm() {
       try {
         const result = await updateSettings(values)
 
-        if (!result.data) {
+        if (!result?.data) {
           toast.error('Erro ao atualizar configurações')
           return
         }
