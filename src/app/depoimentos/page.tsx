@@ -1,104 +1,142 @@
-"use client";
+import type { Metadata } from 'next'
+import Image from 'next/image'
+import { Star } from 'lucide-react'
 
-import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
-import { Star } from "lucide-react";
+export const metadata: Metadata = {
+  title: 'Depoimentos | EdunexIA LMS',
+  description: 'Veja o que nossos clientes dizem sobre a plataforma.',
+}
 
 const testimonials = [
   {
-    id: 1,
-    name: "Maria Silva",
-    role: "Diretora Acadêmica",
-    institution: "Colégio Inovação",
-    image: "/avatars/maria-silva.jpg",
+    name: 'Ana Silva',
+    role: 'Diretora Acadêmica',
+    institution: 'Faculdade Inovação',
+    image: '/testimonials/ana-silva.jpg',
+    content:
+      'A EdunexIA transformou completamente nossa forma de ensinar. A integração da IA no processo de aprendizagem trouxe resultados surpreendentes para nossos alunos.',
     rating: 5,
-    content: "A EdunexIA revolucionou nossa forma de ensinar. A tutoria com IA tem sido fundamental para o desenvolvimento personalizado dos nossos alunos. Em apenas 6 meses, vimos uma melhoria significativa no engajamento e resultados."
   },
   {
-    id: 2,
-    name: "João Santos",
-    role: "Professor de Matemática",
-    institution: "Instituto Educacional Futuro",
-    image: "/avatars/joao-santos.jpg",
+    name: 'Carlos Santos',
+    role: 'Coordenador de EAD',
+    institution: 'Instituto Tecnológico',
+    image: '/testimonials/carlos-santos.jpg',
+    content:
+      'A facilidade de uso e o suporte excepcional fazem da EdunexIA a melhor escolha para instituições que buscam inovação no ensino.',
     rating: 5,
-    content: "Como professor, posso dizer que a plataforma tornou meu trabalho muito mais eficiente. O sistema de gestão de conteúdo é intuitivo e a análise de desempenho dos alunos me ajuda a identificar pontos de melhoria rapidamente."
   },
   {
-    id: 3,
-    name: "Ana Oliveira",
-    role: "Coordenadora Pedagógica",
-    institution: "Escola Novos Caminhos",
-    image: "/avatars/ana-oliveira.jpg",
+    name: 'Mariana Costa',
+    role: 'Professora',
+    institution: 'Colégio Futuro',
+    image: '/testimonials/mariana-costa.jpg',
+    content:
+      'Como professora, posso dizer que a plataforma me ajuda a criar conteúdos mais engajadores e acompanhar o progresso dos alunos de forma eficiente.',
     rating: 5,
-    content: "A integração da IA no processo de aprendizagem é impressionante. Os alunos recebem suporte 24/7 e os relatórios detalhados nos permitem tomar decisões baseadas em dados reais."
   },
   {
-    id: 4,
-    name: "Carlos Mendes",
-    role: "Diretor Financeiro",
-    institution: "Centro Educacional Progresso",
-    image: "/avatars/carlos-mendes.jpg",
+    name: 'Roberto Oliveira',
+    role: 'Diretor de TI',
+    institution: 'Universidade Digital',
+    image: '/testimonials/roberto-oliveira.jpg',
+    content:
+      'A infraestrutura robusta e a segurança da plataforma nos dão tranquilidade para escalar nossas operações de ensino à distância.',
     rating: 5,
-    content: "O módulo financeiro da EdunexIA nos ajudou a reduzir a inadimplência em 40%. A gestão de mensalidades e pagamentos ficou muito mais simples e transparente."
-  }
-];
+  },
+  {
+    name: 'Patrícia Lima',
+    role: 'Coordenadora Pedagógica',
+    institution: 'Escola Nova Era',
+    image: '/testimonials/patricia-lima.jpg',
+    content:
+      'A adaptabilidade da plataforma às nossas necessidades específicas e o sistema de avaliação inteligente são diferenciais importantes.',
+    rating: 5,
+  },
+  {
+    name: 'Fernando Mendes',
+    role: 'Gestor de Projetos',
+    institution: 'Centro de Capacitação',
+    image: '/testimonials/fernando-mendes.jpg',
+    content:
+      'A EdunexIA nos ajudou a expandir nossa oferta de cursos e melhorar significativamente a experiência de aprendizagem dos alunos.',
+    rating: 5,
+  },
+]
 
 export default function TestimonialsPage() {
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-12">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-4xl font-bold mb-4">O que dizem sobre a EdunexIA</h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Conheça as experiências de instituições que já transformaram sua gestão educacional com nossa plataforma.
-          </p>
-        </motion.div>
+    <div className="container py-20">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold tracking-tight">
+          O que dizem nossos clientes
+        </h1>
+        <p className="mt-4 text-lg text-muted-foreground">
+          Depoimentos de instituições que transformaram seu ensino com a EdunexIA
+        </p>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={testimonial.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <Card className="h-full">
-                <CardContent className="p-6">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
-                      <img
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg">{testimonial.name}</h3>
-                      <p className="text-gray-600 text-sm">{testimonial.role}</p>
-                      <p className="text-blue-600 text-sm">{testimonial.institution}</p>
-                    </div>
-                  </div>
-                  <div className="flex mb-4" aria-label={`Avaliação: ${testimonial.rating} de 5 estrelas`}>
-                    {Array.from({ length: testimonial.rating }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-5 h-5 fill-yellow-400 text-yellow-400"
-                        aria-hidden="true"
-                      />
-                    ))}
-                  </div>
-                  <p className="text-gray-700 italic">"{testimonial.content}"</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+      <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {testimonials.map((testimonial) => (
+          <div
+            key={testimonial.name}
+            className="flex flex-col rounded-2xl border bg-card p-8"
+          >
+            <div className="flex items-center gap-4">
+              <Image
+                src={testimonial.image}
+                alt={testimonial.name}
+                width={48}
+                height={48}
+                className="rounded-full"
+              />
+              <div>
+                <h3 className="font-semibold">{testimonial.name}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {testimonial.role} • {testimonial.institution}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-4 flex">
+              {Array.from({ length: testimonial.rating }).map((_, i) => (
+                <Star
+                  key={i}
+                  className="h-4 w-4 fill-primary text-primary"
+                />
+              ))}
+            </div>
+
+            <blockquote className="mt-4 flex-1">
+              <p className="text-muted-foreground">{testimonial.content}</p>
+            </blockquote>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-20 text-center">
+        <h2 className="text-2xl font-semibold">
+          Quer fazer parte dessa transformação?
+        </h2>
+        <p className="mt-4 text-muted-foreground">
+          Junte-se a milhares de instituições que já estão revolucionando o ensino
+          com a EdunexIA.
+        </p>
+        <div className="mt-8 flex justify-center gap-4">
+          <a
+            href="/precos"
+            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+          >
+            Ver planos
+          </a>
+          <a
+            href="/suporte"
+            className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+          >
+            Falar com consultor
+          </a>
         </div>
       </div>
     </div>
-  );
+  )
 }

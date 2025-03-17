@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 import { toast } from 'sonner'
+import { Loader2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -85,6 +86,8 @@ export function LoginForm({ userRole }: LoginFormProps) {
                   type="email"
                   placeholder="Digite seu email"
                   disabled={isPending}
+                  autoComplete="email"
+                  aria-label="Email"
                   {...field}
                 />
               </FormControl>
@@ -104,6 +107,8 @@ export function LoginForm({ userRole }: LoginFormProps) {
                   type="password"
                   placeholder="Digite sua senha"
                   disabled={isPending}
+                  autoComplete="current-password"
+                  aria-label="Senha"
                   {...field}
                 />
               </FormControl>
@@ -112,7 +117,15 @@ export function LoginForm({ userRole }: LoginFormProps) {
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isPending}>
+        <Button 
+          type="submit" 
+          className="w-full" 
+          disabled={isPending}
+          aria-label={isPending ? 'Entrando...' : 'Entrar'}
+        >
+          {isPending && (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+          )}
           {isPending ? 'Entrando...' : 'Entrar'}
         </Button>
       </form>
