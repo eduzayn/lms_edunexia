@@ -1,8 +1,9 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
-import { cookies } from 'next/headers'
-import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies'
+'use server'
 
-export function createClient() {
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
+
+export async function createClient() {
   const cookieStore = cookies()
   
   return createServerClient(
@@ -11,24 +12,13 @@ export function createClient() {
     {
       cookies: {
         get(name: string) {
-          const cookie = cookieStore.get(name)
-          return cookie?.value
+          return cookieStore.get(name)?.value
         },
-        set(name: string, value: string, options: CookieOptions) {
-          const cookie: ResponseCookie = {
-            name,
-            value,
-            ...options
-          }
-          cookieStore.set(cookie)
+        set(name: string, value: string, options: any) {
+          cookieStore.set(name, value, options)
         },
-        remove(name: string, options: CookieOptions) {
-          const cookie: ResponseCookie = {
-            name,
-            value: '',
-            ...options
-          }
-          cookieStore.set(cookie)
+        remove(name: string, options: any) {
+          cookieStore.set(name, '', { ...options, maxAge: 0 })
         },
       },
     }
