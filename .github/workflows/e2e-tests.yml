@@ -54,10 +54,8 @@ jobs:
           node --version
           echo "Verificando versão do pnpm"
           pnpm --version
-          echo "Limpando cache do pnpm"
-          pnpm store prune
-          echo "Instalando dependências com verbose"
-          pnpm install --no-frozen-lockfile --verbose
+          echo "Instalando dependências"
+          pnpm install --frozen-lockfile
 
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
@@ -70,7 +68,7 @@ jobs:
           # Inicia o servidor em background na porta 3001
           PORT=3001 pnpm start &
           
-          # Aguarda o servidor iniciar (aumentado para 60 segundos)
+          # Aguarda o servidor iniciar
           echo "Aguardando o servidor iniciar..."
           timeout 60 bash -c 'until curl -s http://localhost:3001 > /dev/null; do sleep 2; echo "Ainda aguardando..."; done' || (echo "Servidor não iniciou" && exit 1)
           echo "Servidor iniciado com sucesso"
