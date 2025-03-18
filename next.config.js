@@ -36,10 +36,14 @@ const nextConfig = {
         fs: false,
       };
     }
+    // Otimizações adicionais
+    config.optimization = {
+      ...config.optimization,
+      minimize: true,
+      moduleIds: 'deterministic',
+    };
     return config;
   },
-  // Configuração de output
-  output: 'standalone',
   // Configuração de páginas estáticas
   staticPageGenerationTimeout: 120,
 };

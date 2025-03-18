@@ -9,10 +9,12 @@ import Image from "@tiptap/extension-image"
 import Placeholder from "@tiptap/extension-placeholder"
 import Highlight from "@tiptap/extension-highlight"
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
-import { EditorToolbar } from "./editor-toolbar"
-import { ImageUploadDialog } from "./image-upload-dialog"
-import { AIAssistant } from "./ai-assistant"
-import { useState } from "react"
+import { lazy, Suspense, useState } from "react"
+
+// Carrega componentes da UI dinamicamente
+const EditorToolbar = lazy(() => import("./editor-toolbar").then(mod => ({ default: mod.EditorToolbar })))
+const ImageUploadDialog = lazy(() => import("./image-upload-dialog").then(mod => ({ default: mod.ImageUploadDialog })))
+const AIAssistant = lazy(() => import("./ai-assistant").then(mod => ({ default: mod.AIAssistant })))
 
 interface RichTextEditorProps {
   content: string
@@ -69,18 +71,24 @@ export function RichTextEditor({ content, onChange, placeholder = "Comece a digi
   return (
     <div className="relative min-h-[500px] w-full max-w-screen-lg border rounded-lg">
       <div className="flex items-center justify-between border-b p-2">
-        <EditorToolbar editor={editor} onImageUpload={() => setIsImageUploadOpen(true)} />
-        <AIAssistant onGenerate={handleAIGenerate} />
+        <Suspense fallback={<div className="h-10 w-full animate-pulse bg-muted" />}>
+          <EditorToolbar editor={editor} onImageUpload={() => setIsImageUploadOpen(true)} />
+        </Suspense>
+        <Suspense fallback={<div className="h-10 w-32 animate-pulse bg-muted" />}>
+          <AIAssistant onGenerate={handleAIGenerate} />
+        </Suspense>
       </div>
       <EditorContent editor={editor} className="prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none" />
-      <ImageUploadDialog
-        open={isImageUploadOpen}
-        onOpenChange={setIsImageUploadOpen}
-        onImageUpload={(url) => {
-          editor.chain().focus().setImage({ src: url }).run()
-          setIsImageUploadOpen(false)
-        }}
-      />
+      <Suspense fallback={null}>
+        <ImageUploadDialog
+          open={isImageUploadOpen}
+          onOpenChange={setIsImageUploadOpen}
+          onImageUpload={(url) => {
+            editor.chain().focus().setImage({ src: url }).run()
+            setIsImageUploadOpen(false)
+          }}
+        />
+      </Suspense>
     </div>
   )
 } 
