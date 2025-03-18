@@ -11,6 +11,7 @@ import Highlight from "@tiptap/extension-highlight"
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
 import { EditorToolbar } from "./editor-toolbar"
 import { ImageUploadDialog } from "./image-upload-dialog"
+import { AIAssistant } from "./ai-assistant"
 import { useState } from "react"
 
 interface RichTextEditorProps {
@@ -61,9 +62,16 @@ export function RichTextEditor({ content, onChange, placeholder = "Comece a digi
     return null
   }
 
+  const handleAIGenerate = (content: string) => {
+    editor.chain().focus().insertContent(content).run()
+  }
+
   return (
     <div className="relative min-h-[500px] w-full max-w-screen-lg border rounded-lg">
-      <EditorToolbar editor={editor} onImageUpload={() => setIsImageUploadOpen(true)} />
+      <div className="flex items-center justify-between border-b p-2">
+        <EditorToolbar editor={editor} onImageUpload={() => setIsImageUploadOpen(true)} />
+        <AIAssistant onGenerate={handleAIGenerate} />
+      </div>
       <EditorContent editor={editor} className="prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none" />
       <ImageUploadDialog
         open={isImageUploadOpen}
