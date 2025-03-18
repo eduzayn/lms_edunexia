@@ -3,68 +3,75 @@
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Underline from "@tiptap/extension-underline"
+import TextAlign from "@tiptap/extension-text-align"
 import Link from "@tiptap/extension-link"
 import Image from "@tiptap/extension-image"
-import TextAlign from "@tiptap/extension-text-align"
 import Placeholder from "@tiptap/extension-placeholder"
-
+import Highlight from "@tiptap/extension-highlight"
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
 import { EditorToolbar } from "./editor-toolbar"
+import { ImageUploadDialog } from "./image-upload-dialog"
+import { useState } from "react"
 
 interface RichTextEditorProps {
-  content?: string
+  content: string
+  onChange: (content: string) => void
   placeholder?: string
-  onChange?: (content: string) => void
-  readOnly?: boolean
 }
 
-export function RichTextEditor({
-  content = "",
-  placeholder = "Comece a escrever...",
-  onChange,
-  readOnly = false,
-}: RichTextEditorProps) {
+export function RichTextEditor({ content, onChange, placeholder = "Comece a digitar..." }: RichTextEditorProps) {
+  const [isImageUploadOpen, setIsImageUploadOpen] = useState(false)
+
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3],
-        },
-      }),
+      StarterKit,
       Underline,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
+      }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class:
-            "text-primary underline underline-offset-4 hover:text-primary/80 transition-colors cursor-pointer",
+          rel: "noopener noreferrer",
+          class: "text-primary underline",
         },
       }),
       Image.configure({
         HTMLAttributes: {
-          class: "rounded-md max-w-full",
+          class: "rounded-lg max-w-full",
         },
-      }),
-      TextAlign.configure({
-        types: ["heading", "paragraph"],
       }),
       Placeholder.configure({
         placeholder,
-        emptyEditorClass:
-          "before:content-[attr(data-placeholder)] before:text-muted-foreground before:h-0 before:float-left before:pointer-events-none",
+      }),
+      Highlight,
+      CodeBlockLowlight.configure({
+        HTMLAttributes: {
+          class: "rounded-md bg-muted p-4",
+        },
       }),
     ],
     content,
-    editable: !readOnly,
     onUpdate: ({ editor }) => {
-      onChange?.(editor.getHTML())
+      onChange(editor.getHTML())
     },
   })
 
+  if (!editor) {
+    return null
+  }
+
   return (
-    <div className="min-h-[250px] rounded-md border bg-background">
-      {!readOnly && <EditorToolbar editor={editor} />}
-      <EditorContent
-        editor={editor}
-        className="prose prose-sm dark:prose-invert max-w-none p-4"
+    <div className="relative min-h-[500px] w-full max-w-screen-lg border rounded-lg">
+      <EditorToolbar editor={editor} onImageUpload={() => setIsImageUploadOpen(true)} />
+      <EditorContent editor={editor} className="prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none" />
+      <ImageUploadDialog
+        open={isImageUploadOpen}
+        onOpenChange={setIsImageUploadOpen}
+        onImageUpload={(url) => {
+          editor.chain().focus().setImage({ src: url }).run()
+          setIsImageUploadOpen(false)
+        }}
       />
     </div>
   )

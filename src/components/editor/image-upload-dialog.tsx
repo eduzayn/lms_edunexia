@@ -18,19 +18,19 @@ import { cn } from '@/lib/utils'
 
 interface ImageUploadDialogProps {
   open: boolean
-  onClose: () => void
-  onUpload: (url: string) => void
+  onOpenChange: (open: boolean) => void
+  onImageUpload: (url: string) => void
 }
 
-export function ImageUploadDialog({ open, onClose, onUpload }: ImageUploadDialogProps) {
+export function ImageUploadDialog({ open, onOpenChange, onImageUpload }: ImageUploadDialogProps) {
   const [imageUrl, setImageUrl] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.length) {
+      const file = e.target.files[0]
       setFile(file)
       const reader = new FileReader()
       reader.onloadend = () => {
@@ -40,28 +40,10 @@ export function ImageUploadDialog({ open, onClose, onUpload }: ImageUploadDialog
     }
   }
 
-  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImageUrl(e.target.value)
-    setFile(null)
-    setPreview(null)
-  }
-
-  const handleUpload = async () => {
-    try {
-      setIsUploading(true)
-
-      if (file) {
-        // TODO: Implementar upload do arquivo para o servidor
-        // Por enquanto, vamos usar o preview como URL
-        onUpload(preview!)
-      } else if (imageUrl) {
-        onUpload(imageUrl)
-      }
-    } catch (error) {
-      console.error('Erro ao fazer upload da imagem:', error)
-    } finally {
-      setIsUploading(false)
-      handleClose()
+  const handleUrlUpload = () => {
+    if (imageUrl) {
+      onImageUpload(imageUrl)
+      setImageUrl('')
     }
   }
 
@@ -69,24 +51,34 @@ export function ImageUploadDialog({ open, onClose, onUpload }: ImageUploadDialog
     setImageUrl('')
     setFile(null)
     setPreview(null)
-    onClose()
+    onOpenChange(false)
   }
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Adicionar imagem</DialogTitle>
+          <DialogTitle>Adicionar Imagem</DialogTitle>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="image-url">URL da imagem</Label>
+            <Label htmlFor="image">Upload de arquivo</Label>
+            <Input
+              id="image"
+              type="file"
+              accept="image/*"
+              onChange={handleFileUpload}
+            />
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="image-url">Ou cole o link da imagem aqui</Label>
             <Input
               id="image-url"
-              placeholder="Cole a URL da imagem aqui"
+              placeholder="Cole o link da imagem aqui"
               value={imageUrl}
-              onChange={handleUrlChange}
+              onChange={(e) => setImageUrl(e.target.value)}
               disabled={isUploading}
             />
           </div>
@@ -135,7 +127,7 @@ export function ImageUploadDialog({ open, onClose, onUpload }: ImageUploadDialog
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={handleFileChange}
+                  onChange={handleFileUpload}
                   disabled={isUploading}
                 />
               </label>
@@ -148,7 +140,7 @@ export function ImageUploadDialog({ open, onClose, onUpload }: ImageUploadDialog
             Cancelar
           </Button>
           <Button
-            onClick={handleUpload}
+            onClick={handleUrlUpload}
             disabled={(!imageUrl && !file) || isUploading}
           >
             Adicionar
